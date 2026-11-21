@@ -157,6 +157,7 @@ class ModernBatterieMonitor extends HTMLElement {
     this._render();
   }
   set hass(hass) {
+    this._captureLiveReplacement(this._hass, hass);
     this._hass = hass;
     this._loadRegistries();
     this._loadHistory();
@@ -220,16 +221,17 @@ class ModernBatterieMonitor extends HTMLElement {
     for (const [deviceId, group] of byDevice) {
       const lowBinary = group.binary.some((state) => state.state === "on");
       if (group.numeric.length) {
-        for (const state of group.numeric) entries.push(this._makeEntry(state, deviceId, lowBinary));
+        const binaryEntityIds = group.binary.map((state) => state.entity_id);
+        for (const state of group.numeric) entries.push(this._makeEntry(state, deviceId, lowBinary, false, binaryEntityIds));
       } else if (group.binary.length) {
         const main = group.binary.find((state) => state.state === "on") || group.binary[0];
-        entries.push(this._makeEntry(main, deviceId, main.state === "on", true));
+        entries.push(this._makeEntry(main, deviceId, main.state === "on", true, group.binary.map((state) => state.entity_id)));
       }
     }
     return entries;
   }
 
-  _makeEntry(state, deviceId, lowBinary, binaryOnly = false) {
+  _makeEntry(state, deviceId, lowBinary, binaryOnly = false, binaryEntityIds = []) {
     const entity = this._registry?.entities.get(state.entity_id);
     const device = this._registry?.devices.get(deviceId);
     const areaId = entity?.area_id || device?.area_id || state.attributes?.area_id;
@@ -241,15 +243,28 @@ class ModernBatterieMonitor extends HTMLElement {
     const room = this._registry?.areas.get(areaId) || state.attributes?.area_name || "Ohne Raum";
     return {
       entityId:state.entity_id, deviceId, state, level, lowBinary,
-      binaryOnly, room, displayName, low: level != null ? level <= threshold : lowBinary,
+      binaryOnly, binaryEntityIds, room, displayName, low: level != null ? level <= threshold : lowBinary,
       domain:state.entity_id.split(".")[0],
     };
+  }
+
+  _captureLiveReplacement(previous, current) {
+    if (!previous?.states || !current?.states) return;
+    for (const [entityId, state] of Object.entries(current.states)) {
+      if (state.attributes?.device_class !== "battery") continue;
+      const oldState = previous.states[entityId];
+      if (!oldState) continue;
+      const oldLevel = mBatteryNumber(oldState.state), newLevel = mBatteryNumber(state.state);
+      const numericReplacement = oldLevel != null && newLevel != null && oldLevel <= 50 && newLevel >= 80 && newLevel-oldLevel >= 40;
+      const binaryReplacement = entityId.startsWith("binary_sensor.") && oldState.state === "on" && state.state === "off";
+      if (numericReplacement || binaryReplacement) this._history.set(entityId, state.last_changed || state.last_updated);
+    }
   }
 
   async _loadHistory() {
     if (!this._hass?.callWS || this._historyLoading) return;
     const entries = this._batteryEntities();
-    const ids = entries.map((entry) => entry.entityId).sort();
+    const ids = [...new Set(entries.flatMap((entry) => [entry.entityId, ...(entry.binaryEntityIds || [])]))].sort();
     const key = ids.join("|");
     if (!key || key === this._historyKey) return;
     this._historyKey = key;
@@ -323,9 +338,11 @@ class ModernBatterieMonitor extends HTMLElement {
   }
 
   _row(entry) {
-    const date = this._date(this._history.get(entry.entityId));
-    const stateText = entry.level != null ? (entry.low ? "Niedriger Akkustand" : "Batteriestand") : (entry.lowBinary ? "Batterie leer / niedrig" : "Kein Prozentwert · Status OK");
-    const valueText = entry.level != null ? `${Math.round(entry.level)} %` : (entry.lowBinary ? "Niedrig" : "OK");
+    const detectedAt = this._history.get(entry.entityId) || (entry.binaryEntityIds || []).map((id)=>this._history.get(id)).find(Boolean);
+    const date = this._date(detectedAt);
+    const unknown = entry.level == null && (entry.state.state === "unknown" || entry.state.state === "unavailable");
+    const stateText = entry.level != null ? (entry.low ? "Niedriger Akkustand" : "Batteriestand") : (entry.lowBinary ? "Batterie leer / niedrig" : (unknown ? "Batteriestatus nicht verfügbar" : "Kein Prozentwert · Status OK"));
+    const valueText = entry.level != null ? `${Math.round(entry.level)} %` : (entry.lowBinary ? "Niedrig" : (unknown ? "—" : "OK"));
     const historyLine = date ? `<span class="device-sub">Letzter Batterietausch (geschätzt): ${mBatteryEsc(date)}</span>` : "";
     return `<article class="device"><div class="device-main"><span class="device-icon" aria-hidden="true">${entry.binaryOnly ? "◉" : "⌁"}</span><div class="device-copy"><span class="device-name pressable" data-entity="${mBatteryEsc(entry.entityId)}">${mBatteryEsc(entry.displayName)}</span><span class="device-sub">${mBatteryEsc(stateText)} · <code>${mBatteryEsc(entry.entityId)}</code></span>${historyLine}</div></div><div class="device-meta">${this._batteryGraphic(entry)}<div class="level-copy pressable" data-entity="${mBatteryEsc(entry.entityId)}"><div class="level-number" style="color:${entry.level == null ? (entry.lowBinary?"#ff7182":"#aab6c1") : mBatteryColor(entry.level)}">${mBatteryEsc(valueText)}</div><div class="level-state">${entry.level == null ? "Binärsensor" : "Batterielevel"}</div></div></div></article>`;
   }
