@@ -1,6 +1,6 @@
 # Modern-Batterie-Monitor
 
-**Version 1.1.0**
+**Version 1.2.0**
 
 Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentwerte und binäre „Batterie leer“-Sensoren, gruppiert die Geräte nach ihren Bereichen und zeigt den Ladestand als feingranulare, farbwechselnde Batterie an.
 
@@ -12,7 +12,8 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 - Zeigt eine dreistufige Baumstruktur **Raum → Gerät → Batterie-Sensor** mit Ein-/Ausklappen pro Ebene und globalen Schaltflächen zum Auf- und Zuklappen.
 - Hält den Bereich „Ohne Raum“ bei jeder Sortierung am Ende.
 - Filtert nach niedrigem Stand und fehlendem Raum; Suche und Sortierung sind enthalten.
-- Die Batterieanzeige hat zehn Segmente und füllt das jeweilige Segment proportional bis auf den exakten Sensorwert.
+- Die Batterieanzeige greift die glänzende, dreidimensionale Batterie aus der Referenz-App auf: metallischer Rahmen, Lichtreflexe und farbiger Verlauf. Die Füllung reagiert stufenlos auf jeden Prozentpunkt und wechselt je nach Ladestand von Rot über Gelb zu Grün.
+- Erkennt und filtert Handys, Tablets und Wearables standardmäßig automatisch. Dazu nutzt die Karte die Home-Assistant-Mobile-App-Integration und Hinweise in Gerätename, Modell sowie Kennung. Die Geräte können im Einstellungsfenster oder Karteneditor wieder eingeblendet werden.
 - Zeigt den Gerätenamen über dem Sensor-Namen; der übersetzte Entity-Name wie „Batterie fast leer“ steht als Sensorbezeichnung in der untergeordneten Baumebene.
 - Markiert Batterie-Binärsensoren bei Normalstatus grün und bei Niedrigstatus rot.
 - Langer Druck auf Gerätename, Batterieanzeige oder Wert öffnet den Home-Assistant-Dialog „Mehr Informationen“.
@@ -45,8 +46,11 @@ Wenn HACS die Ressource nicht automatisch registriert, unter **Einstellungen →
 | `name_overrides` | `{}` | Anzeigenamen pro Entity-ID |
 | `notifications_enabled` | `false` | Benachrichtigung bei neu niedrigem Stand einschalten |
 | `notification_service` | `""` | Benachrichtigungsdienst, zum Beispiel `notify.mobile_app_handy` |
+| `show_mobile_devices` | `false` | Handys, Tablets und Wearables ebenfalls anzeigen |
 
 Die **Konfiguration** in der Karte speichert ihre Schnelländerungen im Browserprofil. Für eine dashboardweite, geräteübergreifende Konfiguration nutze die Optionen des Karteneditors. Benachrichtigungen aus der Karte werden nur gesendet, während die Karte in einem geöffneten Home-Assistant-Dashboard aktiv ist. Für Hintergrundbenachrichtigungen sollte zusätzlich eine Home-Assistant-Automation eingerichtet werden.
+
+Der Gerätefilter arbeitet mit den in Home Assistant verfügbaren Integrations-, Namens- und Modellangaben. Je nach Gerät kann die automatische Erkennung daher einzelne Treffer übersehen oder ein Smart-Home-Gerät falsch zuordnen. Mit **„Handys, Tablets und Wearables ebenfalls anzeigen“** lässt sich der Filter ausschalten.
 
 ## Hinweise zum Batterietauschdatum
 
