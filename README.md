@@ -1,6 +1,6 @@
 # Modern-Batterie-Monitor
 
-**Version 1.2.0**
+**Version 1.3.0**
 
 Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentwerte und binäre „Batterie leer“-Sensoren, gruppiert die Geräte nach ihren Bereichen und zeigt den Ladestand als feingranulare, farbwechselnde Batterie an.
 
@@ -9,10 +9,14 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 - Erkennt `sensor`- und `binary_sensor`-Entitäten mit `device_class: battery`.
 - Verwendet Binärsensoren als Status „Niedrig“ oder „OK“, ohne einen Prozentwert zu erfinden.
 - Ordnet Geräte über die Entitäts- und Geräteregistrierung den Home-Assistant-Bereichen zu.
-- Zeigt eine dreistufige Baumstruktur **Raum → Gerät → Batterie-Sensor** mit Ein-/Ausklappen pro Ebene und globalen Schaltflächen zum Auf- und Zuklappen.
+- Zeigt die Baumstruktur **Raum → Gerät** wie in der Vorschau; mehrere Batterie-Entitäten desselben Geräts erscheinen als ein Geräteeintrag.
+- Verwendet den Gerätenamen aus der Geräteregistrierung und zeigt keine Batterie-Entity-Namen in der Geräteliste an. Ein Stiftsymbol öffnet die Umbenennung direkt.
+- Zeigt passende Raum- und Geräte-Icons, zum Beispiel für Schlafzimmer, Flur, Rauchmelder, Türkontakt, Bewegung und Klima.
+- Räume lassen sich einzeln sowie mit den Glas-Schaltflächen global auf- und zuklappen.
 - Hält den Bereich „Ohne Raum“ bei jeder Sortierung am Ende.
 - Filtert nach niedrigem Stand und fehlendem Raum; Suche und Sortierung sind enthalten.
 - Die Batterieanzeige greift die glänzende, dreidimensionale Batterie aus der Referenz-App auf: metallischer Rahmen, Lichtreflexe und farbiger Verlauf. Die Füllung reagiert stufenlos auf jeden Prozentpunkt und wechselt je nach Ladestand von Rot über Gelb zu Grün.
+- Die Filter-, Konfigurations- und Baum-Schaltflächen verwenden eine einheitliche Glasoptik. Binärsensoren behalten ihren gut sichtbaren Statushinweis „Binärsensor“ sowie die grüne oder rote Statusfarbe.
 - Erkennt und filtert Handys, Tablets und Wearables standardmäßig automatisch. Dazu nutzt die Karte die Home-Assistant-Mobile-App-Integration und Hinweise in Gerätename, Modell sowie Kennung. Die Geräte können im Einstellungsfenster oder Karteneditor wieder eingeblendet werden.
 - Zeigt den Gerätenamen über dem Sensor-Namen; der übersetzte Entity-Name wie „Batterie fast leer“ steht als Sensorbezeichnung in der untergeordneten Baumebene.
 - Markiert Batterie-Binärsensoren bei Normalstatus grün und bei Niedrigstatus rot.
@@ -42,8 +46,8 @@ Wenn HACS die Ressource nicht automatisch registriert, unter **Einstellungen →
 | --- | --- | --- |
 | `title` | `Batterien` | Überschrift der Karte |
 | `low_threshold` | `25` | Prozentwert, ab dem ein Prozent-Sensor als niedrig zählt |
-| `hidden_entities` | `[]` | Entity-IDs, die ausgeblendet werden sollen |
-| `name_overrides` | `{}` | Anzeigenamen pro Entity-ID |
+| `hidden_entities` | `[]` | Geräte-IDs oder zugehörige Entity-IDs, die ausgeblendet werden sollen |
+| `name_overrides` | `{}` | Anzeigenamen pro Geräte-ID oder Entity-ID |
 | `notifications_enabled` | `false` | Benachrichtigung bei neu niedrigem Stand einschalten |
 | `notification_service` | `""` | Benachrichtigungsdienst, zum Beispiel `notify.mobile_app_handy` |
 | `show_mobile_devices` | `false` | Handys, Tablets und Wearables ebenfalls anzeigen |
