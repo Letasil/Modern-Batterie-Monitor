@@ -4,6 +4,7 @@ low_threshold: 25
 hidden_entities: []
 name_overrides: {}
 notifications_enabled: false
+show_mobile_devices: false
 # Beispiel: notify.mobile_app_dein_handy
 notification_service: ""
 
