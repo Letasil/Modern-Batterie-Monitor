@@ -1,5 +1,13 @@
 # Änderungsprotokoll
 
+## 1.3.0 — 2026-11-21
+
+- Gerätebaum auf **Raum → Gerät** vereinfacht; mehrere Batterie-Sensoren eines Geräts werden in einer Zeile zusammengefasst.
+- Gerätenamen aus der Geräteregistrierung verwenden und Batterie-Entity-Namen aus der Liste entfernen.
+- Raum-Icons und Gerätekategorie-Icons ergänzt; das Stiftsymbol führt direkt zur Namensänderung.
+- Raumgruppen und Gerätezeilen optisch an `battery-dashboard-treeview.html` angelehnt; Buttons und Filter in Glasoptik gestaltet.
+- Binärsensor-Hinweis und grüne/rote Statusdarstellung erhalten; Batterieanzeige behält ihre stufenlose, farbige Füllung.
+
 ## 1.2.0 — 2026-11-21
 
 - Handys, Tablets und Wearables werden anhand der Mobile-App-Integration und Gerätehinweisen standardmäßig aus der Übersicht gefiltert; der Filter ist in den Einstellungen und im Karteneditor abschaltbar.
