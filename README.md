@@ -1,5 +1,7 @@
 # Modern-Batterie-Monitor
 
+**Version 1.1.0**
+
 Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentwerte und binäre „Batterie leer“-Sensoren, gruppiert die Geräte nach ihren Bereichen und zeigt den Ladestand als feingranulare, farbwechselnde Batterie an.
 
 ## Funktionen
@@ -7,10 +9,15 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 - Erkennt `sensor`- und `binary_sensor`-Entitäten mit `device_class: battery`.
 - Verwendet Binärsensoren als Status „Niedrig“ oder „OK“, ohne einen Prozentwert zu erfinden.
 - Ordnet Geräte über die Entitäts- und Geräteregistrierung den Home-Assistant-Bereichen zu.
+- Zeigt eine dreistufige Baumstruktur **Raum → Gerät → Batterie-Sensor** mit Ein-/Ausklappen pro Ebene und globalen Schaltflächen zum Auf- und Zuklappen.
+- Hält den Bereich „Ohne Raum“ bei jeder Sortierung am Ende.
 - Filtert nach niedrigem Stand und fehlendem Raum; Suche und Sortierung sind enthalten.
 - Die Batterieanzeige hat zehn Segmente und füllt das jeweilige Segment proportional bis auf den exakten Sensorwert.
+- Zeigt den Gerätenamen über dem Sensor-Namen; der übersetzte Entity-Name wie „Batterie fast leer“ steht als Sensorbezeichnung in der untergeordneten Baumebene.
+- Markiert Batterie-Binärsensoren bei Normalstatus grün und bei Niedrigstatus rot.
 - Langer Druck auf Gerätename, Batterieanzeige oder Wert öffnet den Home-Assistant-Dialog „Mehr Informationen“.
 - Schnellkonfiguration für Anzeigenamen, Ausblenden, Grenzwert und Benachrichtigungen.
+- Das Konfigurationsfenster bleibt bei laufenden Home-Assistant-Aktualisierungen geöffnet und behält ungespeicherte Eingaben.
 - Schätzt den letzten Batterietausch aus dem Recorder-Verlauf: Prozentwerte werden bei einem starken Sprung auf mindestens 80 % erkannt; Binärsensoren bei einem Wechsel von „niedrig“ zu „OK“.
 
 ## Installation mit HACS
