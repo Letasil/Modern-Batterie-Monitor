@@ -265,9 +265,9 @@ class ModernBatterieMonitor extends HTMLElement {
           start_time:start.toISOString(), end_time:now.toISOString(),
           entity_ids:batch, minimal_response:true,
         });
-        for (const series of response || []) {
+        for (const [seriesIndex, series] of (response || []).entries()) {
           if (!series?.length) continue;
-          const entityId = series[0].entity_id || series[0].e || batch[0];
+          const entityId = series[0].entity_id || series[0].e || batch[seriesIndex] || batch[0];
           let latest = null;
           for (let i=1; i<series.length; i++) {
             const before = series[i-1], after = series[i];
@@ -337,7 +337,7 @@ class ModernBatterieMonitor extends HTMLElement {
     const shown = all.filter((entry) => !(this._config.hidden_entities || []).includes(entry.entityId));
     const rows = this._visibleEntries();
     const lowCount = shown.filter((entry) => entry.low).length;
-    const rooms = new Set(shown.map((entry) => entry.room));
+    const rooms = new Set(shown.map((entry) => entry.room).filter((room) => room !== "Ohne Raum"));
     const groups = new Map();
     for (const row of rows) {
       if (!groups.has(row.room)) groups.set(row.room, []);
@@ -345,7 +345,9 @@ class ModernBatterieMonitor extends HTMLElement {
     }
     const roomNames = [...groups.keys()].sort((a,b) => a.localeCompare(b,"de"));
     const content = roomNames.map((room) => {
-      const roomRows = groups.get(room).sort((a,b) => a.displayName.localeCompare(b.displayName,"de"));
+      const roomRows = groups.get(room).sort((a,b) => this._sort === "level"
+        ? ((a.level ?? (a.low?0:101)) - (b.level ?? (b.low?0:101)) || a.displayName.localeCompare(b.displayName,"de"))
+        : a.displayName.localeCompare(b.displayName,"de"));
       return `<details class="room" open><summary class="room-title"><span class="room-name"><span class="room-icon">⌂</span>${mBatteryEsc(room)} <span class="section-head span">${roomRows.length}</span></span><span class="chev">›</span></summary><div class="room-list">${roomRows.map((entry) => this._row(entry)).join("")}</div></details>`;
     }).join("");
     const localOnly = "Änderungen in diesem Schnellmenü werden in diesem Browserprofil gespeichert; die Kartenoptionen im Dashboard-Editor bleiben zusätzlich verfügbar.";
