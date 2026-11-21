@@ -1,5 +1,11 @@
 # Änderungsprotokoll
 
+## 1.2.0 — 2026-11-21
+
+- Handys, Tablets und Wearables werden anhand der Mobile-App-Integration und Gerätehinweisen standardmäßig aus der Übersicht gefiltert; der Filter ist in den Einstellungen und im Karteneditor abschaltbar.
+- Batterieanzeige an die glänzende Batterie der referenzierten App angelehnt: metallischer Rahmen, Lichtreflexe, Farbverlauf und stufenloser Prozentfüllstand.
+- Dokumentation und Beispielkonfiguration auf die neue Version aktualisiert.
+
 ## 1.1.0 — 2026-11-21
 
 - Einstellungsdialog bleibt bei Home-Assistant-Aktualisierungen geöffnet und erhält ungespeicherte Eingaben.
