@@ -15,12 +15,12 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 
 ## Installation mit HACS
 
-1. In HACS unter **Integrationen / Frontend** (Dashboard) die **benutzerdefinierten Repositories** öffnen.
-2. Dieses GitHub-Repository als Kategorie **Dashboard** hinzufügen.
+1. In HACS über das Menü **Benutzerdefinierte Repositories** öffnen.
+2. `https://github.com/Letasil/Modern-Batterie-Monitor` als Kategorie **Dashboard** hinzufügen.
 3. **Modern-Batterie-Monitor** installieren und Home Assistant bzw. den Browser neu laden.
 4. Im Dashboard eine manuelle Karte hinzufügen und die Konfiguration aus [`lovelace-example.yaml`](lovelace-example.yaml) verwenden.
 
-Wenn HACS die Ressource nicht automatisch registriert, unter **Einstellungen → Dashboards → Ressourcen** die JavaScript-Datei als Typ **JavaScript-Modul** eintragen. HACS stellt die Datei üblicherweise unter `/hacsfiles/modern-batterie-monitor.js` bereit.
+Wenn HACS die Ressource nicht automatisch registriert, unter **Einstellungen → Dashboards → Ressourcen** die JavaScript-Datei als Typ **JavaScript-Modul** eintragen. HACS speichert Dashboard-Dateien im Home-Assistant-Konfigurationsverzeichnis unter `www/community/Modern-Batterie-Monitor/`.
 
 ## Manuelle Installation
 
