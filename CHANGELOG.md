@@ -1,5 +1,10 @@
 # Änderungsprotokoll
 
+## 1.6.3 — 2026-11-22
+
+- Batteriehöhe an den OK-Statusbutton angepasst: 38 px am Desktop und 36 px auf kleinen Displays.
+- Geräteanzahl in einem zugeklappten Raum wird bei einer vorhandenen Batteriewarnung gelb hinterlegt; geöffnet bleibt die Anzeige neutral.
+
 ## 1.6.2 — 2026-11-22
 
 - Prozentwert und Batterieanzeige getauscht; der Prozentwert steht links von der Batterie.
