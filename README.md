@@ -1,6 +1,8 @@
 # Modern-Batterie-Monitor
 
-**Version 1.4.0**
+**Version 1.5.0**
+
+Versionen folgen [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH`. Neue Funktionen erhöhen MINOR, rückwärtskompatible Fehlerkorrekturen PATCH und inkompatible Änderungen MAJOR.
 
 Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentwerte und binäre „Batterie leer“-Sensoren, gruppiert die Geräte nach ihren Bereichen und zeigt den Ladestand als feingranulare, farbwechselnde Batterie an.
 
@@ -18,6 +20,9 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 - Die Batterieanzeige greift die glänzende, dreidimensionale Batterie aus der Referenz-App auf: metallischer Rahmen, Lichtreflexe und farbiger Verlauf. Die Füllung reagiert stufenlos auf jeden Prozentpunkt und wechselt je nach Ladestand von Rot über Gelb zu Grün.
 - Geräte mit reinem Binärsensor zeigen statt eines Batterie-Symbols eine Glas-Statusschaltfläche mit „OK“, „Niedrig“ oder „Unbekannt“; die grüne oder rote Statusfarbe bleibt erhalten.
 - Filter-, Konfigurations- und Baum-Schaltflächen verwenden die gleiche abgerundete Glasform. Der Konfigurationsbutton steht direkt neben der Suche.
+- Raum- und Gerätegruppen erhalten im geöffneten Zustand eine türkisfarbene Glasfläche und im geschlossenen Zustand eine neutrale Glasfläche. Die Schriftfarbe aller Schaltflächen bleibt einheitlich und kontrastreich.
+- Die Warnschwelle lässt sich im Konfigurationsfenster und im Karteneditor über einen Prozent-Slider einstellen.
+- Benutzeroberflächentexte sind für Deutsch und Englisch lokalisiert. Standardmäßig folgt die Sprache Home Assistant; im Konfigurationsfenster kann zwischen automatisch, Deutsch und Englisch gewählt werden. Geräte- und Raumnamen aus Home Assistant bleiben unverändert.
 - Sortierung nach Gerätename, Akkustand oder Raum aktualisiert die Baumansicht.
 - Erkennt und filtert Handys, Tablets und Wearables standardmäßig automatisch. Dazu nutzt die Karte die Home-Assistant-Mobile-App-Integration und Hinweise in Gerätename, Modell sowie Kennung. Die Geräte können im Einstellungsfenster oder Karteneditor wieder eingeblendet werden.
 - Zeigt für jedes Gerät nur den Gerätenamen an; Batterie-Entity-Namen erscheinen nicht in der Geräteübersicht.
@@ -53,10 +58,15 @@ Wenn HACS die Ressource nicht automatisch registriert, unter **Einstellungen →
 | `notifications_enabled` | `false` | Benachrichtigung bei neu niedrigem Stand einschalten |
 | `notification_service` | `""` | Benachrichtigungsdienst, zum Beispiel `notify.mobile_app_handy` |
 | `show_mobile_devices` | `false` | Handys, Tablets und Wearables ebenfalls anzeigen |
+| `language` | `auto` | Sprache der Oberfläche: Home-Assistant-Sprache (`auto`), `de` oder `en` |
 
 Die **Konfiguration** in der Karte speichert ihre Schnelländerungen im Browserprofil. Für eine dashboardweite, geräteübergreifende Konfiguration nutze die Optionen des Karteneditors. Benachrichtigungen aus der Karte werden nur gesendet, während die Karte in einem geöffneten Home-Assistant-Dashboard aktiv ist. Für Hintergrundbenachrichtigungen sollte zusätzlich eine Home-Assistant-Automation eingerichtet werden.
 
 Der Gerätefilter arbeitet mit den in Home Assistant verfügbaren Integrations-, Namens- und Modellangaben. Je nach Gerät kann die automatische Erkennung daher einzelne Treffer übersehen oder ein Smart-Home-Gerät falsch zuordnen. Mit **„Handys, Tablets und Wearables ebenfalls anzeigen“** lässt sich der Filter ausschalten.
+
+## Wann neue Geräte gefunden werden
+
+Beim Laden der Karte werden die Home-Assistant-Registrierungen für Entitäten, Geräte und Bereiche abgefragt. Die Karte prüft danach erneut, sobald Home Assistant einen Zustandssatz mit einer neuen Entität der Geräteklasse `battery` übergibt. Das ist ereignisgesteuert und kein periodischer Timer. Ein neu hinzugefügter Batteriesensor erscheint, sobald Home Assistant ihn in seinen Zuständen bereitstellt; seine Raum- und Gerätenamen werden beim anschließenden Registerabruf zugeordnet.
 
 ## Hinweise zum Batterietauschdatum
 
