@@ -1,5 +1,5 @@
-/* Modern-Batterie-Monitor · Lovelace custom card · 1.6.3 */
-const M_BATTERY_VERSION = "1.6.3";
+/* Modern-Batterie-Monitor · Lovelace custom card · 1.6.4 */
+const M_BATTERY_VERSION = "1.6.4";
 const M_BATTERY_DEFAULTS = {
   type: "custom:modern-batterie-monitor",
   title: "Batterien",
