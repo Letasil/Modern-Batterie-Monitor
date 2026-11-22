@@ -459,7 +459,7 @@ class ModernBatterieMonitor extends HTMLElement {
     const level = binaryOnly ? null : mBatteryNumber(state.state);
     const threshold = Number(this._config.low_threshold ?? 25);
     const override = this._config.name_overrides?.[deviceId] || this._config.name_overrides?.[state.entity_id];
-    const deviceName = device?.name_by_user || device?.name || state.attributes?.device_name || [device?.manufacturer,device?.model].filter(Boolean).join(" ") || "Batteriegerät";
+    const deviceName = device?.name_by_user || device?.name || state.attributes?.device_name || [device?.manufacturer,device?.model].filter(Boolean).join(" ") || this._t("generic_device");
     const displayName = override || deviceName;
     const room = this._registry?.areas.get(areaId) || state.attributes?.area_name || "Ohne Raum";
     return {
@@ -498,7 +498,7 @@ class ModernBatterieMonitor extends HTMLElement {
         allEntityIds,
         latestUpdated:latestState?.last_updated || latestState?.last_changed || null,
         currentOverride:override || "",
-        displayName:override || representative.displayName || "Batteriegerät",
+        displayName:override || representative.displayName || this._t("generic_device"),
         low:lowBinary || (level!=null && level<=threshold),
       };
       return entry;
