@@ -1,5 +1,9 @@
 # Änderungsprotokoll
 
+## 1.6.4 — 2026-11-22
+
+- README auf den Funktionsumfang des ersten Releases konzentriert und um drei erklärende Screenshots ergänzt.
+
 ## 1.6.3 — 2026-11-22
 
 - Batteriehöhe an den OK-Statusbutton angepasst: 38 px am Desktop und 36 px auf kleinen Displays.
@@ -75,3 +79,4 @@
 ## 1.0.0 — 2026-11-21
 
 - Erste Version der Lovelace-Karte mit Batterie-Sensorerkennung, Raumgruppen, Filtern, Suche, Umbenennen, Ausblenden und Austauschdatum-Schätzung.
+
