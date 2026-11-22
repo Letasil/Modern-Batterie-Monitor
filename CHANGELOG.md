@@ -1,5 +1,13 @@
 # Änderungsprotokoll
 
+## 1.6.0 — 2026-11-22
+
+- Inaktive Umschalt- und Gruppenbeschriftungen wieder grau; aktive hell. Button-Texte sind normalgewichtig statt fett.
+- Grüne Füllungen an Gruppenflächen entfernt; die offene und geschlossene Ansicht bleibt dezent unterscheidbar.
+- Gerätekategorie-Icons neutralisiert; Binärsensoren zeigen ihren Status weiterhin im separaten Statusknopf.
+- Übersetzungen aus dem JavaScript in `translations/` ausgelagert und Dateien für Arabisch, Deutsch, Englisch, Spanisch, Französisch, Niederländisch, Polnisch, Russisch und Türkisch ergänzt.
+- Sprachwahl im Schnellmenü und Karteneditor erweitert; automatisch wird weiterhin die Home-Assistant-Sprache verwendet.
+
 ## 1.5.0 — 2026-11-22
 
 - Konfigurationsbutton links neben das Suchfeld gesetzt.
