@@ -1,5 +1,11 @@
 # Änderungsprotokoll
 
+## 1.6.2 — 2026-11-22
+
+- Prozentwert und Batterieanzeige getauscht; der Prozentwert steht links von der Batterie.
+- Batterieanzeige bündig rechts ausgerichtet und auf dieselbe Breite wie der OK-Statusbutton gesetzt.
+- Sichtbaren silbernen Rahmen auf höchstens 1 px reduziert.
+
 ## 1.6.1 — 2026-11-22
 
 - Sortierfeld und Sortiercode entfernt; die Räume und Gerätenamen bleiben alphabetisch sortiert, „Ohne Raum“ steht immer am Ende.
