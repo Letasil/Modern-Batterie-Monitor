@@ -1,1 +1,47 @@
+name: Release
 
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version from VERSION.txt, without a leading v
+        required: true
+        type: string
+        default: "1.6.5"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Validate release version and files
+        run: node scripts/validate-release.mjs "${{ inputs.version }}"
+      - name: Build and verify installation ZIP
+        run: python scripts/package_release.py
+      - name: Verify JavaScript syntax
+        run: node --input-type=module --check < modern-batterie-monitor.js
+      - name: Create draft release and upload assets
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v${{ inputs.version }}
+          name: Modern-Batterie-Monitor v${{ inputs.version }}
+          target_commitish: main
+          draft: true
+          prerelease: false
+          body_path: GITHUB_RELEASE_NOTES.md
+          files: |
+            modern-batterie-monitor.js
+            dist/Modern-Batterie-Monitor-v${{ inputs.version }}.zip
