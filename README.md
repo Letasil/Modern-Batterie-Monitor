@@ -1,6 +1,6 @@
 # Modern-Batterie-Monitor
 
-**Version 1.3.0**
+**Version 1.4.0**
 
 Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentwerte und binäre „Batterie leer“-Sensoren, gruppiert die Geräte nach ihren Bereichen und zeigt den Ladestand als feingranulare, farbwechselnde Batterie an.
 
@@ -16,11 +16,13 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 - Hält den Bereich „Ohne Raum“ bei jeder Sortierung am Ende.
 - Filtert nach niedrigem Stand und fehlendem Raum; Suche und Sortierung sind enthalten.
 - Die Batterieanzeige greift die glänzende, dreidimensionale Batterie aus der Referenz-App auf: metallischer Rahmen, Lichtreflexe und farbiger Verlauf. Die Füllung reagiert stufenlos auf jeden Prozentpunkt und wechselt je nach Ladestand von Rot über Gelb zu Grün.
-- Die Filter-, Konfigurations- und Baum-Schaltflächen verwenden eine einheitliche Glasoptik. Binärsensoren behalten ihren gut sichtbaren Statushinweis „Binärsensor“ sowie die grüne oder rote Statusfarbe.
+- Geräte mit reinem Binärsensor zeigen statt eines Batterie-Symbols eine Glas-Statusschaltfläche mit „OK“, „Niedrig“ oder „Unbekannt“; die grüne oder rote Statusfarbe bleibt erhalten.
+- Filter-, Konfigurations- und Baum-Schaltflächen verwenden die gleiche abgerundete Glasform. Der Konfigurationsbutton steht direkt neben der Suche.
+- Sortierung nach Gerätename, Akkustand oder Raum aktualisiert die Baumansicht.
 - Erkennt und filtert Handys, Tablets und Wearables standardmäßig automatisch. Dazu nutzt die Karte die Home-Assistant-Mobile-App-Integration und Hinweise in Gerätename, Modell sowie Kennung. Die Geräte können im Einstellungsfenster oder Karteneditor wieder eingeblendet werden.
-- Zeigt den Gerätenamen über dem Sensor-Namen; der übersetzte Entity-Name wie „Batterie fast leer“ steht als Sensorbezeichnung in der untergeordneten Baumebene.
+- Zeigt für jedes Gerät nur den Gerätenamen an; Batterie-Entity-Namen erscheinen nicht in der Geräteübersicht.
 - Markiert Batterie-Binärsensoren bei Normalstatus grün und bei Niedrigstatus rot.
-- Langer Druck auf Gerätename, Batterieanzeige oder Wert öffnet den Home-Assistant-Dialog „Mehr Informationen“.
+- Langer Druck auf Gerätename, Batterieanzeige, Prozentwert oder Binärstatus öffnet den Home-Assistant-Dialog „Mehr Informationen“.
 - Schnellkonfiguration für Anzeigenamen, Ausblenden, Grenzwert und Benachrichtigungen.
 - Das Konfigurationsfenster bleibt bei laufenden Home-Assistant-Aktualisierungen geöffnet und behält ungespeicherte Eingaben.
 - Schätzt den letzten Batterietausch aus dem Recorder-Verlauf: Prozentwerte werden bei einem starken Sprung auf mindestens 80 % erkannt; Binärsensoren bei einem Wechsel von „niedrig“ zu „OK“.
