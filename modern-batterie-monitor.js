@@ -70,7 +70,7 @@ const M_BATTERY_CSS = `
   .subtitle { margin:9px 0 0; color:var(--muted); font-size:14px; line-height:1.5; }
   .button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.22); border-radius:11px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.045)); color:var(--muted); font-weight:400; font-size:12px; cursor:pointer; transition:all 150ms; backdrop-filter:blur(14px) saturate(135%); -webkit-backdrop-filter:blur(14px) saturate(135%); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.12); }
   .button::before { content:""; position:absolute; inset:1px 9px auto; height:44%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.23),rgba(255,255,255,0)); opacity:.58; pointer-events:none; }
-  .button:hover,.tab:hover { background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); border-color:rgba(255,255,255,.38); transform:translateY(-1px); }
+  .button:hover,.tab:hover,.button.primary:hover { background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); border-color:rgba(255,255,255,.38); transform:translateY(-1px); }
   .button.state-active,.button.state-active:hover { color:#fff; border-color:rgba(70,223,155,.88); }
   .button:active,.tab:active { transform:scale(.97); }
   .button.primary { color:#e8f0f4; font-weight:400; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.075)); border-color:rgba(255,255,255,.32); }
@@ -86,6 +86,8 @@ const M_BATTERY_CSS = `
   .tabs { display:flex; gap:4px; align-items:center; flex-wrap:wrap; }
   .tab { position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.17); border-radius:11px; padding:9px 12px; background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035)); color:var(--muted); font-size:11px; font-weight:400; cursor:pointer; transition:all 150ms; backdrop-filter:blur(12px) saturate(130%); -webkit-backdrop-filter:blur(12px) saturate(130%); box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 4px 12px rgba(0,0,0,.1); }
   .tab::before { content:""; position:absolute; inset:1px 8px auto; height:42%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.2),transparent); pointer-events:none; }
+  .button,.tab { min-height:38px; border-color:rgba(255,255,255,.17); background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035)); color:var(--muted); font-weight:400; transition:all 150ms; backdrop-filter:blur(12px) saturate(130%); -webkit-backdrop-filter:blur(12px) saturate(130%); box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 4px 12px rgba(0,0,0,.1); }
+  .button::before,.tab::before { inset:1px 8px auto; height:42%; background:linear-gradient(180deg,rgba(255,255,255,.2),transparent); opacity:1; }
   .tab.active { color:#fff; border-color:rgba(70,223,155,.88); background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035)); }
   .tab.active:hover { color:#fff; border-color:rgba(70,223,155,.88); background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); }
   .tools { display:flex; align-items:center; gap:8px; min-width:0; margin-left:auto; }
