@@ -1,5 +1,5 @@
-/* Modern-Batterie-Monitor · Lovelace custom card · 1.3.0 */
-const M_BATTERY_VERSION = "1.3.0";
+/* Modern-Batterie-Monitor · Lovelace custom card · 1.4.0 */
+const M_BATTERY_VERSION = "1.4.0";
 const M_BATTERY_DEFAULTS = {
   type: "custom:modern-batterie-monitor",
   title: "Batterien",
@@ -31,7 +31,7 @@ const M_BATTERY_CSS = `
   .eyebrow { margin:0 0 8px; color:var(--teal); font-size:10px; font-weight:750; letter-spacing:.14em; text-transform:uppercase; }
   h1 { margin:0; font-size:clamp(34px,5.4vw,48px); line-height:1.02; letter-spacing:-.045em; font-weight:720; }
   .subtitle { margin:9px 0 0; color:var(--muted); font-size:14px; line-height:1.5; }
-  .button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:40px; padding:9px 14px; border:1px solid rgba(255,255,255,.22); border-radius:999px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.045)); color:var(--ink); font-weight:600; font-size:12px; cursor:pointer; transition:all 150ms; backdrop-filter:blur(14px) saturate(135%); -webkit-backdrop-filter:blur(14px) saturate(135%); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.12); }
+  .button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.22); border-radius:11px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.045)); color:var(--ink); font-weight:600; font-size:12px; cursor:pointer; transition:all 150ms; backdrop-filter:blur(14px) saturate(135%); -webkit-backdrop-filter:blur(14px) saturate(135%); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.12); }
   .button::before { content:""; position:absolute; inset:1px 9px auto; height:44%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.23),rgba(255,255,255,0)); opacity:.58; pointer-events:none; }
   .button:hover { background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); border-color:rgba(255,255,255,.38); transform:translateY(-1px); }
   .button:active { transform:scale(.97); }
@@ -50,10 +50,12 @@ const M_BATTERY_CSS = `
   .tab::before { content:""; position:absolute; inset:1px 8px auto; height:42%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.2),transparent); pointer-events:none; }
   .tab:hover { border-color:rgba(255,255,255,.32); background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06)); }
   .tab.active { color:#dffcf7; border-color:rgba(80,224,209,.38); background:linear-gradient(145deg,rgba(80,224,209,.2),rgba(80,224,209,.08)); }
-  .tools { display:flex; gap:8px; min-width:0; }
+  .tools { display:flex; align-items:center; gap:8px; min-width:0; }
+  .search-settings { display:flex; align-items:center; gap:8px; min-width:0; }
   .search,.sort { min-height:38px; border:1px solid var(--line); border-radius:12px; background:rgba(7,12,19,.4); color:var(--ink); outline:none; }
   .search { width:min(250px,34vw); padding:0 12px; }
   .sort { min-width:145px; padding:0 10px; }
+  .settings-button { flex:0 0 auto; white-space:nowrap; }
   .search::placeholder { color:#8292a1; }
   .section-head { margin:0 2px 10px; }
   .section-head strong { font-size:14px; }
@@ -101,7 +103,14 @@ const M_BATTERY_CSS = `
   .device-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:360px; padding:2px 0; border:0; background:transparent; color:#eff5f7; text-align:left; font-size:13px; font-weight:600; cursor:pointer; touch-action:manipulation; -webkit-touch-callout:none; user-select:none; }
   .device-name:hover { color:var(--teal); }
   .device-sub { margin-top:4px; color:#8897a5; font-size:11px; line-height:1.35; }
-  .edit-name { display:grid; place-items:center; width:25px; height:25px; flex:0 0 auto; padding:0; border:1px solid rgba(255,255,255,.15); border-radius:9px; color:#aab7c1; background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035)); box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 3px 9px rgba(0,0,0,.1); opacity:.78; cursor:pointer; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:all 150ms; }
+  .edit-name { display:grid; place-items:center; width:25px; height:25px; flex:0 0 auto; padding:0; border:1px solid rgba(255,255,255,.15); border-radius:11px; color:#aab7c1; background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035)); box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 3px 9px rgba(0,0,0,.1); opacity:.78; cursor:pointer; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:all 150ms; }
+  .status-button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:104px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.19); border-radius:11px; color:var(--muted); background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.045)); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 14px rgba(0,0,0,.12); font-size:12px; font-weight:700; cursor:pointer; backdrop-filter:blur(13px) saturate(135%); -webkit-backdrop-filter:blur(13px) saturate(135%); }
+  .status-button::before { content:""; position:absolute; inset:1px 9px auto; height:44%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.23),transparent); pointer-events:none; }
+  .status-button.status-ok { color:#46df9b; border-color:rgba(70,223,155,.34); background:linear-gradient(145deg,rgba(70,223,155,.17),rgba(70,223,155,.045)); }
+  .status-button.status-low { color:#ff667f; border-color:rgba(255,102,127,.38); background:linear-gradient(145deg,rgba(255,77,103,.18),rgba(255,77,103,.045)); }
+  .status-button.status-unknown { color:#c2ccd5; }
+  .status-button:hover { border-color:currentColor; filter:brightness(1.1); }
+  .status-mark { display:grid; place-items:center; width:19px; height:19px; border:1px solid currentColor; border-radius:7px; font-size:12px; line-height:1; }
   .edit-name:hover { opacity:1; color:var(--teal); border-color:rgba(80,224,209,.36); background:rgba(80,224,209,.13); }
   .edit-name svg { width:14px; height:14px; }
   .pressable { cursor:pointer; touch-action:pan-y; user-select:none; }
@@ -109,7 +118,7 @@ const M_BATTERY_CSS = `
   .level-copy { min-width:70px; text-align:right; }
   .level-number { font-variant-numeric:tabular-nums; font-size:15px; font-weight:780; white-space:nowrap; }
   .level-state { margin-top:3px; color:var(--muted); font-size:9px; white-space:nowrap; }
-  .battery { display:block; width:104px; height:40px; overflow:visible; cursor:pointer; touch-action:pan-y; filter:drop-shadow(0 3px 7px rgba(0,0,0,.28)); }
+  .battery { display:block; width:104px; height:40px; overflow:visible; cursor:pointer; touch-action:pan-y; filter:drop-shadow(0 3px 7px rgba(0,0,0,.28)) drop-shadow(0 0 4px hsl(var(--battery-hue) 92% 55% / .25)); }
   .battery .case { stroke:rgba(230,240,247,.72); stroke-width:1.2; }
   .battery .terminal { stroke:rgba(226,236,243,.52); stroke-width:.7; }
   .battery .cell { fill:rgba(8,15,20,.86); }
@@ -141,8 +150,8 @@ const M_BATTERY_CSS = `
   .setting-row label { display:flex; gap:5px; align-items:center; color:var(--muted); font-size:9px; }
   .modal-actions { display:flex; justify-content:flex-end; gap:8px; padding-top:12px; }
   .note { margin:8px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }
-  @media(max-width:720px) { .stats{gap:8px}.stat{padding:13px;min-height:91px}.stat-value{font-size:22px}.toolbar{align-items:stretch;flex-direction:column}.tools{width:100%}.search{width:100%;flex:1}.sort{min-width:132px}.tabs{justify-content:space-between}.tab{padding:8px 9px}.hero{align-items:flex-start}.subtitle{font-size:12px} }
-  @media(max-width:520px) { .shell{padding:15px;border-radius:19px}.topbar{align-items:flex-start;margin-bottom:20px}.top-meta{gap:5px}.pill{padding:7px 8px;font-size:9px}.mark{width:36px;height:36px;border-radius:12px}.brand-copy strong{font-size:12px}.brand-copy span{font-size:10px}.hero{display:block}.hero .button{margin-top:13px}.stats{grid-template-columns:1fr;gap:8px}.stat{min-height:75px}.stat-value{font-size:20px}.toolbar{padding:8px}.tools{flex-direction:column}.search,.sort{width:100%;min-height:40px}.tree{padding:4px 11px 10px}.device{grid-template-columns:minmax(0,1fr) auto;gap:6px;padding:10px 3px}.device-main{gap:8px}.device-icon{width:34px;height:34px;border-radius:12px}.device-meta{justify-content:flex-end;gap:6px;padding-left:0}.level-copy{text-align:right;min-width:48px}.level-number{font-size:13px}.level-state{font-size:8px}.battery{width:88px;height:35px}.setting-grid{grid-template-columns:1fr}.setting-row{grid-template-columns:minmax(0,1fr) 48px}.setting-row input[type=text]{grid-column:1}.setting-row label{grid-column:2;grid-row:1/3;justify-content:center;flex-direction:column}.room-title{padding:10px 2px;gap:8px}.room-icon{width:34px;height:34px}.room-list{margin-left:12px;padding:0 2px 8px 18px}.room-list .device::before{left:-18px;width:11px}.tree-actions{justify-content:flex-start}.tree-actions .button{font-size:10px;padding:8px 10px} }
+  @media(max-width:720px) { .stats{gap:8px}.stat{padding:13px;min-height:91px}.stat-value{font-size:22px}.toolbar{align-items:stretch;flex-direction:column}.tools{width:100%}.search-settings{flex:1}.search{width:100%;flex:1;min-width:0}.sort{min-width:132px}.tabs{justify-content:space-between}.tab{padding:8px 9px}.hero{align-items:flex-start}.subtitle{font-size:12px} }
+  @media(max-width:520px) { .shell{padding:15px;border-radius:19px}.topbar{align-items:flex-start;margin-bottom:20px}.top-meta{gap:5px}.pill{padding:7px 8px;font-size:9px}.mark{width:36px;height:36px;border-radius:12px}.brand-copy strong{font-size:12px}.brand-copy span{font-size:10px}.hero{display:block}.stats{grid-template-columns:1fr;gap:8px}.stat{min-height:75px}.stat-value{font-size:20px}.toolbar{padding:8px}.tools{flex-direction:column;align-items:stretch}.search-settings{width:100%}.search{width:auto;min-width:0;min-height:40px;flex:1}.settings-button{padding:8px 10px;font-size:10px}.sort{width:100%;min-height:40px}.tree{padding:4px 11px 10px}.device{grid-template-columns:minmax(0,1fr) auto;gap:6px;padding:10px 3px}.device-main{gap:8px}.device-icon{width:34px;height:34px;border-radius:12px}.device-meta{justify-content:flex-end;gap:6px;padding-left:0}.level-copy{text-align:right;min-width:48px}.level-number{font-size:13px}.level-state{font-size:8px}.battery{width:88px;height:35px}.status-button{min-width:88px;min-height:36px;padding:7px 9px;font-size:11px}.setting-grid{grid-template-columns:1fr}.setting-row{grid-template-columns:minmax(0,1fr) 48px}.setting-row input[type=text]{grid-column:1}.setting-row label{grid-column:2;grid-row:1/3;justify-content:center;flex-direction:column}.room-title{padding:10px 2px;gap:8px}.room-icon{width:34px;height:34px}.room-list{margin-left:12px;padding:0 2px 8px 18px}.room-list .device::before{left:-18px;width:11px}.tree-actions{justify-content:flex-start}.tree-actions .button{font-size:10px;padding:8px 10px} }
 `;
 
 function mBatteryEsc(value) {
@@ -375,7 +384,7 @@ class ModernBatterieMonitor extends HTMLElement {
         level,
         lowBinary,
         binaryStatus,
-        binaryOnly:numeric.length===0,
+        binaryOnly:validNumeric.length===0 && (numeric.length===0 || group.some((item)=>item.binaryOnly || (item.binaryEntityIds || []).length>0)),
         binaryEntityIds:binaryEntities,
         allEntityIds,
         latestUpdated:latestState?.last_updated || latestState?.last_changed || null,
@@ -490,6 +499,13 @@ class ModernBatterieMonitor extends HTMLElement {
     return rows;
   }
 
+  _setSort(value) {
+    if(!["name","level","room"].includes(value) || value===this._sort) return;
+    this._sort=value;
+    this._render();
+    this.shadowRoot.querySelector(".sort")?.focus();
+  }
+
   _relativeUpdated(entry) {
     const timestamp=entry.latestUpdated || entry.state?.last_updated || entry.state?.last_changed;
     if(!timestamp) return "Zeitpunkt unbekannt";
@@ -511,17 +527,16 @@ class ModernBatterieMonitor extends HTMLElement {
     const fillWidth = Math.max(0,Math.min(1,value/100))*88;
     const label = entry.level == null ? (entry.lowBinary?"Batterie niedrig":"Batteriestatus unbekannt") : `${Math.round(entry.level)} Prozent Batterie`;
     const uid = `mb-${entry.entityId.replace(/[^a-z0-9]/gi,"-")}`;
-    const dividers = Array.from({length:9},(_v,i)=>`<path class="divider" d="M${10+(i+1)*8.8} 11v20"/>`).join("");
-    return `<svg class="battery pressable" data-entity="${mBatteryEsc(entry.entityId)}" viewBox="0 0 108 42" role="img" aria-label="${mBatteryEsc(label)}"><defs><linearGradient id="${uid}-case" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset=".18" stop-color="#aab7c1"/><stop offset=".43" stop-color="#53616b"/><stop offset=".7" stop-color="#c7d0d6"/><stop offset="1" stop-color="#59656e"/></linearGradient><linearGradient id="${uid}-terminal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8eef2"/><stop offset=".5" stop-color="#66737c"/><stop offset="1" stop-color="#b9c4cb"/></linearGradient><linearGradient id="${uid}-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="hsl(${hue} 88% 74%)"/><stop offset=".24" stop-color="hsl(${hue} 88% 57%)"/><stop offset=".72" stop-color="hsl(${hue} 86% 43%)"/><stop offset="1" stop-color="hsl(${hue} 78% 31%)"/></linearGradient><linearGradient id="${uid}-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".42" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient><clipPath id="${uid}-clip"><rect x="10" y="9" width="88" height="24" rx="3.4"/></clipPath></defs><rect class="case" x="2.5" y="4.5" width="97" height="33" rx="6.8" fill="url(#${uid}-case)"/><rect class="terminal" x="100.5" y="13.2" width="5.5" height="15.6" rx="2" fill="url(#${uid}-terminal)"/><rect class="cell" x="10" y="9" width="88" height="24" rx="3.4"/><g clip-path="url(#${uid}-clip)"><rect class="fill" x="10" y="9" width="${fillWidth.toFixed(2)}" height="24" fill="url(#${uid}-fill)"/>${dividers}<rect class="gloss" x="10" y="9" width="88" height="24" fill="url(#${uid}-gloss)"/></g><path d="M7 6.4h87" stroke="#fff" stroke-opacity=".7" stroke-width="1.3" stroke-linecap="round"/><path d="M8 35.2h84" stroke="#fff" stroke-opacity=".2" stroke-width=".8" stroke-linecap="round"/></svg>`;
+    return `<svg class="battery pressable" style="--battery-hue:${hue}" data-entity="${mBatteryEsc(entry.entityId)}" viewBox="0 0 108 42" role="img" aria-label="${mBatteryEsc(label)}"><defs><linearGradient id="${uid}-case" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset=".18" stop-color="#aab7c1"/><stop offset=".43" stop-color="#53616b"/><stop offset=".7" stop-color="#c7d0d6"/><stop offset="1" stop-color="#59656e"/></linearGradient><linearGradient id="${uid}-terminal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8eef2"/><stop offset=".5" stop-color="#66737c"/><stop offset="1" stop-color="#b9c4cb"/></linearGradient><linearGradient id="${uid}-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="hsl(${hue} 100% 76%)"/><stop offset=".16" stop-color="hsl(${hue} 98% 63%)"/><stop offset=".48" stop-color="hsl(${hue} 94% 53%)"/><stop offset=".78" stop-color="hsl(${hue} 90% 43%)"/><stop offset="1" stop-color="hsl(${hue} 82% 34%)"/></linearGradient><linearGradient id="${uid}-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".64"/><stop offset=".22" stop-color="#fff" stop-opacity=".2"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient><clipPath id="${uid}-clip"><rect x="10" y="9" width="88" height="24" rx="3.4"/></clipPath></defs><rect class="case" x="2.5" y="4.5" width="97" height="33" rx="6.8" fill="url(#${uid}-case)"/><rect class="terminal" x="100.5" y="13.2" width="5.5" height="15.6" rx="2" fill="url(#${uid}-terminal)"/><rect class="cell" x="10" y="9" width="88" height="24" rx="3.4"/><g clip-path="url(#${uid}-clip)"><rect class="fill" x="10" y="9" width="${fillWidth.toFixed(2)}" height="24" fill="url(#${uid}-fill)"/><rect class="gloss" x="10" y="9" width="88" height="24" fill="url(#${uid}-gloss)"/></g><rect x="6" y="10" width="3.5" height="22" rx="1.6" fill="url(#${uid}-terminal)" opacity=".9"/><path d="M7 6.4h87" stroke="#fff" stroke-opacity=".74" stroke-width="1.3" stroke-linecap="round"/><path d="M8 35.2h84" stroke="#fff" stroke-opacity=".24" stroke-width=".8" stroke-linecap="round"/></svg>`;
   }
 
   _row(entry) {
     const detectedAt = (entry.allEntityIds || [entry.entityId,...(entry.binaryEntityIds || [])]).map((id)=>this._history.get(id)).find(Boolean);
     const date = this._date(detectedAt);
-    const unknown = entry.level == null && (entry.state.state === "unknown" || entry.state.state === "unavailable");
+    const unknown = entry.level == null && entry.binaryStatus == null && (entry.state.state === "unknown" || entry.state.state === "unavailable");
     const updated=this._relativeUpdated(entry);
     const stateText = entry.binaryOnly
-      ? `Binärsensor · Status ${entry.lowBinary?"Batterie niedrig":"OK"} · Zuletzt aktualisiert ${updated}`
+      ? `Binärsensor · Status ${unknown?"nicht verfügbar":entry.lowBinary?"Batterie niedrig":"OK"} · Zuletzt aktualisiert ${updated}`
       : entry.binaryStatus==="on"
         ? `Binärsensor meldet niedrigen Stand · Zuletzt aktualisiert ${updated}`
         : unknown
@@ -533,7 +548,10 @@ class ModernBatterieMonitor extends HTMLElement {
     const historyLine = date ? `<span class="device-sub">Letzter Batterietausch (geschätzt): ${mBatteryEsc(date)}</span>` : "";
     const iconClass = entry.binaryStatus === "on" ? " binary-low" : entry.binaryStatus === "off" ? " binary-ok" : "";
     const levelColor = entry.level != null ? mBatteryColor(entry.level) : entry.lowBinary ? "#ff617b" : unknown ? "#aab6c1" : "#46df9b";
-    return `<article class="device"><div class="device-main"><span class="device-icon${iconClass}" aria-hidden="true">${this._deviceIcon(entry)}</span><div class="device-copy"><div class="device-name-line"><button class="device-name pressable" data-entity="${mBatteryEsc(entry.entityId)}" aria-label="${mBatteryEsc(entry.displayName)}. Für Gerätedetails gedrückt halten">${mBatteryEsc(entry.displayName)}</button><button class="edit-name" data-rename-device="${mBatteryEsc(entry.deviceId)}" aria-label="Anzeigename von ${mBatteryEsc(entry.displayName)} ändern" title="Anzeigename ändern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5 5 5M4 20l4.2-.9L19 8.3a2.1 2.1 0 0 0-3-3L5.2 16.1 4 20Z"/></svg></button></div><span class="device-sub">${mBatteryEsc(stateText)}</span>${historyLine}</div></div><div class="device-meta">${this._batteryGraphic(entry)}<div class="level-copy pressable" data-entity="${mBatteryEsc(entry.entityId)}"><div class="level-number" style="color:${levelColor}">${mBatteryEsc(valueText)}</div><div class="level-state">${entry.binaryOnly ? "Binärsensor" : "Batterielevel"}</div></div></div></article>`;
+    const rightSide=entry.binaryOnly
+      ? `<button type="button" class="status-button ${unknown?"status-unknown":entry.lowBinary?"status-low":"status-ok"} pressable" data-entity="${mBatteryEsc(entry.entityId)}" aria-label="Binärsensor-Status ${unknown?"nicht verfügbar":entry.lowBinary?"niedrig":"OK"}. Für Gerätedetails länger drücken"><span class="status-mark" aria-hidden="true">${unknown?"?":entry.lowBinary?"!":"✓"}</span>${unknown?"Unbekannt":entry.lowBinary?"Niedrig":"OK"}</button>`
+      : `${this._batteryGraphic(entry)}<div class="level-copy pressable" data-entity="${mBatteryEsc(entry.entityId)}"><div class="level-number" style="color:${levelColor}">${mBatteryEsc(valueText)}</div><div class="level-state">Batterielevel</div></div>`;
+    return `<article class="device"><div class="device-main"><span class="device-icon${iconClass}" aria-hidden="true">${this._deviceIcon(entry)}</span><div class="device-copy"><div class="device-name-line"><button class="device-name pressable" data-entity="${mBatteryEsc(entry.entityId)}" aria-label="${mBatteryEsc(entry.displayName)}. Für Gerätedetails gedrückt halten">${mBatteryEsc(entry.displayName)}</button><button class="edit-name" data-rename-device="${mBatteryEsc(entry.deviceId)}" aria-label="Anzeigename von ${mBatteryEsc(entry.displayName)} ändern" title="Anzeigename ändern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5 5 5M4 20l4.2-.9L19 8.3a2.1 2.1 0 0 0-3-3L5.2 16.1 4 20Z"/></svg></button></div><span class="device-sub">${mBatteryEsc(stateText)}</span>${historyLine}</div></div><div class="device-meta">${rightSide}</div></article>`;
   }
 
   _makeSettingsDraft() {
@@ -611,13 +629,14 @@ class ModernBatterieMonitor extends HTMLElement {
     const draft=this._settingsDraft || this._makeSettingsDraft();
     root.innerHTML = `
       <div class="topbar"><div class="brand"><div class="mark">HA</div><div class="brand-copy"><strong>Smart Home</strong><span>Modern-Batterie-Monitor</span></div></div><div class="top-meta"><span class="pill"><span class="dot"></span>${this._hass ? "Automatisch erkannt" : "Warte auf Home Assistant"}</span></div></div>
-      <div class="hero"><div><div class="eyebrow">Geräteübersicht</div><h1>${mBatteryEsc(this._config.title || "Batterien")}</h1><p class="subtitle">Alle Batterie- und Batteriewarnsensoren auf einen Blick, sortiert nach Räumen.</p></div><button class="button" data-action="settings" aria-label="Konfiguration öffnen">⚙　Konfiguration</button></div>
+      <div class="hero"><div><div class="eyebrow">Geräteübersicht</div><h1>${mBatteryEsc(this._config.title || "Batterien")}</h1><p class="subtitle">Alle Batterie- und Batteriewarnsensoren auf einen Blick, sortiert nach Räumen.</p></div></div>
       <div class="stats"><div class="stat" style="--glow:rgba(80,224,209,.2)"><div class="stat-label">Erkannte Geräte</div><div class="stat-value">${allDevices.size}<small>Geräte</small></div><div class="stat-note">${shownDevices.size} angezeigt · ${allDevices.size-shownDevices.size} ausgeblendet</div></div><div class="stat" style="--glow:rgba(255,126,83,.21)"><div class="stat-label">Batterie niedrig</div><div class="stat-value">${lowCount}<small>unter ${mBatteryEsc(this._config.low_threshold ?? 25)} % oder Binärwarnung</small></div><div class="stat-note">Akkustand im Blick behalten</div></div><div class="stat" style="--glow:rgba(120,136,255,.2)"><div class="stat-label">Räume mit Geräten</div><div class="stat-value">${rooms.size}<small>Räume</small></div><div class="stat-note">Geräte ohne Bereich erscheinen separat</div></div></div>
-      <div class="toolbar"><div class="tabs"><button class="tab ${this._filter==="all"?"active":""}" data-filter="all">Alle Geräte</button><button class="tab ${this._filter==="low"?"active":""}" data-filter="low">Niedriger Akkustand</button><button class="tab ${this._filter==="no-room"?"active":""}" data-filter="no-room">Ohne Raum</button></div><div class="tools"><input class="search" type="search" placeholder="Gerät oder Raum suchen…" value="${mBatteryEsc(this._search)}" aria-label="Gerät oder Raum suchen"><select class="sort" aria-label="Sortierung"><option value="name" ${this._sort==="name"?"selected":""}>Gerät A–Z</option><option value="level" ${this._sort==="level"?"selected":""}>Niedrigster Stand</option><option value="room" ${this._sort==="room"?"selected":""}>Raum A–Z</option></select></div></div>
+      <div class="toolbar"><div class="tabs"><button class="tab ${this._filter==="all"?"active":""}" data-filter="all">Alle Geräte</button><button class="tab ${this._filter==="low"?"active":""}" data-filter="low">Niedriger Akkustand</button><button class="tab ${this._filter==="no-room"?"active":""}" data-filter="no-room">Ohne Raum</button></div><div class="tools"><div class="search-settings"><input class="search" type="search" placeholder="Gerät oder Raum suchen…" value="${mBatteryEsc(this._search)}" aria-label="Gerät oder Raum suchen"><button class="button settings-button" data-action="settings" aria-label="Konfiguration öffnen">⚙ Konfiguration</button></div><select class="sort" aria-label="Sortierung"><option value="name" ${this._sort==="name"?"selected":""}>Gerät A–Z</option><option value="level" ${this._sort==="level"?"selected":""}>Niedrigster Stand</option><option value="room" ${this._sort==="room"?"selected":""}>Raum A–Z</option></select></div></div>
       <div class="section-head"><strong>${this._filter==="low"?"Niedriger Akkustand":this._filter==="no-room"?"Geräte ohne Raum":"Geräte nach Raum"} · ${rows.length} Gerät${rows.length===1?"":"e"}</strong><div class="tree-actions"><button class="button" data-action="expand-all">Alles aufklappen</button><button class="button" data-action="collapse-all">Alles zuklappen</button></div></div>
       <div class="tree">${content || `<div class="empty">${all.length ? "Keine Geräte entsprechen dem aktuellen Filter." : "Noch keine Sensoren mit Geräteklasse „Batterie“ gefunden."}</div>`}</div>
       <div class="foot">Der letzte Batterietausch wird nur geschätzt, wenn der Verlauf einen deutlichen Anstieg auf einen hohen Ladezustand oder den Wechsel von „niedrig“ zu „OK“ enthält. Fehlt der Verlauf, wird kein Datum angezeigt.</div>
       <div class="overlay" data-overlay ${this._openSettings?"":"hidden"}><section class="modal" role="dialog" aria-modal="true" aria-label="Batterie-Monitor konfigurieren"><div class="modal-head"><h2>Modern-Batterie-Monitor konfigurieren</h2><button class="button" data-action="close-settings" aria-label="Schließen">✕</button></div><div class="modal-body"><div class="setting-card"><h3>Anzeige und Benachrichtigung</h3><div class="setting-grid"><label class="field">Schwelle für niedrigen Akkustand (%)<input data-setting="threshold" type="number" min="0" max="100" value="${mBatteryEsc(draft.threshold)}"></label><label class="field">Home-Assistant-Benachrichtigungsdienst<input data-setting="service" type="text" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(draft.service)}"></label></div><p class="note">Benachrichtigungen laufen, solange diese Karte in Home Assistant geöffnet ist. Für dauerhaft aktive Meldungen eignet sich zusätzlich eine Home-Assistant-Automation.</p><label class="toggle-line"><input data-setting="notifications" type="checkbox" ${draft.notifications?"checked":""}> Benachrichtigungen bei neu niedrigem Akkustand aktivieren</label></div><div class="setting-card"><h3>Gerätefilter</h3><label class="toggle-line"><input data-setting="show-mobile" type="checkbox" ${draft.showMobile?"checked":""}> Handys, Tablets und Wearables ebenfalls anzeigen</label><p class="note">Mobilgeräte werden standardmäßig anhand der Mobile-App-Integration sowie Name, Modell und Gerätekennung ausgeblendet. Diese Option zeigt sie wieder an, falls ein Gerät falsch erkannt wurde.</p></div><div class="setting-card"><h3>Geräte anpassen</h3><div class="settings-list">${all.map((entry)=>`<div class="setting-row"><div class="setting-entity"><strong>${mBatteryEsc(entry.displayName)}</strong><span>${mBatteryEsc(entry.room)}${entry.binaryOnly?" · Binärsensor":" · Batterie"}</span></div><input type="text" data-rename="${mBatteryEsc(entry.deviceId)}" placeholder="Anzeigename anpassen" value="${mBatteryEsc(draft.names[entry.deviceId] || draft.names[entry.entityId] || entry.currentOverride || "")}"><label><input type="checkbox" data-hide="${mBatteryEsc(entry.deviceId)}" ${draft.hidden.includes(entry.deviceId) || (entry.allEntityIds || []).some((id)=>draft.hidden.includes(id))?"checked":""}> Ausblenden</label></div>`).join("") || `<div class="empty">Keine Batterie-Sensoren vorhanden.</div>`}</div></div><div class="modal-actions"><button class="button" data-action="close-settings">Abbrechen</button><button class="button primary" data-action="save-settings">Speichern</button></div><p class="note">${mBatteryEsc(localOnly)}</p></div></section></div>`;
+    root.querySelector(".sort")?.addEventListener("change",(ev)=>this._setSort(ev.currentTarget.value));
     const overlay=root.querySelector("[data-overlay]");
     if(overlay) overlay.hidden=!this._openSettings;
     if(this._openSettings) {
@@ -670,7 +689,7 @@ class ModernBatterieMonitor extends HTMLElement {
   }
   _onChange(ev) {
     if (ev.target.matches?.("[data-setting],[data-hide],[data-rename]")) { this._captureSettingsDraft(); return; }
-    if (ev.target.matches?.(".sort")) { this._sort = ev.target.value; this._render(); }
+    if (ev.target.matches?.(".sort")) this._setSort(ev.target.value);
   }
   _onPointerDown(ev) {
     const target = ev.composedPath().find((node) => node?.dataset?.entity);
