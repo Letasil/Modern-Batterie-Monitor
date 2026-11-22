@@ -1,1 +1,26 @@
+name: Validate
 
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Validate card and translations
+        run: node scripts/validate-release.mjs
+      - name: Verify JavaScript syntax
+        run: node --input-type=module --check < modern-batterie-monitor.js
