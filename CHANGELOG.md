@@ -1,5 +1,15 @@
 # Änderungsprotokoll
 
+## 1.6.1 — 2026-11-22
+
+- Sortierfeld und Sortiercode entfernt; die Räume und Gerätenamen bleiben alphabetisch sortiert, „Ohne Raum“ steht immer am Ende.
+- Suchfeld und Konfiguration rechtsbündig angeordnet.
+- Aktive Filter- und Auf-/Zuklapp-Schaltflächen markieren ihren Zustand nur mit grünem Rahmen und weißer Schrift; inaktive Beschriftungen bleiben grau.
+- Hover-Effekt zwischen Filter-Tabs und Glas-Schaltflächen vereinheitlicht.
+- Batterierahmen auf maximal 2 px sichtbare Stärke reduziert.
+- Sprachwahl entfernt; Karte und Karteneditor verwenden ausschließlich die Home-Assistant-Sprache.
+- Gerätefiltertexte in den neun Übersetzungen angepasst; Wearables sind nun als Smartwatches und Fitness-Tracker übersetzt.
+
 ## 1.6.0 — 2026-11-22
 
 - Inaktive Umschalt- und Gruppenbeschriftungen wieder grau; aktive hell. Button-Texte sind normalgewichtig statt fett.
@@ -54,4 +64,3 @@
 ## 1.0.0 — 2026-11-21
 
 - Erste Version der Lovelace-Karte mit Batterie-Sensorerkennung, Raumgruppen, Filtern, Suche, Umbenennen, Ausblenden und Austauschdatum-Schätzung.
-
