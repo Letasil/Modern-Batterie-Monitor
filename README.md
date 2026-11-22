@@ -1,6 +1,6 @@
 # Modern-Batterie-Monitor
 
-**Version 1.5.0**
+**Version 1.6.0**
 
 Versionen folgen [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH`. Neue Funktionen erhöhen MINOR, rückwärtskompatible Fehlerkorrekturen PATCH und inkompatible Änderungen MAJOR.
 
@@ -20,9 +20,10 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 - Die Batterieanzeige greift die glänzende, dreidimensionale Batterie aus der Referenz-App auf: metallischer Rahmen, Lichtreflexe und farbiger Verlauf. Die Füllung reagiert stufenlos auf jeden Prozentpunkt und wechselt je nach Ladestand von Rot über Gelb zu Grün.
 - Geräte mit reinem Binärsensor zeigen statt eines Batterie-Symbols eine Glas-Statusschaltfläche mit „OK“, „Niedrig“ oder „Unbekannt“; die grüne oder rote Statusfarbe bleibt erhalten.
 - Filter-, Konfigurations- und Baum-Schaltflächen verwenden die gleiche abgerundete Glasform. Der Konfigurationsbutton steht direkt neben der Suche.
-- Raum- und Gerätegruppen erhalten im geöffneten Zustand eine türkisfarbene Glasfläche und im geschlossenen Zustand eine neutrale Glasfläche. Die Schriftfarbe aller Schaltflächen bleibt einheitlich und kontrastreich.
+- Inaktive Filter- und Gruppenbeschriftungen sind grau; aktive Beschriftungen hell. Die Beschriftungen verwenden eine normale Schriftstärke. Geöffnete Gruppen haben eine neutrale Glasfläche ohne grüne Balken.
+- Gerätekategorie-Icons bleiben neutral und werden nicht nach dem Batteriestatus eingefärbt. Binäre Sensoren behalten ihren eigenen Statusknopf.
 - Die Warnschwelle lässt sich im Konfigurationsfenster und im Karteneditor über einen Prozent-Slider einstellen.
-- Benutzeroberflächentexte sind für Deutsch und Englisch lokalisiert. Standardmäßig folgt die Sprache Home Assistant; im Konfigurationsfenster kann zwischen automatisch, Deutsch und Englisch gewählt werden. Geräte- und Raumnamen aus Home Assistant bleiben unverändert.
+- Benutzeroberflächentexte liegen in separaten JSON-Dateien im Ordner `translations/`: Arabisch, Deutsch, Englisch, Spanisch, Französisch, Niederländisch, Polnisch, Russisch und Türkisch. Standardmäßig folgt die Sprache Home Assistant; im Konfigurationsfenster kann sie umgeschaltet werden. Geräte- und Raumnamen aus Home Assistant bleiben unverändert.
 - Sortierung nach Gerätename, Akkustand oder Raum aktualisiert die Baumansicht.
 - Erkennt und filtert Handys, Tablets und Wearables standardmäßig automatisch. Dazu nutzt die Karte die Home-Assistant-Mobile-App-Integration und Hinweise in Gerätename, Modell sowie Kennung. Die Geräte können im Einstellungsfenster oder Karteneditor wieder eingeblendet werden.
 - Zeigt für jedes Gerät nur den Gerätenamen an; Batterie-Entity-Namen erscheinen nicht in der Geräteübersicht.
@@ -38,12 +39,13 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 2. `https://github.com/Letasil/Modern-Batterie-Monitor` als Kategorie **Dashboard** hinzufügen.
 3. **Modern-Batterie-Monitor** installieren und Home Assistant bzw. den Browser neu laden.
 4. Im Dashboard eine manuelle Karte hinzufügen und die Konfiguration aus [`lovelace-example.yaml`](lovelace-example.yaml) verwenden.
+5. Den Ordner `translations/` zusammen mit der JavaScript-Datei beibehalten; die Karte lädt daraus die gewählte Sprache.
 
 Wenn HACS die Ressource nicht automatisch registriert, unter **Einstellungen → Dashboards → Ressourcen** die JavaScript-Datei als Typ **JavaScript-Modul** eintragen. HACS speichert Dashboard-Dateien im Home-Assistant-Konfigurationsverzeichnis unter `www/community/Modern-Batterie-Monitor/`.
 
 ## Manuelle Installation
 
-1. Kopiere `modern-batterie-monitor.js` in `www/` in deinem Home-Assistant-Konfigurationsverzeichnis.
+1. Kopiere `modern-batterie-monitor.js` und den vollständigen Ordner `translations/` nebeneinander in `www/` in deinem Home-Assistant-Konfigurationsverzeichnis.
 2. Registriere `/local/modern-batterie-monitor.js` unter **Einstellungen → Dashboards → Ressourcen** als **JavaScript-Modul**.
 3. Füge die Beispielkarte aus [`lovelace-example.yaml`](lovelace-example.yaml) zu einem Dashboard hinzu.
 
@@ -58,7 +60,7 @@ Wenn HACS die Ressource nicht automatisch registriert, unter **Einstellungen →
 | `notifications_enabled` | `false` | Benachrichtigung bei neu niedrigem Stand einschalten |
 | `notification_service` | `""` | Benachrichtigungsdienst, zum Beispiel `notify.mobile_app_handy` |
 | `show_mobile_devices` | `false` | Handys, Tablets und Wearables ebenfalls anzeigen |
-| `language` | `auto` | Sprache der Oberfläche: Home-Assistant-Sprache (`auto`), `de` oder `en` |
+| `language` | `auto` | Sprache der Oberfläche: Home-Assistant-Sprache (`auto`) oder eine Sprache aus dem Ordner `translations/` |
 
 Die **Konfiguration** in der Karte speichert ihre Schnelländerungen im Browserprofil. Für eine dashboardweite, geräteübergreifende Konfiguration nutze die Optionen des Karteneditors. Benachrichtigungen aus der Karte werden nur gesendet, während die Karte in einem geöffneten Home-Assistant-Dashboard aktiv ist. Für Hintergrundbenachrichtigungen sollte zusätzlich eine Home-Assistant-Automation eingerichtet werden.
 
