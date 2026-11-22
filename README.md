@@ -1,6 +1,6 @@
 # Modern-Batterie-Monitor
 
-**Version 1.6.4**
+**Version 1.6.5**
 
 Modern-Batterie-Monitor ist eine responsive Lovelace-Karte für batteriebetriebene Smart-Home-Geräte. Das erste Release erkennt Batterie-Prozentwerte und Binärsensoren, ordnet Geräte ihren Räumen zu und zeigt Warnungen übersichtlich im Dashboard.
 
@@ -36,11 +36,13 @@ Modern-Batterie-Monitor ist eine responsive Lovelace-Karte für batteriebetriebe
 3. **Modern-Batterie-Monitor** installieren und Home Assistant sowie den Browser neu laden.
 4. Eine manuelle Karte hinzufügen und die Konfiguration aus [`lovelace-example.yaml`](lovelace-example.yaml) verwenden.
 
+Die Release-Datei `modern-batterie-monitor.js` wird zusätzlich einzeln angehängt. Sie enthält die Übersetzungen eingebettet und funktioniert daher auch dann, wenn HACS nur diese eine Datei herunterlädt. Das ZIP im Release ist für die manuelle Installation und enthält die JavaScript-Datei direkt im ZIP-Hauptverzeichnis.
+
 Falls HACS die Ressource nicht automatisch registriert, unter **Einstellungen → Dashboards → Ressourcen** die JavaScript-Datei als **JavaScript-Modul** eintragen.
 
 ## Manuelle Installation
 
-1. `modern-batterie-monitor.js` und den Ordner `translations/` zusammen nach `www/` im Home-Assistant-Konfigurationsverzeichnis kopieren.
+1. `modern-batterie-monitor.js` nach `www/` im Home-Assistant-Konfigurationsverzeichnis kopieren. Die Dateien in `translations/` können zusätzlich mitkopiert werden; die Karte enthält die Übersetzungen bereits eingebettet.
 2. `/local/modern-batterie-monitor.js` unter **Einstellungen → Dashboards → Ressourcen** als **JavaScript-Modul** registrieren.
 3. Die Beispielkarte aus [`lovelace-example.yaml`](lovelace-example.yaml) in ein Dashboard einfügen.
 
@@ -61,4 +63,3 @@ Falls HACS die Ressource nicht automatisch registriert, unter **Einstellungen �
 Neue Batterie-Sensoren werden beim Laden der Karte und bei einer Home-Assistant-Aktualisierung mit neuen Batterie-Entitäten gesucht. Für Raum- und Gerätenamen nutzt die Karte die Home-Assistant-Registrierungen.
 
 Das Batterietauschdatum ist eine Schätzung. Es wird nur angezeigt, wenn der Recorder eine plausible Zustandsänderung gespeichert hat. Benachrichtigungen aus der Karte werden gesendet, solange ein Home-Assistant-Dashboard mit der Karte geöffnet ist; für Hintergrundbenachrichtigungen eignet sich eine Home-Assistant-Automation.
-

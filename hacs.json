@@ -1,7 +1,6 @@
 {
   "name": "Modern-Batterie-Monitor",
-  "content_in_root": true,
+  "content_in_root": false,
   "filename": "modern-batterie-monitor.js",
   "render_readme": true
 }
-

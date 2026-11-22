@@ -1,5 +1,12 @@
 # Änderungsprotokoll
 
+## 1.6.5 — 2026-11-22
+
+- Marketplace-Release stellt `modern-batterie-monitor.js` als einzelne Datei bereit; die Karte benötigt beim Installieren keine separate Übersetzungsdatei.
+- Übersetzungen für alle neun unterstützten Sprachen sind zusätzlich in der JavaScript-Datei eingebettet und fallen bei fehlenden JSON-Dateien darauf zurück.
+- HACS-Manifest und Release-Workflow auf den direkten JavaScript-Download abgestimmt.
+- Release- und Validierungs-Workflows sowie eine Prüfung der Installations-ZIP ergänzt.
+
 ## 1.6.4 — 2026-11-22
 
 - README auf den Funktionsumfang des ersten Releases konzentriert und um drei erklärende Screenshots ergänzt.
@@ -79,4 +86,3 @@
 ## 1.0.0 — 2026-11-21
 
 - Erste Version der Lovelace-Karte mit Batterie-Sensorerkennung, Raumgruppen, Filtern, Suche, Umbenennen, Ausblenden und Austauschdatum-Schätzung.
-
