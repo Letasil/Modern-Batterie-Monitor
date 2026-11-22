@@ -1,5 +1,5 @@
-/* Modern-Batterie-Monitor · Lovelace custom card · 1.6.0 */
-const M_BATTERY_VERSION = "1.6.0";
+/* Modern-Batterie-Monitor · Lovelace custom card · 1.6.1 */
+const M_BATTERY_VERSION = "1.6.1";
 const M_BATTERY_DEFAULTS = {
   type: "custom:modern-batterie-monitor",
   title: "Batterien",
@@ -9,16 +9,14 @@ const M_BATTERY_DEFAULTS = {
   notifications_enabled: false,
   notification_service: "",
   show_mobile_devices: false,
-  language: "auto",
 };
 
 const M_BATTERY_TRANSLATION_LANGUAGES = new Set(["ar","de","en","es","fr","nl","pl","ru","tr"]);
 
 const M_BATTERY_TRANSLATION_CACHE = new Map();
 
-function mBatteryResolveLanguage(selected,hass) {
-  if(selected && selected!=="auto" && M_BATTERY_TRANSLATION_LANGUAGES.has(selected)) return selected;
-  const requested=String(hass?.language || "de").toLowerCase().split("-")[0];
+function mBatteryResolveLanguage(hass) {
+  const requested=String(hass?.language || "en").toLowerCase().split("-")[0];
   return M_BATTERY_TRANSLATION_LANGUAGES.has(requested)?requested:"en";
 }
 
@@ -72,8 +70,9 @@ const M_BATTERY_CSS = `
   .subtitle { margin:9px 0 0; color:var(--muted); font-size:14px; line-height:1.5; }
   .button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.22); border-radius:11px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.045)); color:var(--muted); font-weight:400; font-size:12px; cursor:pointer; transition:all 150ms; backdrop-filter:blur(14px) saturate(135%); -webkit-backdrop-filter:blur(14px) saturate(135%); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.12); }
   .button::before { content:""; position:absolute; inset:1px 9px auto; height:44%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.23),rgba(255,255,255,0)); opacity:.58; pointer-events:none; }
-  .button:hover { color:#e8f0f4; background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); border-color:rgba(255,255,255,.38); transform:translateY(-1px); }
-  .button:active { transform:scale(.97); }
+  .button:hover,.tab:hover { background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); border-color:rgba(255,255,255,.38); transform:translateY(-1px); }
+  .button.state-active,.button.state-active:hover { color:#fff; border-color:rgba(70,223,155,.88); }
+  .button:active,.tab:active { transform:scale(.97); }
   .button.primary { color:#e8f0f4; font-weight:400; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.075)); border-color:rgba(255,255,255,.32); }
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) { .button { background:rgba(50,55,65,.92); } }
   .stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
@@ -87,15 +86,13 @@ const M_BATTERY_CSS = `
   .tabs { display:flex; gap:4px; align-items:center; flex-wrap:wrap; }
   .tab { position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.17); border-radius:11px; padding:9px 12px; background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035)); color:var(--muted); font-size:11px; font-weight:400; cursor:pointer; transition:all 150ms; backdrop-filter:blur(12px) saturate(130%); -webkit-backdrop-filter:blur(12px) saturate(130%); box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 4px 12px rgba(0,0,0,.1); }
   .tab::before { content:""; position:absolute; inset:1px 8px auto; height:42%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.2),transparent); pointer-events:none; }
-  .tab:hover { border-color:rgba(255,255,255,.32); background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06)); }
-  .tab.active { color:#e8f0f4; border-color:rgba(255,255,255,.32); background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.075)); }
-  .tools { display:flex; align-items:center; gap:8px; min-width:0; }
+  .tab.active { color:#fff; border-color:rgba(70,223,155,.88); background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035)); }
+  .tab.active:hover { color:#fff; border-color:rgba(70,223,155,.88); background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); }
+  .tools { display:flex; align-items:center; gap:8px; min-width:0; margin-left:auto; }
   .search-settings { display:flex; align-items:center; gap:8px; min-width:0; }
-  .search,.sort { min-height:38px; border:1px solid var(--line); border-radius:12px; background:rgba(7,12,19,.4); color:var(--ink); outline:none; }
+  .search { min-height:38px; border:1px solid var(--line); border-radius:12px; background:rgba(7,12,19,.4); color:var(--ink); outline:none; }
   .search { width:min(250px,34vw); padding:0 12px; }
-  .sort { min-width:145px; padding:0 10px; }
   .settings-button { flex:0 0 auto; white-space:nowrap; }
-  .language-select { width:100%; min-height:38px; padding:0 9px; border:1px solid var(--line); border-radius:11px; color:#dffcf7; background:rgba(7,12,19,.5); }
   .search::placeholder { color:#8292a1; }
   .section-head { margin:0 2px 10px; }
   .section-head strong { font-size:14px; }
@@ -162,7 +159,7 @@ const M_BATTERY_CSS = `
   .level-number { font-variant-numeric:tabular-nums; font-size:15px; font-weight:780; white-space:nowrap; }
   .level-state { margin-top:3px; color:var(--muted); font-size:9px; white-space:nowrap; }
   .battery { display:block; width:104px; height:40px; overflow:visible; cursor:pointer; touch-action:pan-y; filter:drop-shadow(0 3px 7px rgba(0,0,0,.28)) drop-shadow(0 0 4px hsl(var(--battery-hue) 92% 55% / .25)); }
-  .battery .case { stroke:rgba(230,240,247,.72); stroke-width:.75; }
+  .battery .case { stroke:rgba(230,240,247,.72); stroke-width:.6; }
   .battery .terminal { stroke:rgba(226,236,243,.52); stroke-width:.55; }
   .battery .cell { fill:rgba(8,15,20,.86); }
   .battery .fill { transition:width .38s ease; }
@@ -196,8 +193,8 @@ const M_BATTERY_CSS = `
   .setting-row label { display:flex; gap:5px; align-items:center; color:var(--muted); font-size:9px; }
   .modal-actions { display:flex; justify-content:flex-end; gap:8px; padding-top:12px; }
   .note { margin:8px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }
-  @media(max-width:720px) { .stats{gap:8px}.stat{padding:13px;min-height:91px}.stat-value{font-size:22px}.toolbar{align-items:stretch;flex-direction:column}.tools{width:100%}.search-settings{flex:1}.search{width:100%;flex:1;min-width:0}.sort{min-width:132px}.tabs{justify-content:space-between}.tab{padding:8px 9px}.hero{align-items:flex-start}.subtitle{font-size:12px} }
-  @media(max-width:520px) { .shell{padding:15px;border-radius:19px}.topbar{align-items:flex-start;margin-bottom:20px}.top-meta{gap:5px}.pill{padding:7px 8px;font-size:9px}.mark{width:36px;height:36px;border-radius:12px}.brand-copy strong{font-size:12px}.brand-copy span{font-size:10px}.hero{display:block}.stats{grid-template-columns:1fr;gap:8px}.stat{min-height:75px}.stat-value{font-size:20px}.toolbar{padding:8px}.tools{flex-direction:column;align-items:stretch}.search-settings{width:100%}.search{width:auto;min-width:0;min-height:40px;flex:1}.settings-button{padding:8px 10px;font-size:10px}.sort{width:100%;min-height:40px}.tree{padding:4px 11px 10px}.device{grid-template-columns:minmax(0,1fr) auto;gap:6px;padding:10px 3px}.device-main{gap:8px}.device-icon{width:34px;height:34px;border-radius:12px}.device-meta{justify-content:flex-end;gap:6px;padding-left:0}.level-copy{text-align:right;min-width:48px}.level-number{font-size:13px}.level-state{font-size:8px}.battery{width:88px;height:35px}.status-button{min-width:88px;min-height:36px;padding:7px 9px;font-size:11px}.setting-grid{grid-template-columns:1fr}.setting-row{grid-template-columns:minmax(0,1fr) 48px}.setting-row input[type=text]{grid-column:1}.setting-row label{grid-column:2;grid-row:1/3;justify-content:center;flex-direction:column}.room-title{padding:10px 2px;gap:8px}.room-icon{width:34px;height:34px}.room-list{margin-left:12px;padding:0 2px 8px 18px}.room-list .device::before{left:-18px;width:11px}.tree-actions{justify-content:flex-start}.tree-actions .button{font-size:10px;padding:8px 10px} }
+  @media(max-width:720px) { .stats{gap:8px}.stat{padding:13px;min-height:91px}.stat-value{font-size:22px}.toolbar{align-items:stretch;flex-direction:column}.tools{width:100%;margin-left:0}.search-settings{flex:1}.search{width:100%;flex:1;min-width:0}.tabs{justify-content:space-between}.tab{padding:8px 9px}.hero{align-items:flex-start}.subtitle{font-size:12px} }
+  @media(max-width:520px) { .shell{padding:15px;border-radius:19px}.topbar{align-items:flex-start;margin-bottom:20px}.top-meta{gap:5px}.pill{padding:7px 8px;font-size:9px}.mark{width:36px;height:36px;border-radius:12px}.brand-copy strong{font-size:12px}.brand-copy span{font-size:10px}.hero{display:block}.stats{grid-template-columns:1fr;gap:8px}.stat{min-height:75px}.stat-value{font-size:20px}.toolbar{padding:8px}.tools{flex-direction:column;align-items:stretch}.search-settings{width:100%}.search{width:auto;min-width:0;min-height:40px;flex:1}.settings-button{padding:8px 10px;font-size:10px}.tree{padding:4px 11px 10px}.device{grid-template-columns:minmax(0,1fr) auto;gap:6px;padding:10px 3px}.device-main{gap:8px}.device-icon{width:34px;height:34px;border-radius:12px}.device-meta{justify-content:flex-end;gap:6px;padding-left:0}.level-copy{text-align:right;min-width:48px}.level-number{font-size:13px}.level-state{font-size:8px}.battery{width:88px;height:35px}.status-button{min-width:88px;min-height:36px;padding:7px 9px;font-size:11px}.setting-grid{grid-template-columns:1fr}.setting-row{grid-template-columns:minmax(0,1fr) 48px}.setting-row input[type=text]{grid-column:1}.setting-row label{grid-column:2;grid-row:1/3;justify-content:center;flex-direction:column}.room-title{padding:10px 2px;gap:8px}.room-icon{width:34px;height:34px}.room-list{margin-left:12px;padding:0 2px 8px 18px}.room-list .device::before{left:-18px;width:11px}.tree-actions{justify-content:flex-start}.tree-actions .button{font-size:10px;padding:8px 10px} }
 `;
 
 function mBatteryEsc(value) {
@@ -275,7 +272,6 @@ class ModernBatterieMonitor extends HTMLElement {
     this._historyLoading = false;
     this._filter = "all";
     this._search = "";
-    this._sort = "name";
     this._allExpanded = true;
     this._expandedNodes = new Map();
     this._openSettings = false;
@@ -291,13 +287,17 @@ class ModernBatterieMonitor extends HTMLElement {
     this.shadowRoot.addEventListener("pointerdown", (ev) => this._onPointerDown(ev));
     this.shadowRoot.addEventListener("toggle", (ev) => {
       const node=ev.target;
-      if(node?.dataset?.nodeKey) this._expandedNodes.set(node.dataset.nodeKey,node.open);
+      if(node?.dataset?.nodeKey) {
+        this._expandedNodes.set(node.dataset.nodeKey,node.open);
+        this._syncExpansionButtons();
+      }
     }, true);
     ["pointerup","pointerleave","pointercancel"].forEach((name) => this.shadowRoot.addEventListener(name, () => this._clearPress()));
   }
 
   setConfig(config) {
     this._config = { ...M_BATTERY_DEFAULTS, ...config };
+    delete this._config.language;
     this._loadLocalOverrides();
     this._ensureTranslation();
     this._render();
@@ -325,13 +325,11 @@ class ModernBatterieMonitor extends HTMLElement {
       if (saved.notifications_enabled != null) this._config.notifications_enabled = saved.notifications_enabled;
       if (saved.notification_service != null) this._config.notification_service = saved.notification_service;
       if (saved.show_mobile_devices != null) this._config.show_mobile_devices = saved.show_mobile_devices;
-      if (saved.language) this._config.language = saved.language;
     } catch (_err) { /* Keep dashboard configuration when browser storage is unavailable. */ }
   }
 
   _uiLanguage() {
-    const selected=this._openSettings && this._settingsDraft ? this._settingsDraft.language : this._config.language;
-    return mBatteryResolveLanguage(selected,this._hass);
+    return mBatteryResolveLanguage(this._hass);
   }
 
   _ensureTranslation() {
@@ -587,19 +585,16 @@ class ModernBatterieMonitor extends HTMLElement {
     if (this._filter === "low") rows = rows.filter((entry) => entry.low);
     if (this._filter === "no-room") rows = rows.filter((entry) => entry.room === "Ohne Raum");
     if (needle) rows = rows.filter((entry) => `${entry.displayName} ${entry.room} ${entry.room==="Ohne Raum"?this._t("no_room"):""}`.toLocaleLowerCase(this._uiLanguage()).includes(needle));
-    rows.sort((a,b) => {
-      if (this._sort === "level") return (a.level ?? (a.low?0:101)) - (b.level ?? (b.low?0:101)) || a.displayName.localeCompare(b.displayName,this._uiLanguage());
-      if (this._sort === "room") return a.room.localeCompare(b.room,this._uiLanguage()) || a.displayName.localeCompare(b.displayName,this._uiLanguage());
-      return a.displayName.localeCompare(b.displayName,this._uiLanguage());
-    });
+    rows.sort((a,b) => a.displayName.localeCompare(b.displayName,this._uiLanguage()));
     return rows;
   }
 
-  _setSort(value) {
-    if(!["name","level","room"].includes(value) || value===this._sort) return;
-    this._sort=value;
-    this._render();
-    this.shadowRoot.querySelector(".sort")?.focus();
+  _syncExpansionButtons() {
+    const rooms=[...this.shadowRoot.querySelectorAll("details.room")];
+    const allOpen=rooms.length>0 && rooms.every((room)=>room.open);
+    const allClosed=rooms.length>0 && rooms.every((room)=>!room.open);
+    this.shadowRoot.querySelector('[data-action="expand-all"]')?.classList.toggle("state-active",allOpen);
+    this.shadowRoot.querySelector('[data-action="collapse-all"]')?.classList.toggle("state-active",allClosed);
   }
 
   _relativeUpdated(entry) {
@@ -625,7 +620,7 @@ class ModernBatterieMonitor extends HTMLElement {
     const fillWidth = Math.max(0,Math.min(1,value/100))*91.7;
     const label = entry.level == null ? (entry.lowBinary?this._t("battery_low"):this._t("battery_unknown")) : this._t("percent_battery",{value:Math.round(entry.level)});
     const uid = `mb-${entry.entityId.replace(/[^a-z0-9]/gi,"-")}`;
-    return `<svg class="battery pressable" style="--battery-hue:${hue}" data-entity="${mBatteryEsc(entry.entityId)}" viewBox="0 0 108 42" role="img" aria-label="${mBatteryEsc(label)}"><defs><linearGradient id="${uid}-case" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset=".18" stop-color="#aab7c1"/><stop offset=".43" stop-color="#53616b"/><stop offset=".7" stop-color="#c7d0d6"/><stop offset="1" stop-color="#59656e"/></linearGradient><linearGradient id="${uid}-terminal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8eef2"/><stop offset=".5" stop-color="#66737c"/><stop offset="1" stop-color="#b9c4cb"/></linearGradient><linearGradient id="${uid}-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="hsl(${hue} 100% 76%)"/><stop offset=".16" stop-color="hsl(${hue} 98% 63%)"/><stop offset=".48" stop-color="hsl(${hue} 94% 53%)"/><stop offset=".78" stop-color="hsl(${hue} 90% 43%)"/><stop offset="1" stop-color="hsl(${hue} 82% 34%)"/></linearGradient><linearGradient id="${uid}-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".64"/><stop offset=".22" stop-color="#fff" stop-opacity=".2"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient><clipPath id="${uid}-clip"><rect x="6.8" y="7.6" width="91.7" height="26.5" rx="4"/></clipPath></defs><rect class="case" x="2.5" y="4.2" width="97.5" height="33.6" rx="6.8" fill="url(#${uid}-case)"/><rect class="terminal" x="100.5" y="13.2" width="5.5" height="15.6" rx="2" fill="url(#${uid}-terminal)"/><rect class="cell" x="6.8" y="7.6" width="91.7" height="26.5" rx="4"/><g clip-path="url(#${uid}-clip)"><rect class="fill" x="6.8" y="7.6" width="${fillWidth.toFixed(2)}" height="26.5" fill="url(#${uid}-fill)"/><rect class="gloss" x="6.8" y="7.6" width="91.7" height="26.5" fill="url(#${uid}-gloss)"/></g><path d="M7.3 6.1h87.8" stroke="#fff" stroke-opacity=".66" stroke-width=".95" stroke-linecap="round"/><path d="M8 35.8h84" stroke="#fff" stroke-opacity=".22" stroke-width=".65" stroke-linecap="round"/></svg>`;
+    return `<svg class="battery pressable" style="--battery-hue:${hue}" data-entity="${mBatteryEsc(entry.entityId)}" viewBox="0 0 108 42" role="img" aria-label="${mBatteryEsc(label)}"><defs><linearGradient id="${uid}-case" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset=".18" stop-color="#aab7c1"/><stop offset=".43" stop-color="#53616b"/><stop offset=".7" stop-color="#c7d0d6"/><stop offset="1" stop-color="#59656e"/></linearGradient><linearGradient id="${uid}-terminal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8eef2"/><stop offset=".5" stop-color="#66737c"/><stop offset="1" stop-color="#b9c4cb"/></linearGradient><linearGradient id="${uid}-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="hsl(${hue} 100% 76%)"/><stop offset=".16" stop-color="hsl(${hue} 98% 63%)"/><stop offset=".48" stop-color="hsl(${hue} 94% 53%)"/><stop offset=".78" stop-color="hsl(${hue} 90% 43%)"/><stop offset="1" stop-color="hsl(${hue} 82% 34%)"/></linearGradient><linearGradient id="${uid}-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".64"/><stop offset=".22" stop-color="#fff" stop-opacity=".2"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient><clipPath id="${uid}-clip"><rect x="6.8" y="7.6" width="91.7" height="26.5" rx="4"/></clipPath></defs><rect class="case" x="5.1" y="5.9" width="94.9" height="29.9" rx="5.5" fill="url(#${uid}-case)"/><rect class="terminal" x="100.5" y="13.2" width="5.5" height="15.6" rx="2" fill="url(#${uid}-terminal)"/><rect class="cell" x="6.8" y="7.6" width="91.7" height="26.5" rx="4"/><g clip-path="url(#${uid}-clip)"><rect class="fill" x="6.8" y="7.6" width="${fillWidth.toFixed(2)}" height="26.5" fill="url(#${uid}-fill)"/><rect class="gloss" x="6.8" y="7.6" width="91.7" height="26.5" fill="url(#${uid}-gloss)"/></g><path d="M7.3 6.1h87.8" stroke="#fff" stroke-opacity=".66" stroke-width=".95" stroke-linecap="round"/><path d="M8 35.8h84" stroke="#fff" stroke-opacity=".22" stroke-width=".65" stroke-linecap="round"/></svg>`;
   }
 
   _row(entry) {
@@ -657,7 +652,6 @@ class ModernBatterieMonitor extends HTMLElement {
       service:this._config.notification_service || "",
       notifications:!!this._config.notifications_enabled,
       showMobile:!!this._config.show_mobile_devices,
-      language:this._config.language || "auto",
       hidden:[...(this._config.hidden_entities || [])],
       names:{...(this._config.name_overrides || {})},
     };
@@ -670,12 +664,10 @@ class ModernBatterieMonitor extends HTMLElement {
     const service=this.shadowRoot.querySelector('[data-setting="service"]');
     const notifications=this.shadowRoot.querySelector('[data-setting="notifications"]');
     const showMobile=this.shadowRoot.querySelector('[data-setting="show-mobile"]');
-    const language=this.shadowRoot.querySelector('[data-setting="language"]');
     if (threshold) draft.threshold=threshold.value;
     if (service) draft.service=service.value;
     if (notifications) draft.notifications=notifications.checked;
     if (showMobile) draft.showMobile=showMobile.checked;
-    if (language) draft.language=language.value;
     draft.hidden=[...this.shadowRoot.querySelectorAll("[data-hide]:checked")].map((input)=>input.dataset.hide);
     draft.names={};
     this.shadowRoot.querySelectorAll("[data-rename]").forEach((input)=>{if(input.value.trim())draft.names[input.dataset.rename]=input.value.trim();});
@@ -713,34 +705,27 @@ class ModernBatterieMonitor extends HTMLElement {
         if(!deviceGroups.has(entry.deviceId)) deviceGroups.set(entry.deviceId,[]);
         deviceGroups.get(entry.deviceId).push(entry);
       }
-      const sortedDevices=[...deviceGroups.entries()].sort((a,b)=>{
-        const nameA=a[1][0].displayName, nameB=b[1][0].displayName;
-        if(this._sort==="level") {
-          const minA=Math.min(...a[1].map((entry)=>entry.level ?? (entry.low?0:101)));
-          const minB=Math.min(...b[1].map((entry)=>entry.level ?? (entry.low?0:101)));
-          return minA-minB || nameA.localeCompare(nameB,this._uiLanguage());
-        }
-        return nameA.localeCompare(nameB,this._uiLanguage());
-      });
+      const sortedDevices=[...deviceGroups.entries()].sort((a,b)=>a[1][0].displayName.localeCompare(b[1][0].displayName,this._uiLanguage()));
       const devicesHtml=sortedDevices.flatMap(([,deviceRows])=>deviceRows).map((entry)=>this._row(entry)).join("");
       const roomKey=`room:${room}`;
       const roomOpen=this._expandedNodes.has(roomKey)?this._expandedNodes.get(roomKey):this._allExpanded;
       const roomLabel=room==="Ohne Raum"?this._t("no_room"):room;
       return `<details class="room" data-node-key="${mBatteryEsc(roomKey)}" ${roomOpen?"open":""}><summary class="room-title"><span class="chev" aria-hidden="true">›</span><span class="room-icon" aria-hidden="true">${mBatteryRoomIcon(room)}</span><span class="room-copy"><span class="room-name">${mBatteryEsc(roomLabel)}</span><span class="room-meta">${room==="Ohne Raum"?t("area_assign"):t("batteries_in_room")}</span></span><span class="room-count">${t(deviceGroups.size===1?"one_device":"many_devices",{count:deviceGroups.size})}</span></summary><div class="room-list">${devicesHtml}</div></details>`;
     }).join("");
+    const roomOpenStates=roomNames.map((room)=>{const key="room:"+room;return this._expandedNodes.has(key)?this._expandedNodes.get(key):this._allExpanded;});
+    const expandAllActive=roomOpenStates.length>0 && roomOpenStates.every(Boolean);
+    const collapseAllActive=roomOpenStates.length>0 && roomOpenStates.every((open)=>!open);
     const localOnly = this._t("local_only");
     const draft=this._settingsDraft || this._makeSettingsDraft();
-    const languageOptions=[...M_BATTERY_TRANSLATION_LANGUAGES].map((language)=>`<option value="${language}" ${draft.language===language?"selected":""}>${t(`lang_${language}`)}</option>`).join("");
     root.innerHTML = `
       <div class="topbar"><div class="brand"><div class="mark">HA</div><div class="brand-copy"><strong>${t("smart_home")}</strong><span>Modern-Batterie-Monitor</span></div></div><div class="top-meta"><span class="pill"><span class="dot"></span>${this._hass?t("status_auto"):t("waiting_ha")}</span></div></div>
       <div class="hero"><div><div class="eyebrow">${t("overview")}</div><h1>${mBatteryEsc(!this._config.title || this._config.title===M_BATTERY_DEFAULTS.title?this._t("default_title"):this._config.title)}</h1><p class="subtitle">${t("subtitle")}</p></div></div>
       <div class="stats"><div class="stat" style="--glow:rgba(80,224,209,.2)"><div class="stat-label">${t("detected_devices")}</div><div class="stat-value">${allDevices.size}<small>${t(allDevices.size===1?"device_unit":"devices")}</small></div><div class="stat-note">${t("shown_hidden",{shown:shownDevices.size,hidden:allDevices.size-shownDevices.size})}</div></div><div class="stat" style="--glow:rgba(255,126,83,.21)"><div class="stat-label">${t("low_battery")}</div><div class="stat-value">${lowCount}<small>${t("under_binary",{threshold:this._config.low_threshold ?? 25})}</small></div><div class="stat-note">${t("keep_watch")}</div></div><div class="stat" style="--glow:rgba(120,136,255,.2)"><div class="stat-label">${t("rooms_with_devices")}</div><div class="stat-value">${rooms.size}<small>${t(rooms.size===1?"room_unit":"rooms")}</small></div><div class="stat-note">${t("no_area_separate")}</div></div></div>
-      <div class="toolbar"><div class="tabs"><button class="tab ${this._filter==="all"?"active":""}" data-filter="all">${t("all_devices")}</button><button class="tab ${this._filter==="low"?"active":""}" data-filter="low">${t("low_filter")}</button><button class="tab ${this._filter==="no-room"?"active":""}" data-filter="no-room">${t("no_room")}</button></div><div class="tools"><div class="search-settings"><button class="button settings-button" data-action="settings" aria-label="${t("configure_aria")}">⚙ ${t("settings_button")}</button><input class="search" type="search" placeholder="${t("search")}" value="${mBatteryEsc(this._search)}" aria-label="${t("search")}"></div><select class="sort" aria-label="${t("sort")}"><option value="name" ${this._sort==="name"?"selected":""}>${t("sort_name")}</option><option value="level" ${this._sort==="level"?"selected":""}>${t("sort_level")}</option><option value="room" ${this._sort==="room"?"selected":""}>${t("sort_room")}</option></select></div></div>
-      <div class="section-head"><strong>${this._filter==="low"?t("low_filter"):this._filter==="no-room"?t("no_room_heading"):t("room_heading")} · ${t(rows.length===1?"one_device":"many_devices",{count:rows.length})}</strong><div class="tree-actions"><button class="button" data-action="expand-all">${t("expand_all")}</button><button class="button" data-action="collapse-all">${t("collapse_all")}</button></div></div>
+      <div class="toolbar"><div class="tabs"><button class="tab ${this._filter==="all"?"active":""}" data-filter="all">${t("all_devices")}</button><button class="tab ${this._filter==="low"?"active":""}" data-filter="low">${t("low_filter")}</button><button class="tab ${this._filter==="no-room"?"active":""}" data-filter="no-room">${t("no_room")}</button></div><div class="tools"><div class="search-settings"><button class="button settings-button" data-action="settings" aria-label="${t("configure_aria")}">⚙ ${t("settings_button")}</button><input class="search" type="search" placeholder="${t("search")}" value="${mBatteryEsc(this._search)}" aria-label="${t("search")}"></div></div></div>
+      <div class="section-head"><strong>${this._filter==="low"?t("low_filter"):this._filter==="no-room"?t("no_room_heading"):t("room_heading")} · ${t(rows.length===1?"one_device":"many_devices",{count:rows.length})}</strong><div class="tree-actions"><button class="button ${expandAllActive?"state-active":""}" data-action="expand-all">${t("expand_all")}</button><button class="button ${collapseAllActive?"state-active":""}" data-action="collapse-all">${t("collapse_all")}</button></div></div>
       <div class="tree">${content || `<div class="empty">${all.length ? t("no_matching") : t("no_sensors")}</div>`}</div>
       <div class="foot">${t("battery_change_note")}</div>
-      <div class="overlay" data-overlay ${this._openSettings?"":"hidden"}><section class="modal" role="dialog" aria-modal="true" aria-label="${t("configure_aria")}"><div class="modal-head"><h2>${t("configure_title")}</h2><button class="button" data-action="close-settings" aria-label="${t("close")}">✕</button></div><div class="modal-body"><div class="setting-card"><h3>${t("display_notifications")}</h3><div class="setting-grid"><label class="field">${t("threshold")}<div class="range-row"><input data-setting="threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(draft.threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(draft.threshold)}%</output></div></label><label class="field">${t("notify_service")}<input data-setting="service" type="text" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(draft.service)}"></label></div><p class="note">${t("notify_note")}</p><label class="toggle-line"><input data-setting="notifications" type="checkbox" ${draft.notifications?"checked":""}> ${t("enable_notifications")}</label></div><div class="setting-card"><h3>${t("device_filter")}</h3><label class="toggle-line"><input data-setting="show-mobile" type="checkbox" ${draft.showMobile?"checked":""}> ${t("show_mobile")}</label><p class="note">${t("mobile_note")}</p></div><div class="setting-card"><h3>${t("language")}</h3><select class="language-select" data-setting="language" aria-label="${t("language")}"><option value="auto" ${draft.language==="auto"?"selected":""}>${t("auto_language")}</option>${languageOptions}</select></div><div class="setting-card"><h3>${t("customize_devices")}</h3><div class="settings-list">${all.map((entry)=>`<div class="setting-row"><div class="setting-entity"><strong>${mBatteryEsc(entry.displayName)}</strong><span>${mBatteryEsc(entry.room==="Ohne Raum"?this._t("no_room"):entry.room)}${entry.binaryOnly?` · ${t("binary_sensor")}`:` · ${t("battery")}`}</span></div><input type="text" data-rename="${mBatteryEsc(entry.deviceId)}" placeholder="${t("rename_placeholder")}" value="${mBatteryEsc(draft.names[entry.deviceId] || draft.names[entry.entityId] || entry.currentOverride || "")}"><label><input type="checkbox" data-hide="${mBatteryEsc(entry.deviceId)}" ${draft.hidden.includes(entry.deviceId) || (entry.allEntityIds || []).some((id)=>draft.hidden.includes(id))?"checked":""}> ${t("hide")}</label></div>`).join("") || `<div class="empty">${t("no_batteries")}</div>`}</div></div><div class="modal-actions"><button class="button" data-action="close-settings">${t("cancel")}</button><button class="button primary" data-action="save-settings">${t("save")}</button></div><p class="note">${mBatteryEsc(localOnly)}</p></div></section></div>`;
-    root.querySelector(".sort")?.addEventListener("change",(ev)=>this._setSort(ev.currentTarget.value));
+      <div class="overlay" data-overlay ${this._openSettings?"":"hidden"}><section class="modal" role="dialog" aria-modal="true" aria-label="${t("configure_aria")}"><div class="modal-head"><h2>${t("configure_title")}</h2><button class="button" data-action="close-settings" aria-label="${t("close")}">✕</button></div><div class="modal-body"><div class="setting-card"><h3>${t("display_notifications")}</h3><div class="setting-grid"><label class="field">${t("threshold")}<div class="range-row"><input data-setting="threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(draft.threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(draft.threshold)}%</output></div></label><label class="field">${t("notify_service")}<input data-setting="service" type="text" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(draft.service)}"></label></div><p class="note">${t("notify_note")}</p><label class="toggle-line"><input data-setting="notifications" type="checkbox" ${draft.notifications?"checked":""}> ${t("enable_notifications")}</label></div><div class="setting-card"><h3>${t("device_filter")}</h3><label class="toggle-line"><input data-setting="show-mobile" type="checkbox" ${draft.showMobile?"checked":""}> ${t("show_mobile")}</label><p class="note">${t("mobile_note")}</p></div><div class="setting-card"><h3>${t("customize_devices")}</h3><div class="settings-list">${all.map((entry)=>`<div class="setting-row"><div class="setting-entity"><strong>${mBatteryEsc(entry.displayName)}</strong><span>${mBatteryEsc(entry.room==="Ohne Raum"?this._t("no_room"):entry.room)}${entry.binaryOnly?` · ${t("binary_sensor")}`:` · ${t("battery")}`}</span></div><input type="text" data-rename="${mBatteryEsc(entry.deviceId)}" placeholder="${t("rename_placeholder")}" value="${mBatteryEsc(draft.names[entry.deviceId] || draft.names[entry.entityId] || entry.currentOverride || "")}"><label><input type="checkbox" data-hide="${mBatteryEsc(entry.deviceId)}" ${draft.hidden.includes(entry.deviceId) || (entry.allEntityIds || []).some((id)=>draft.hidden.includes(id))?"checked":""}> ${t("hide")}</label></div>`).join("") || `<div class="empty">${t("no_batteries")}</div>`}</div></div><div class="modal-actions"><button class="button" data-action="close-settings">${t("cancel")}</button><button class="button primary" data-action="save-settings">${t("save")}</button></div><p class="note">${mBatteryEsc(localOnly)}</p></div></section></div>`;
     const overlay=root.querySelector("[data-overlay]");
     if(overlay) overlay.hidden=!this._openSettings;
     if(this._openSettings) {
@@ -801,10 +786,8 @@ class ModernBatterieMonitor extends HTMLElement {
   _onChange(ev) {
     if (ev.target.matches?.("[data-setting],[data-hide],[data-rename]")) {
       this._captureSettingsDraft();
-      if(ev.target.dataset.setting==="language") { this._ensureTranslation(); this._render(); }
       return;
     }
-    if (ev.target.matches?.(".sort")) this._setSort(ev.target.value);
   }
   _onPointerDown(ev) {
     const target = ev.composedPath().find((node) => node?.dataset?.entity);
@@ -824,11 +807,11 @@ class ModernBatterieMonitor extends HTMLElement {
     const service = draft.service?.trim() || "";
     const notifications = !!draft.notifications;
     const showMobileDevices = !!draft.showMobile;
-    const language = M_BATTERY_TRANSLATION_LANGUAGES.has(draft.language) ? draft.language : "auto";
     const hidden = draft.hidden || [];
     const names = draft.names || {};
-    this._config = { ...this._config, low_threshold:Math.max(0,Math.min(100,threshold)), notification_service:service, notifications_enabled:notifications, show_mobile_devices:showMobileDevices, language, hidden_entities:hidden, name_overrides:names };
-    try { localStorage.setItem(this._storageKey, JSON.stringify({ low_threshold:this._config.low_threshold, notification_service:service, notifications_enabled:notifications, show_mobile_devices:showMobileDevices, language, hidden_entities:hidden, name_overrides:names })); } catch (_err) { /* Settings remain active until the card is reloaded. */ }
+    this._config = { ...this._config, low_threshold:Math.max(0,Math.min(100,threshold)), notification_service:service, notifications_enabled:notifications, show_mobile_devices:showMobileDevices, hidden_entities:hidden, name_overrides:names };
+    delete this._config.language;
+    try { localStorage.setItem(this._storageKey, JSON.stringify({ low_threshold:this._config.low_threshold, notification_service:service, notifications_enabled:notifications, show_mobile_devices:showMobileDevices, hidden_entities:hidden, name_overrides:names })); } catch (_err) { /* Settings remain active until the card is reloaded. */ }
     mBatteryFire(this, "config-changed", { config:this._config });
     this._openSettings = false;
     this._settingsDraft=null;
@@ -870,14 +853,13 @@ class ModernBatterieMonitorEditor extends HTMLElement {
     });
     this.shadowRoot.addEventListener("change",(ev)=>{
       this._changed();
-      if(ev.target.matches?.('[data-field="language"]')) { this._ensureTranslation(); this._render(); }
     });
   }
-  setConfig(config) { this._config={...M_BATTERY_DEFAULTS,...config}; this._ensureTranslation(); this._render(); }
+  setConfig(config) { this._config={...M_BATTERY_DEFAULTS,...config}; delete this._config.language; this._ensureTranslation(); this._render(); }
   set hass(hass) { this._hass=hass; this._ensureTranslation(); this._render(); }
   get hass() { return this._hass; }
   _uiLanguage() {
-    return mBatteryResolveLanguage(this._config.language,this._hass);
+    return mBatteryResolveLanguage(this._hass);
   }
   _ensureTranslation() {
     const language=this._uiLanguage();
@@ -907,15 +889,14 @@ class ModernBatterieMonitorEditor extends HTMLElement {
     const t=(key,values={})=>mBatteryEsc(this._t(key,values));
     const threshold=this._config.low_threshold ?? 25;
     const title=this._config.title===M_BATTERY_DEFAULTS.title?this._t("default_title"):this._config.title;
-    const languageOptions=[...M_BATTERY_TRANSLATION_LANGUAGES].map((language)=>`<option value="${language}" ${this._config.language===language?"selected":""}>${t(`lang_${language}`)}</option>`).join("");
-    this.shadowRoot.innerHTML = `<style>${M_BATTERY_CSS}:host{display:block}.shell{padding:16px}.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}.hint{font-size:11px;color:var(--secondary-text-color,#8796a4)}@media(max-width:520px){.edit-grid{grid-template-columns:1fr}}</style><div class="shell" dir="${this._uiLanguage()==="ar"?"rtl":"ltr"}"><h2>${t("editor_title")}</h2><p class="hint">${t("editor_hint")}</p><div class="edit-grid"><label class="field">${t("editor_heading")}<input data-field="title" value="${mBatteryEsc(title)}"></label><label class="field">${t("threshold")}<div class="range-row"><input data-field="low_threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(threshold)}%</output></div></label></div><label class="field">${t("language")}<select class="language-select" data-field="language"><option value="auto" ${(this._config.language||"auto")==="auto"?"selected":""}>${t("auto_language")}</option>${languageOptions}</select></label><label class="field">${t("hidden_entities")}<textarea data-field="hidden_entities" rows="4">${mBatteryEsc((this._config.hidden_entities||[]).join("\n"))}</textarea></label><label class="field">${t("custom_names")}<textarea data-field="name_overrides" rows="5">${mBatteryEsc(Object.entries(this._config.name_overrides||{}).map(([id,name])=>`${id} = ${name}`).join("\n"))}</textarea></label><label class="toggle-line"><input data-field="show_mobile_devices" type="checkbox" ${this._config.show_mobile_devices?"checked":""}> ${t("show_mobile_editor")}</label><label class="toggle-line"><input data-field="notifications_enabled" type="checkbox" ${this._config.notifications_enabled?"checked":""}> ${t("enable_notifications_short")}</label><label class="field">${t("notify_service_short")}<input data-field="notification_service" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(this._config.notification_service||"")}"></label></div>`;
+    this.shadowRoot.innerHTML = `<style>${M_BATTERY_CSS}:host{display:block}.shell{padding:16px}.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}.hint{font-size:11px;color:var(--secondary-text-color,#8796a4)}@media(max-width:520px){.edit-grid{grid-template-columns:1fr}}</style><div class="shell" dir="${this._uiLanguage()==="ar"?"rtl":"ltr"}"><h2>${t("editor_title")}</h2><p class="hint">${t("editor_hint")}</p><div class="edit-grid"><label class="field">${t("editor_heading")}<input data-field="title" value="${mBatteryEsc(title)}"></label><label class="field">${t("threshold")}<div class="range-row"><input data-field="low_threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(threshold)}%</output></div></label></div><label class="field">${t("hidden_entities")}<textarea data-field="hidden_entities" rows="4">${mBatteryEsc((this._config.hidden_entities||[]).join("\n"))}</textarea></label><label class="field">${t("custom_names")}<textarea data-field="name_overrides" rows="5">${mBatteryEsc(Object.entries(this._config.name_overrides||{}).map(([id,name])=>`${id} = ${name}`).join("\n"))}</textarea></label><label class="toggle-line"><input data-field="show_mobile_devices" type="checkbox" ${this._config.show_mobile_devices?"checked":""}> ${t("show_mobile_editor")}</label><label class="toggle-line"><input data-field="notifications_enabled" type="checkbox" ${this._config.notifications_enabled?"checked":""}> ${t("enable_notifications_short")}</label><label class="field">${t("notify_service_short")}<input data-field="notification_service" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(this._config.notification_service||"")}"></label></div>`;
   }
   _changed() {
     const get=(key)=>this.shadowRoot.querySelector(`[data-field="${key}"]`);
     const hidden=(get("hidden_entities")?.value||"").split(/\r?\n|,/).map((v)=>v.trim()).filter(Boolean);
     const names={};
     (get("name_overrides")?.value||"").split(/\r?\n/).forEach((line)=>{const split=line.indexOf("=");if(split>0){const id=line.slice(0,split).trim(),name=line.slice(split+1).trim();if(id&&name)names[id]=name;}});
-    const config={...this._config,title:get("title")?.value||(this._uiLanguage()==="de"?"Batterien":"Batteries"),low_threshold:Number(get("low_threshold")?.value||25),language:get("language")?.value||"auto",hidden_entities:hidden,name_overrides:names,show_mobile_devices:!!get("show_mobile_devices")?.checked,notifications_enabled:!!get("notifications_enabled")?.checked,notification_service:get("notification_service")?.value?.trim()||""};
+    const config={...this._config,title:get("title")?.value||(this._uiLanguage()==="de"?"Batterien":"Batteries"),low_threshold:Number(get("low_threshold")?.value||25),hidden_entities:hidden,name_overrides:names,show_mobile_devices:!!get("show_mobile_devices")?.checked,notifications_enabled:!!get("notifications_enabled")?.checked,notification_service:get("notification_service")?.value?.trim()||""};
     this._config=config;
     mBatteryFire(this,"config-changed",{config});
   }
@@ -927,4 +908,3 @@ window.customCards = window.customCards || [];
 if (!window.customCards.some((card)=>card.type==="modern-batterie-monitor")) {
   window.customCards.push({type:"modern-batterie-monitor",name:"Modern-Batterie-Monitor",version:M_BATTERY_VERSION,description:"Raumübersicht für Prozent- und Binärsensoren mit Batterie-Geräteklasse.",preview:true});
 }
-
