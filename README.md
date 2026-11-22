@@ -1,6 +1,6 @@
 # Modern-Batterie-Monitor
 
-**Version 1.6.2**
+**Version 1.6.3**
 
 Versionen folgen [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH`. Neue Funktionen erhöhen MINOR, rückwärtskompatible Fehlerkorrekturen PATCH und inkompatible Änderungen MAJOR.
 
@@ -14,10 +14,10 @@ Eine responsive Lovelace-Karte für Home Assistant. Sie findet Batterie-Prozentw
 - Zeigt die Baumstruktur **Raum → Gerät** wie in der Vorschau; mehrere Batterie-Entitäten desselben Geräts erscheinen als ein Geräteeintrag.
 - Verwendet den Gerätenamen aus der Geräteregistrierung und zeigt keine Batterie-Entity-Namen in der Geräteliste an. Ein Stiftsymbol öffnet die Umbenennung direkt.
 - Zeigt passende Raum- und Geräte-Icons, zum Beispiel für Schlafzimmer, Flur, Rauchmelder, Türkontakt, Bewegung und Klima.
-- Räume lassen sich einzeln sowie mit den Glas-Schaltflächen global auf- und zuklappen.
+- Räume lassen sich einzeln sowie mit den Glas-Schaltflächen global auf- und zuklappen. Bei zugeklappten Räumen färbt sich die Geräteanzahl bei einer Batteriewarnung gelb; beim Öffnen verschwindet die Markierung.
 - Sortiert Räume alphabetisch, setzt „Ohne Raum“ immer ans Ende und ordnet Geräte innerhalb der Räume alphabetisch.
 - Filtert nach niedrigem Stand und fehlendem Raum; die Suche findet Geräte und Räume.
-- Die Batterie steht rechts neben dem Prozentwert, bündig zum OK-Button der Binärsensoren. Ihre Anzeige ist genauso breit wie der OK-Button; der silberne Rahmen ist 1 px stark. Die Füllung reagiert stufenlos auf jeden Prozentpunkt und wechselt je nach Ladestand von Rot über Gelb zu Grün.
+- Die Batterie steht rechts neben dem Prozentwert, bündig zum OK-Button der Binärsensoren. Ihre Breite und Höhe entsprechen diesem Statusbutton (104 × 38 px am Desktop, 88 × 36 px auf kleinen Displays); der silberne Rahmen ist 1 px stark. Die Füllung reagiert stufenlos auf jeden Prozentpunkt und wechselt je nach Ladestand von Rot über Gelb zu Grün.
 - Geräte mit reinem Binärsensor zeigen statt eines Batterie-Symbols eine Glas-Statusschaltfläche mit „OK“, „Niedrig“ oder „Unbekannt“; die grüne oder rote Statusfarbe bleibt erhalten.
 - Filter-, Konfigurations- und Baum-Schaltflächen verwenden die gleiche abgerundete Glasform. Der Konfigurationsbutton steht direkt neben der Suche.
 - Aktive Filter sowie die passenden Schaltflächen zum Auf- und Zuklappen haben einen grünen Rahmen und weiße Schrift. Inaktive Schaltflächen bleiben grau; Hover verhält sich einheitlich.
