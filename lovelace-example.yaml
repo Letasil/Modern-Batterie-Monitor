@@ -5,7 +5,5 @@ hidden_entities: []
 name_overrides: {}
 notifications_enabled: false
 show_mobile_devices: false
-language: auto
 # Beispiel: notify.mobile_app_dein_handy
 notification_service: ""
-
