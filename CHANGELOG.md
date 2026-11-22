@@ -1,5 +1,12 @@
 # Änderungsprotokoll
 
+## 1.4.0 — 2026-11-22
+
+- Batterie-Illustration weiter an die glänzende Referenz-App angelehnt; die Füllung ist glatt, stufenlos und behält den Farbumschlag.
+- Reine Binärsensoren zeigen rechts eine Glas-Statusschaltfläche statt eines Batterie-Symbols; „OK“, „Niedrig“ und „Unbekannt“ bleiben farblich unterscheidbar.
+- Buttons auf die Form der Filterleiste vereinheitlicht und Konfiguration neben das Suchfeld gesetzt.
+- Sortierauswahl direkt mit der Baumansicht verbunden und die aktuelle Auswahl nach dem Sortieren beibehalten.
+
 ## 1.3.0 — 2026-11-21
 
 - Gerätebaum auf **Raum → Gerät** vereinfacht; mehrere Batterie-Sensoren eines Geräts werden in einer Zeile zusammengefasst.
