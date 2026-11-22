@@ -1,5 +1,16 @@
 # Änderungsprotokoll
 
+## 1.5.0 — 2026-11-22
+
+- Konfigurationsbutton links neben das Suchfeld gesetzt.
+- Warnschwelle als Prozent-Slider im Schnellmenü und Karteneditor ergänzt.
+- Silbernen Batterierahmen verkleinert, ohne den farbigen Ladestand und Glanzverlauf zu ändern.
+- Geöffnete Raum- und Gerätegruppen erhalten einen türkisfarbenen Glaszustand; geschlossene Gruppen bleiben neutral. Die Button-Schriftfarbe bleibt einheitlich und kontrastreich.
+- Oberflächentexte für Deutsch und Englisch lokalisiert; die Karte folgt standardmäßig der Home-Assistant-Sprache und bietet eine Sprachwahl in den Einstellungen.
+- Gerätereigene Namen und Raumnamen bleiben unverändert.
+- Registrierungen werden erneut abgefragt, wenn ein neuer Batterie-Sensor in Home-Assistant-Zuständen auftaucht.
+- Versionsnummern folgen Semantic Versioning.
+
 ## 1.4.0 — 2026-11-22
 
 - Batterie-Illustration weiter an die glänzende Referenz-App angelehnt; die Füllung ist glatt, stufenlos und behält den Farbumschlag.
