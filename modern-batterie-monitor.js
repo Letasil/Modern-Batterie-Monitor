@@ -1,5 +1,5 @@
-/* Modern-Batterie-Monitor · Lovelace custom card · 1.5.0 */
-const M_BATTERY_VERSION = "1.5.0";
+/* Modern-Batterie-Monitor · Lovelace custom card · 1.6.0 */
+const M_BATTERY_VERSION = "1.6.0";
 const M_BATTERY_DEFAULTS = {
   type: "custom:modern-batterie-monitor",
   title: "Batterien",
@@ -12,78 +12,43 @@ const M_BATTERY_DEFAULTS = {
   language: "auto",
 };
 
-const M_BATTERY_TRANSLATIONS = {
-  de: {
-    language:"Sprache", auto_language:"Home-Assistant-Sprache", german:"Deutsch", english:"Englisch", default_title:"Batterien",
-    status_auto:"Automatisch erkannt", waiting_ha:"Warte auf Home Assistant", overview:"Geräteübersicht",
-    subtitle:"Alle Batterie- und Batteriewarnsensoren auf einen Blick, sortiert nach Räumen.",
-    detected_devices:"Erkannte Geräte", device_unit:"Gerät", devices:"Geräte", shown_hidden:"{shown} angezeigt · {hidden} ausgeblendet",
-    low_battery:"Batterie niedrig", under_binary:"unter {threshold} % oder Binärwarnung", keep_watch:"Akkustand im Blick behalten",
-    rooms_with_devices:"Räume mit Geräten", room_unit:"Raum", rooms:"Räume", no_area_separate:"Geräte ohne Bereich erscheinen separat",
-    all_devices:"Alle Geräte", low_filter:"Niedriger Akkustand", no_room:"Ohne Raum", search:"Gerät oder Raum suchen…",
-    sort:"Sortierung", sort_name:"Gerät A–Z", sort_level:"Niedrigster Stand", sort_room:"Raum A–Z",
-    no_room_heading:"Geräte ohne Raum", room_heading:"Geräte nach Raum", one_device:"{count} Gerät", many_devices:"{count} Geräte",
-    expand_all:"Alles aufklappen", collapse_all:"Alles zuklappen", area_assign:"Bereich in Home Assistant zuweisen",
-    batteries_in_room:"Batteriegeräte in diesem Raum", no_matching:"Keine Geräte entsprechen dem aktuellen Filter.",
-    no_sensors:"Noch keine Sensoren mit Geräteklasse „Batterie“ gefunden.", battery_change_note:"Der letzte Batterietausch wird nur geschätzt, wenn der Verlauf einen deutlichen Anstieg auf einen hohen Ladezustand oder den Wechsel von „niedrig“ zu „OK“ enthält. Fehlt der Verlauf, wird kein Datum angezeigt.",
-    configure_aria:"Batterie-Monitor konfigurieren", configure_title:"Modern-Batterie-Monitor konfigurieren", settings_button:"Konfiguration", close:"Schließen",
-    display_notifications:"Anzeige und Benachrichtigung", threshold:"Schwelle für niedrigen Akkustand (%)", notify_service:"Home-Assistant-Benachrichtigungsdienst",
-    notify_note:"Benachrichtigungen laufen, solange diese Karte in Home Assistant geöffnet ist. Für dauerhaft aktive Meldungen eignet sich zusätzlich eine Home-Assistant-Automation.",
-    enable_notifications:"Benachrichtigungen bei neu niedrigem Akkustand aktivieren", device_filter:"Gerätefilter",
-    show_mobile:"Handys, Tablets und Wearables ebenfalls anzeigen", mobile_note:"Mobilgeräte werden standardmäßig anhand der Mobile-App-Integration sowie Name, Modell und Gerätekennung ausgeblendet. Diese Option zeigt sie wieder an, falls ein Gerät falsch erkannt wurde.",
-    customize_devices:"Geräte anpassen", binary_sensor:"Binärsensor", battery:"Batterie", rename_placeholder:"Anzeigename anpassen",
-    hide:"Ausblenden", no_batteries:"Keine Batterie-Sensoren vorhanden.", cancel:"Abbrechen", save:"Speichern",
-    local_only:"Änderungen in diesem Schnellmenü werden in diesem Browserprofil gespeichert; die Kartenoptionen im Dashboard-Editor bleiben zusätzlich verfügbar.",
-    unavailable:"nicht verfügbar", low:"niedrig", ok:"OK", unknown:"Unbekannt", binary_status:"Binärsensor · Status {status} · Zuletzt aktualisiert {time}",
-    binary_low_line:"Binärsensor meldet niedrigen Stand · Zuletzt aktualisiert {time}", level_unavailable:"Akkustand nicht verfügbar · Zuletzt aktualisiert {time}",
-    change_battery:"Batterie bald wechseln · Zuletzt aktualisiert {time}", last_updated:"Zuletzt aktualisiert {time}",
-    low_value:"Niedrig", unknown_value:"—", battery_unknown:"Batteriestatus unbekannt", percent_battery:"{value} Prozent Batterie",
-    last_battery_change:"Letzter Batterietausch (geschätzt): {date}", battery_level:"Batterielevel",
-    binary_detail_aria:"Binärsensor-Status {status}. Für Gerätedetails länger drücken", device_detail_aria:"{name}. Für Gerätedetails gedrückt halten",
-    rename_aria:"Anzeigename von {name} ändern", rename_title:"Anzeigename ändern",
-    time_unknown:"Zeitpunkt unbekannt", just_now:"gerade eben", notify_title:"Batteriestand niedrig", battery_low:"Batterie niedrig",
-    generic_device:"Batteriegerät", last_change:"Letzter Batterietausch",
-    editor_title:"Modern-Batterie-Monitor", editor_hint:"Räume und Geräte werden automatisch aus der Home-Assistant-Geräte- und Bereichszuordnung gelesen.",
-    editor_heading:"Überschrift", hidden_entities:"Ausgeblendete Entitäten (eine Entity-ID pro Zeile)",
-    custom_names:"Eigene Anzeigenamen (eine Zeile je Entität: entity_id = Anzeigename)", show_mobile_editor:"Handys, Tablets und Wearables anzeigen",
-    enable_notifications_short:"Benachrichtigungen aktivieren", notify_service_short:"Benachrichtigungsdienst",
-  },
-  en: {
-    language:"Language", auto_language:"Home Assistant language", german:"German", english:"English", default_title:"Batteries",
-    status_auto:"Detected automatically", waiting_ha:"Waiting for Home Assistant", overview:"Device overview",
-    subtitle:"All battery and battery-warning sensors at a glance, sorted by room.",
-    detected_devices:"Detected devices", device_unit:"device", devices:"devices", shown_hidden:"{shown} shown · {hidden} hidden",
-    low_battery:"Low battery", under_binary:"below {threshold}% or binary warning", keep_watch:"Keep an eye on battery levels",
-    rooms_with_devices:"Rooms with devices", room_unit:"room", rooms:"rooms", no_area_separate:"Devices without an area are listed separately",
-    all_devices:"All devices", low_filter:"Low battery", no_room:"No room", search:"Search device or room…",
-    sort:"Sort", sort_name:"Device A–Z", sort_level:"Lowest level", sort_room:"Room A–Z",
-    no_room_heading:"Devices without a room", room_heading:"Devices by room", one_device:"{count} device", many_devices:"{count} devices",
-    expand_all:"Expand all", collapse_all:"Collapse all", area_assign:"Assign an area in Home Assistant",
-    batteries_in_room:"Battery devices in this room", no_matching:"No devices match the current filter.",
-    no_sensors:"No sensors with the “battery” device class found yet.", battery_change_note:"The last battery replacement is estimated only when history shows a clear rise to a high charge level or a change from low to OK. No date is shown when history is unavailable.",
-    configure_aria:"Configure Battery Monitor", configure_title:"Configure Modern Battery Monitor", settings_button:"Settings", close:"Close",
-    display_notifications:"Display and notifications", threshold:"Low battery threshold (%)", notify_service:"Home Assistant notification service",
-    notify_note:"Notifications run while this card is open in Home Assistant. For alerts that run continuously, also create a Home Assistant automation.",
-    enable_notifications:"Notify when a battery first becomes low", device_filter:"Device filters",
-    show_mobile:"Show phones, tablets and wearables too", mobile_note:"Mobile devices are hidden by default using the Mobile App integration and their name, model and device identifiers. Enable this option if a device was detected incorrectly.",
-    customize_devices:"Customize devices", binary_sensor:"Binary sensor", battery:"Battery", rename_placeholder:"Set display name",
-    hide:"Hide", no_batteries:"No battery sensors found.", cancel:"Cancel", save:"Save",
-    local_only:"Changes in this quick menu are saved in this browser profile; dashboard editor options remain available too.",
-    unavailable:"unavailable", low:"low", ok:"OK", unknown:"Unknown", binary_status:"Binary sensor · Status {status} · Updated {time}",
-    binary_low_line:"Binary sensor reports low battery · Updated {time}", level_unavailable:"Battery level unavailable · Updated {time}",
-    change_battery:"Replace battery soon · Updated {time}", last_updated:"Updated {time}",
-    low_value:"Low", unknown_value:"—", battery_unknown:"Battery status unknown", percent_battery:"{value} percent battery",
-    last_battery_change:"Last battery replacement (estimated): {date}", battery_level:"Battery level",
-    binary_detail_aria:"Binary sensor status {status}. Long press for device details", device_detail_aria:"{name}. Long press for device details",
-    rename_aria:"Change display name for {name}", rename_title:"Change display name",
-    time_unknown:"Time unknown", just_now:"just now", notify_title:"Low battery", battery_low:"Battery low",
-    generic_device:"Battery device", last_change:"Last battery replacement",
-    editor_title:"Modern Battery Monitor", editor_hint:"Rooms and devices are read automatically from Home Assistant device and area assignments.",
-    editor_heading:"Heading", hidden_entities:"Hidden entities (one entity ID per line)",
-    custom_names:"Custom display names (one per line: entity_id = display name)", show_mobile_editor:"Show phones, tablets and wearables",
-    enable_notifications_short:"Enable notifications", notify_service_short:"Notification service",
-  },
-};
+const M_BATTERY_TRANSLATION_LANGUAGES = new Set(["ar","de","en","es","fr","nl","pl","ru","tr"]);
+
+const M_BATTERY_TRANSLATION_CACHE = new Map();
+
+function mBatteryResolveLanguage(selected,hass) {
+  if(selected && selected!=="auto" && M_BATTERY_TRANSLATION_LANGUAGES.has(selected)) return selected;
+  const requested=String(hass?.language || "de").toLowerCase().split("-")[0];
+  return M_BATTERY_TRANSLATION_LANGUAGES.has(requested)?requested:"en";
+}
+
+function mBatteryLoadTranslation(language) {
+  let promise=M_BATTERY_TRANSLATION_CACHE.get(language);
+  if(!promise) {
+    const url=new URL(`./translations/${language}.json`,import.meta.url);
+    promise=fetch(url,{cache:"no-cache"}).then((response)=>{
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    });
+    M_BATTERY_TRANSLATION_CACHE.set(language,promise);
+  }
+  return promise.catch((error)=>{
+    M_BATTERY_TRANSLATION_CACHE.delete(language);
+    throw error;
+  });
+}
+
+function mBatteryLoadLocale(language) {
+  return mBatteryLoadTranslation("en").then((fallback)=>{
+    if(language==="en") return fallback;
+    return mBatteryLoadTranslation(language).then((translated)=>({...fallback,...translated})).catch(()=>fallback);
+  });
+}
+
+function mBatteryTranslate(dictionary,key,values={}) {
+  const text=dictionary?.[key] ?? key;
+  return text.replace(/\{(\w+)\}/g,(_match,name)=>String(values[name] ?? ""));
+}
 
 const M_BATTERY_CSS = `
   :host { display:block; color:var(--primary-text-color,#f3f7fb); }
@@ -105,11 +70,11 @@ const M_BATTERY_CSS = `
   .eyebrow { margin:0 0 8px; color:var(--teal); font-size:10px; font-weight:750; letter-spacing:.14em; text-transform:uppercase; }
   h1 { margin:0; font-size:clamp(34px,5.4vw,48px); line-height:1.02; letter-spacing:-.045em; font-weight:720; }
   .subtitle { margin:9px 0 0; color:var(--muted); font-size:14px; line-height:1.5; }
-  .button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.22); border-radius:11px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.045)); color:#dffcf7; font-weight:600; font-size:12px; cursor:pointer; transition:all 150ms; backdrop-filter:blur(14px) saturate(135%); -webkit-backdrop-filter:blur(14px) saturate(135%); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.12); }
+  .button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.22); border-radius:11px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.045)); color:var(--muted); font-weight:400; font-size:12px; cursor:pointer; transition:all 150ms; backdrop-filter:blur(14px) saturate(135%); -webkit-backdrop-filter:blur(14px) saturate(135%); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.12); }
   .button::before { content:""; position:absolute; inset:1px 9px auto; height:44%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.23),rgba(255,255,255,0)); opacity:.58; pointer-events:none; }
-  .button:hover { background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); border-color:rgba(255,255,255,.38); transform:translateY(-1px); }
+  .button:hover { color:#e8f0f4; background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.07)); border-color:rgba(255,255,255,.38); transform:translateY(-1px); }
   .button:active { transform:scale(.97); }
-  .button.primary { color:#dffcf7; background:linear-gradient(145deg,rgba(0,126,121,.92),rgba(0,76,85,.9)); border-color:rgba(126,255,239,.48); }
+  .button.primary { color:#e8f0f4; font-weight:400; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.075)); border-color:rgba(255,255,255,.32); }
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) { .button { background:rgba(50,55,65,.92); } }
   .stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
   .stat { position:relative; min-height:100px; padding:16px 18px; overflow:hidden; border:1px solid var(--line); border-radius:21px; background:linear-gradient(140deg,rgba(255,255,255,.09),rgba(255,255,255,.045)); }
@@ -120,10 +85,10 @@ const M_BATTERY_CSS = `
   .stat-note { margin-top:7px; color:var(--muted); font-size:10px; }
   .toolbar { gap:12px; justify-content:space-between; margin-bottom:16px; padding:10px; border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.045); }
   .tabs { display:flex; gap:4px; align-items:center; flex-wrap:wrap; }
-  .tab { position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.17); border-radius:11px; padding:9px 12px; background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035)); color:#dffcf7; font-size:11px; cursor:pointer; transition:all 150ms; backdrop-filter:blur(12px) saturate(130%); -webkit-backdrop-filter:blur(12px) saturate(130%); box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 4px 12px rgba(0,0,0,.1); }
+  .tab { position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.17); border-radius:11px; padding:9px 12px; background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035)); color:var(--muted); font-size:11px; font-weight:400; cursor:pointer; transition:all 150ms; backdrop-filter:blur(12px) saturate(130%); -webkit-backdrop-filter:blur(12px) saturate(130%); box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 4px 12px rgba(0,0,0,.1); }
   .tab::before { content:""; position:absolute; inset:1px 8px auto; height:42%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.2),transparent); pointer-events:none; }
   .tab:hover { border-color:rgba(255,255,255,.32); background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06)); }
-  .tab.active { color:#dffcf7; border-color:rgba(80,224,209,.48); background:linear-gradient(145deg,rgba(23,139,130,.55),rgba(18,91,96,.38)); }
+  .tab.active { color:#e8f0f4; border-color:rgba(255,255,255,.32); background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.075)); }
   .tools { display:flex; align-items:center; gap:8px; min-width:0; }
   .search-settings { display:flex; align-items:center; gap:8px; min-width:0; }
   .search,.sort { min-height:38px; border:1px solid var(--line); border-radius:12px; background:rgba(7,12,19,.4); color:var(--ink); outline:none; }
@@ -141,17 +106,17 @@ const M_BATTERY_CSS = `
   .room + .room { border-top:1px solid rgba(255,255,255,.065); }
   .room summary { list-style:none; cursor:pointer; }
   .room summary::-webkit-details-marker { display:none; }
-  .room-title { justify-content:flex-start; min-height:62px; margin:3px 0; padding:10px 9px; border:1px solid rgba(255,255,255,.17); border-radius:12px; color:#dffcf7; background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035)); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); cursor:pointer; user-select:none; transition:all 150ms; }
-  .room-title:hover,.device-node summary:hover { border-color:rgba(80,224,209,.34); }
-  .room[open] > .room-title { border-color:rgba(80,224,209,.4); background:linear-gradient(145deg,rgba(35,151,143,.28),rgba(22,91,99,.16)); }
-  .room:not([open]) > .room-title { border-color:rgba(255,255,255,.16); background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.04)); }
-  .room-name { display:block; color:#dffcf7; font-size:13px; font-weight:650; }
+  .room-title { justify-content:flex-start; min-height:62px; margin:3px 0; padding:10px 9px; border:1px solid rgba(255,255,255,.17); border-radius:12px; color:var(--muted); background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035)); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); cursor:pointer; user-select:none; transition:all 150ms; font-weight:400; }
+  .room-title:hover,.device-node summary:hover { border-color:rgba(255,255,255,.34); }
+  .room[open] > .room-title { color:#e8f0f4; border-color:rgba(255,255,255,.28); background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.055)); }
+  .room:not([open]) > .room-title { color:var(--muted); border-color:rgba(255,255,255,.16); background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.03)); }
+  .room-name { display:block; color:inherit; font-size:13px; font-weight:400; }
   .room-copy { min-width:0; flex:1; }
   .room-meta { display:block; margin-top:3px; color:#82929f; font-size:10px; }
   .room-icon { width:36px; height:36px; flex:0 0 auto; display:grid; place-items:center; color:#b9f5eb; border:1px solid rgba(80,224,209,.12); border-radius:12px; background:rgba(80,224,209,.12); }
   .room-icon svg { width:18px; height:18px; }
   .room-count { margin-left:auto; padding:5px 8px; border-radius:999px; color:#9aa9b7; background:rgba(255,255,255,.055); font-size:11px; white-space:nowrap; }
-  .chev { color:#dffcf7; transition:transform .16s ease; }
+  .chev { color:inherit; transition:transform .16s ease; }
   details[open] .chev { transform:rotate(90deg); }
   .room-list { position:relative; margin:0 0 10px 14px; padding:0 10px 9px 25px; border-left:1px solid rgba(255,255,255,.13); }
   .room-list::before { content:""; position:absolute; top:-8px; left:-1px; height:18px; border-left:1px solid rgba(255,255,255,.13); }
@@ -159,36 +124,34 @@ const M_BATTERY_CSS = `
   .room-list .device:last-child { border-bottom:0; }
   .room-list .device::before { content:""; position:absolute; left:-25px; top:50%; width:17px; border-top:1px solid rgba(255,255,255,.13); }
   .device-node { margin:3px 0 0 10px; padding-left:13px; border-left:1px solid rgba(180,202,220,.2); }
-  .device-node summary { position:relative; display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:45px; padding:7px 10px; border:1px solid rgba(255,255,255,.15); border-radius:11px; color:#dffcf7; background:linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.025)); box-shadow:inset 0 1px 0 rgba(255,255,255,.07); list-style:none; cursor:pointer; transition:all 150ms; }
-  .device-node[open] > summary { border-color:rgba(80,224,209,.38); background:linear-gradient(145deg,rgba(35,151,143,.24),rgba(22,91,99,.13)); }
-  .device-node:not([open]) > summary { border-color:rgba(255,255,255,.15); background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.03)); }
+  .device-node summary { position:relative; display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:45px; padding:7px 10px; border:1px solid rgba(255,255,255,.15); border-radius:11px; color:var(--muted); background:linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.025)); box-shadow:inset 0 1px 0 rgba(255,255,255,.07); list-style:none; cursor:pointer; transition:all 150ms; font-weight:400; }
+  .device-node[open] > summary { color:#e8f0f4; border-color:rgba(255,255,255,.28); background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.055)); }
+  .device-node:not([open]) > summary { color:var(--muted); border-color:rgba(255,255,255,.15); background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025)); }
   .device-node summary::-webkit-details-marker { display:none; }
   .device-node summary::before { content:""; position:absolute; left:-14px; top:50%; width:13px; border-top:1px solid rgba(180,202,220,.2); }
   .device-branch { margin-left:17px; padding-left:10px; border-left:1px solid rgba(180,202,220,.14); }
   .device-summary { min-width:0; display:flex; align-items:center; gap:9px; }
   .device-summary-copy { min-width:0; display:grid; gap:3px; }
-  .device-summary-copy strong { overflow:hidden; color:#dffcf7; text-overflow:ellipsis; white-space:nowrap; font-size:11px; }
+  .device-summary-copy strong { overflow:hidden; color:inherit; text-overflow:ellipsis; white-space:nowrap; font-size:11px; font-weight:400; }
   .device-summary-copy small { color:var(--muted); font-size:9px; }
   .device-summary-icon { display:grid; place-items:center; flex:0 0 auto; width:27px; height:27px; color:#a8bdd0; border:1px solid rgba(255,255,255,.11); border-radius:9px; background:rgba(255,255,255,.055); }
-  .device-summary-icon.binary-ok,.device-icon.binary-ok { color:#46df9b; border-color:rgba(70,223,155,.34); background:rgba(49,199,132,.13); box-shadow:0 0 17px rgba(49,199,132,.1); }
-  .device-summary-icon.binary-low,.device-icon.binary-low { color:#ff667f; border-color:rgba(255,102,127,.38); background:rgba(255,77,103,.14); box-shadow:0 0 17px rgba(255,77,103,.12); }
   .device { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:12px; min-height:76px; padding:11px 8px; }
   .device-main { min-width:0; gap:11px; }
   .device-icon { display:grid; place-items:center; flex:0 0 auto; width:37px; height:37px; color:#c6d5dc; border:1px solid rgba(255,255,255,.07); border-radius:13px; background:rgba(9,18,27,.3); }
   .device-icon svg { width:18px; height:18px; }
-  .device-icon.binary-ok { color:#46df9b; border-color:rgba(70,223,155,.34); background:rgba(49,199,132,.13); box-shadow:0 0 17px rgba(49,199,132,.1); }
-  .device-icon.binary-low { color:#ff667f; border-color:rgba(255,102,127,.38); background:rgba(255,77,103,.14); box-shadow:0 0 17px rgba(255,77,103,.12); }
   .device-copy { min-width:0; display:grid; gap:4px; }
   .device-name-line { display:flex; align-items:center; gap:4px; min-width:0; }
-  .device-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:360px; padding:2px 0; border:0; background:transparent; color:#dffcf7; text-align:left; font-size:13px; font-weight:600; cursor:pointer; touch-action:manipulation; -webkit-touch-callout:none; user-select:none; }
+  .device-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:360px; padding:2px 0; border:0; background:transparent; color:#dffcf7; text-align:left; font-size:13px; font-weight:400; cursor:pointer; touch-action:manipulation; -webkit-touch-callout:none; user-select:none; }
   .device-name:hover { color:var(--teal); }
   .device-sub { margin-top:4px; color:#8897a5; font-size:11px; line-height:1.35; }
   .edit-name { display:grid; place-items:center; width:25px; height:25px; flex:0 0 auto; padding:0; border:1px solid rgba(255,255,255,.15); border-radius:11px; color:#dffcf7; background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035)); box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 3px 9px rgba(0,0,0,.1); opacity:.78; cursor:pointer; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:all 150ms; }
-  .status-button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:104px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.19); border-radius:11px; color:#dffcf7; background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.045)); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 14px rgba(0,0,0,.12); font-size:12px; font-weight:700; cursor:pointer; backdrop-filter:blur(13px) saturate(135%); -webkit-backdrop-filter:blur(13px) saturate(135%); }
+  .status-button { position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:104px; min-height:38px; padding:8px 12px; border:1px solid rgba(255,255,255,.19); border-radius:11px; color:#e8f0f4; background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.045)); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 14px rgba(0,0,0,.12); font-size:11px; font-weight:400; cursor:pointer; backdrop-filter:blur(13px) saturate(135%); -webkit-backdrop-filter:blur(13px) saturate(135%); }
   .status-button::before { content:""; position:absolute; inset:1px 9px auto; height:44%; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.23),transparent); pointer-events:none; }
-  .status-button.status-ok { color:#dffcf7; border-color:rgba(70,223,155,.42); background:linear-gradient(145deg,rgba(22,125,88,.52),rgba(15,74,65,.38)); }
-  .status-button.status-low { color:#dffcf7; border-color:rgba(255,102,127,.48); background:linear-gradient(145deg,rgba(154,44,65,.56),rgba(92,28,46,.42)); }
-  .status-button.status-unknown { color:#dffcf7; }
+  .status-button.status-ok { border-color:rgba(70,223,155,.3); }
+  .status-button.status-low { border-color:rgba(255,102,127,.34); }
+  .status-button.status-unknown { color:var(--muted); }
+  .status-button.status-ok .status-mark { color:#46df9b; border-color:rgba(70,223,155,.55); }
+  .status-button.status-low .status-mark { color:#ff667f; border-color:rgba(255,102,127,.6); }
   .status-button:hover { border-color:currentColor; filter:brightness(1.1); }
   .status-mark { display:grid; place-items:center; width:19px; height:19px; border:1px solid currentColor; border-radius:7px; font-size:12px; line-height:1; }
   .edit-name:hover { opacity:1; color:var(--teal); border-color:rgba(80,224,209,.36); background:rgba(80,224,209,.13); }
@@ -300,6 +263,10 @@ class ModernBatterieMonitor extends HTMLElement {
     this.attachShadow({ mode:"open" });
     this._config = { ...M_BATTERY_DEFAULTS };
     this._hass = null;
+    this._translation = null;
+    this._translationLanguage = "";
+    this._translationPromise = null;
+    this._translationToken = 0;
     this._registry = null;
     this._registryLoading = false;
     this._registrySignature = null;
@@ -332,11 +299,13 @@ class ModernBatterieMonitor extends HTMLElement {
   setConfig(config) {
     this._config = { ...M_BATTERY_DEFAULTS, ...config };
     this._loadLocalOverrides();
+    this._ensureTranslation();
     this._render();
   }
   set hass(hass) {
     this._captureLiveReplacement(this._hass, hass);
     this._hass = hass;
+    this._ensureTranslation();
     this._loadRegistries(!!this._registry && this._batterySignature(hass) !== this._registrySignature);
     this._loadHistory();
     this._render();
@@ -362,14 +331,32 @@ class ModernBatterieMonitor extends HTMLElement {
 
   _uiLanguage() {
     const selected=this._openSettings && this._settingsDraft ? this._settingsDraft.language : this._config.language;
-    if(selected && selected!="auto" && M_BATTERY_TRANSLATIONS[selected]) return selected;
-    const requested=String(this._hass?.language || "de").toLowerCase().split("-")[0];
-    return M_BATTERY_TRANSLATIONS[requested] ? requested : "en";
+    return mBatteryResolveLanguage(selected,this._hass);
+  }
+
+  _ensureTranslation() {
+    const language=this._uiLanguage();
+    if(language===this._translationLanguage && (this._translation || this._translationPromise)) return;
+    this._translationLanguage=language;
+    this._translation=null;
+    const token=++this._translationToken;
+    const requested=mBatteryLoadLocale(language);
+    this._translationPromise=requested;
+    requested.then((dictionary)=>{
+      if(token!==this._translationToken) return;
+      this._translation=dictionary;
+      this._translationPromise=null;
+      this._render();
+    }).catch((error)=>{
+      if(token!==this._translationToken) return;
+      this._translationPromise=null;
+      this._translationLanguage="";
+      console.error("[modern-batterie-monitor] Translation file could not be loaded:",error);
+    });
   }
 
   _t(key, values={}) {
-    const text=M_BATTERY_TRANSLATIONS[this._uiLanguage()]?.[key] ?? M_BATTERY_TRANSLATIONS.en[key] ?? key;
-    return text.replace(/\{(\w+)\}/g,(_match,name)=>String(values[name] ?? ""));
+    return mBatteryTranslate(this._translation,key,values);
   }
 
   _batterySignature(hass=this._hass) {
@@ -590,20 +577,20 @@ class ModernBatterieMonitor extends HTMLElement {
     if (!value) return "";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "";
-    return new Intl.DateTimeFormat(this._uiLanguage()==="de"?"de-DE":"en-US", { day:"2-digit", month:"2-digit", year:"numeric" }).format(date);
+    return new Intl.DateTimeFormat(this._uiLanguage(), { day:"2-digit", month:"2-digit", year:"numeric" }).format(date);
   }
 
   _visibleEntries(devices=this._aggregateDevices(this._batteryEntities())) {
     const hidden = new Set(this._config.hidden_entities || []);
-    const needle = this._search.trim().toLocaleLowerCase("de-DE");
+    const needle = this._search.trim().toLocaleLowerCase(this._uiLanguage());
     let rows = devices.filter((entry) => !hidden.has(entry.deviceId) && !(entry.allEntityIds || [entry.entityId]).some((id)=>hidden.has(id)));
     if (this._filter === "low") rows = rows.filter((entry) => entry.low);
     if (this._filter === "no-room") rows = rows.filter((entry) => entry.room === "Ohne Raum");
-    if (needle) rows = rows.filter((entry) => `${entry.displayName} ${entry.room} ${entry.room==="Ohne Raum"?this._t("no_room"):""}`.toLocaleLowerCase(this._uiLanguage()==="de"?"de-DE":"en-US").includes(needle));
+    if (needle) rows = rows.filter((entry) => `${entry.displayName} ${entry.room} ${entry.room==="Ohne Raum"?this._t("no_room"):""}`.toLocaleLowerCase(this._uiLanguage()).includes(needle));
     rows.sort((a,b) => {
-      if (this._sort === "level") return (a.level ?? (a.low?0:101)) - (b.level ?? (b.low?0:101)) || a.displayName.localeCompare(b.displayName,"de");
-      if (this._sort === "room") return a.room.localeCompare(b.room,"de") || a.displayName.localeCompare(b.displayName,"de");
-      return a.displayName.localeCompare(b.displayName,"de");
+      if (this._sort === "level") return (a.level ?? (a.low?0:101)) - (b.level ?? (b.low?0:101)) || a.displayName.localeCompare(b.displayName,this._uiLanguage());
+      if (this._sort === "room") return a.room.localeCompare(b.room,this._uiLanguage()) || a.displayName.localeCompare(b.displayName,this._uiLanguage());
+      return a.displayName.localeCompare(b.displayName,this._uiLanguage());
     });
     return rows;
   }
@@ -622,14 +609,14 @@ class ModernBatterieMonitor extends HTMLElement {
     if(Number.isNaN(date.getTime())) return this._t("time_unknown");
     const minutes=Math.max(0,Math.floor((Date.now()-date.getTime())/60000));
     if(minutes<1) return this._t("just_now");
-    const locale=this._uiLanguage()==="de"?"de-DE":"en-US";
+    const locale=this._uiLanguage();
     const relative=new Intl.RelativeTimeFormat(locale,{numeric:"auto"});
     if(minutes<60) return relative.format(-minutes,"minute");
     const hours=Math.floor(minutes/60);
     if(hours<24) return relative.format(-hours,"hour");
     const days=Math.floor(hours/24);
     if(days<30) return relative.format(-days,"day");
-    return this._uiLanguage()==="de"?`am ${this._date(date)}`:this._date(date);
+    return this._t("date_on",{date:this._date(date)});
   }
 
   _batteryGraphic(entry) {
@@ -657,12 +644,11 @@ class ModernBatterieMonitor extends HTMLElement {
             : this._t("last_updated",{time:updated});
     const valueText = entry.level != null ? `${Math.round(entry.level)} %` : (entry.lowBinary ? this._t("low_value") : (unknown ? this._t("unknown_value") : this._t("ok")));
     const historyLine = date ? `<span class="device-sub">${mBatteryEsc(this._t("last_battery_change",{date}))}</span>` : "";
-    const iconClass = entry.binaryStatus === "on" ? " binary-low" : entry.binaryStatus === "off" ? " binary-ok" : "";
     const levelColor = entry.level != null ? mBatteryColor(entry.level) : entry.lowBinary ? "#ff617b" : unknown ? "#aab6c1" : "#46df9b";
     const rightSide=entry.binaryOnly
       ? `<button type="button" class="status-button ${unknown?"status-unknown":entry.lowBinary?"status-low":"status-ok"} pressable" data-entity="${mBatteryEsc(entry.entityId)}" aria-label="${mBatteryEsc(this._t("binary_detail_aria",{status:unknown?this._t("unavailable"):entry.lowBinary?this._t("low"):this._t("ok")}))}"><span class="status-mark" aria-hidden="true">${unknown?"?":entry.lowBinary?"!":"✓"}</span>${unknown?this._t("unknown"):entry.lowBinary?this._t("low_value"):this._t("ok")}</button>`
       : `${this._batteryGraphic(entry)}<div class="level-copy pressable" data-entity="${mBatteryEsc(entry.entityId)}"><div class="level-number" style="color:${levelColor}">${mBatteryEsc(valueText)}</div><div class="level-state">${this._t("battery_level")}</div></div>`;
-    return `<article class="device"><div class="device-main"><span class="device-icon${iconClass}" aria-hidden="true">${this._deviceIcon(entry)}</span><div class="device-copy"><div class="device-name-line"><button class="device-name pressable" data-entity="${mBatteryEsc(entry.entityId)}" aria-label="${mBatteryEsc(this._t("device_detail_aria",{name:entry.displayName}))}">${mBatteryEsc(entry.displayName)}</button><button class="edit-name" data-rename-device="${mBatteryEsc(entry.deviceId)}" aria-label="${mBatteryEsc(this._t("rename_aria",{name:entry.displayName}))}" title="${mBatteryEsc(this._t("rename_title"))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5 5 5M4 20l4.2-.9L19 8.3a2.1 2.1 0 0 0-3-3L5.2 16.1 4 20Z"/></svg></button></div><span class="device-sub">${mBatteryEsc(stateText)}</span>${historyLine}</div></div><div class="device-meta">${rightSide}</div></article>`;
+    return `<article class="device"><div class="device-main"><span class="device-icon" aria-hidden="true">${this._deviceIcon(entry)}</span><div class="device-copy"><div class="device-name-line"><button class="device-name pressable" data-entity="${mBatteryEsc(entry.entityId)}" aria-label="${mBatteryEsc(this._t("device_detail_aria",{name:entry.displayName}))}">${mBatteryEsc(entry.displayName)}</button><button class="edit-name" data-rename-device="${mBatteryEsc(entry.deviceId)}" aria-label="${mBatteryEsc(this._t("rename_aria",{name:entry.displayName}))}" title="${mBatteryEsc(this._t("rename_title"))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5 5 5M4 20l4.2-.9L19 8.3a2.1 2.1 0 0 0-3-3L5.2 16.1 4 20Z"/></svg></button></div><span class="device-sub">${mBatteryEsc(stateText)}</span>${historyLine}</div></div><div class="device-meta">${rightSide}</div></article>`;
   }
 
   _makeSettingsDraft() {
@@ -698,7 +684,8 @@ class ModernBatterieMonitor extends HTMLElement {
 
   _render() {
     const root = this.shadowRoot?.querySelector(".shell");
-    if (!root) return;
+    if (!root || !this._translation) return;
+    root.dir=this._uiLanguage()==="ar"?"rtl":"ltr";
     const oldModal=root.querySelector(".modal");
     const modalScroll=oldModal?.scrollTop || 0;
     const focused=this.shadowRoot.activeElement;
@@ -719,7 +706,7 @@ class ModernBatterieMonitor extends HTMLElement {
       if (!groups.has(row.room)) groups.set(row.room, []);
       groups.get(row.room).push(row);
     }
-    const roomNames = [...groups.keys()].sort((a,b) => a === "Ohne Raum" ? 1 : b === "Ohne Raum" ? -1 : a.localeCompare(b,"de"));
+    const roomNames = [...groups.keys()].sort((a,b) => a === "Ohne Raum" ? 1 : b === "Ohne Raum" ? -1 : a.localeCompare(b,this._uiLanguage()));
     const content = roomNames.map((room) => {
       const deviceGroups=new Map();
       for(const entry of groups.get(room)) {
@@ -731,9 +718,9 @@ class ModernBatterieMonitor extends HTMLElement {
         if(this._sort==="level") {
           const minA=Math.min(...a[1].map((entry)=>entry.level ?? (entry.low?0:101)));
           const minB=Math.min(...b[1].map((entry)=>entry.level ?? (entry.low?0:101)));
-          return minA-minB || nameA.localeCompare(nameB,"de");
+          return minA-minB || nameA.localeCompare(nameB,this._uiLanguage());
         }
-        return nameA.localeCompare(nameB,"de");
+        return nameA.localeCompare(nameB,this._uiLanguage());
       });
       const devicesHtml=sortedDevices.flatMap(([,deviceRows])=>deviceRows).map((entry)=>this._row(entry)).join("");
       const roomKey=`room:${room}`;
@@ -743,15 +730,16 @@ class ModernBatterieMonitor extends HTMLElement {
     }).join("");
     const localOnly = this._t("local_only");
     const draft=this._settingsDraft || this._makeSettingsDraft();
+    const languageOptions=[...M_BATTERY_TRANSLATION_LANGUAGES].map((language)=>`<option value="${language}" ${draft.language===language?"selected":""}>${t(`lang_${language}`)}</option>`).join("");
     root.innerHTML = `
-      <div class="topbar"><div class="brand"><div class="mark">HA</div><div class="brand-copy"><strong>Smart Home</strong><span>Modern-Batterie-Monitor</span></div></div><div class="top-meta"><span class="pill"><span class="dot"></span>${this._hass?t("status_auto"):t("waiting_ha")}</span></div></div>
+      <div class="topbar"><div class="brand"><div class="mark">HA</div><div class="brand-copy"><strong>${t("smart_home")}</strong><span>Modern-Batterie-Monitor</span></div></div><div class="top-meta"><span class="pill"><span class="dot"></span>${this._hass?t("status_auto"):t("waiting_ha")}</span></div></div>
       <div class="hero"><div><div class="eyebrow">${t("overview")}</div><h1>${mBatteryEsc(!this._config.title || this._config.title===M_BATTERY_DEFAULTS.title?this._t("default_title"):this._config.title)}</h1><p class="subtitle">${t("subtitle")}</p></div></div>
       <div class="stats"><div class="stat" style="--glow:rgba(80,224,209,.2)"><div class="stat-label">${t("detected_devices")}</div><div class="stat-value">${allDevices.size}<small>${t(allDevices.size===1?"device_unit":"devices")}</small></div><div class="stat-note">${t("shown_hidden",{shown:shownDevices.size,hidden:allDevices.size-shownDevices.size})}</div></div><div class="stat" style="--glow:rgba(255,126,83,.21)"><div class="stat-label">${t("low_battery")}</div><div class="stat-value">${lowCount}<small>${t("under_binary",{threshold:this._config.low_threshold ?? 25})}</small></div><div class="stat-note">${t("keep_watch")}</div></div><div class="stat" style="--glow:rgba(120,136,255,.2)"><div class="stat-label">${t("rooms_with_devices")}</div><div class="stat-value">${rooms.size}<small>${t(rooms.size===1?"room_unit":"rooms")}</small></div><div class="stat-note">${t("no_area_separate")}</div></div></div>
       <div class="toolbar"><div class="tabs"><button class="tab ${this._filter==="all"?"active":""}" data-filter="all">${t("all_devices")}</button><button class="tab ${this._filter==="low"?"active":""}" data-filter="low">${t("low_filter")}</button><button class="tab ${this._filter==="no-room"?"active":""}" data-filter="no-room">${t("no_room")}</button></div><div class="tools"><div class="search-settings"><button class="button settings-button" data-action="settings" aria-label="${t("configure_aria")}">⚙ ${t("settings_button")}</button><input class="search" type="search" placeholder="${t("search")}" value="${mBatteryEsc(this._search)}" aria-label="${t("search")}"></div><select class="sort" aria-label="${t("sort")}"><option value="name" ${this._sort==="name"?"selected":""}>${t("sort_name")}</option><option value="level" ${this._sort==="level"?"selected":""}>${t("sort_level")}</option><option value="room" ${this._sort==="room"?"selected":""}>${t("sort_room")}</option></select></div></div>
       <div class="section-head"><strong>${this._filter==="low"?t("low_filter"):this._filter==="no-room"?t("no_room_heading"):t("room_heading")} · ${t(rows.length===1?"one_device":"many_devices",{count:rows.length})}</strong><div class="tree-actions"><button class="button" data-action="expand-all">${t("expand_all")}</button><button class="button" data-action="collapse-all">${t("collapse_all")}</button></div></div>
       <div class="tree">${content || `<div class="empty">${all.length ? t("no_matching") : t("no_sensors")}</div>`}</div>
       <div class="foot">${t("battery_change_note")}</div>
-      <div class="overlay" data-overlay ${this._openSettings?"":"hidden"}><section class="modal" role="dialog" aria-modal="true" aria-label="${t("configure_aria")}"><div class="modal-head"><h2>${t("configure_title")}</h2><button class="button" data-action="close-settings" aria-label="${t("close")}">✕</button></div><div class="modal-body"><div class="setting-card"><h3>${t("display_notifications")}</h3><div class="setting-grid"><label class="field">${t("threshold")}<div class="range-row"><input data-setting="threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(draft.threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(draft.threshold)}%</output></div></label><label class="field">${t("notify_service")}<input data-setting="service" type="text" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(draft.service)}"></label></div><p class="note">${t("notify_note")}</p><label class="toggle-line"><input data-setting="notifications" type="checkbox" ${draft.notifications?"checked":""}> ${t("enable_notifications")}</label></div><div class="setting-card"><h3>${t("device_filter")}</h3><label class="toggle-line"><input data-setting="show-mobile" type="checkbox" ${draft.showMobile?"checked":""}> ${t("show_mobile")}</label><p class="note">${t("mobile_note")}</p></div><div class="setting-card"><h3>${t("language")}</h3><select class="language-select" data-setting="language" aria-label="${t("language")}"><option value="auto" ${draft.language==="auto"?"selected":""}>${t("auto_language")}</option><option value="de" ${draft.language==="de"?"selected":""}>${t("german")}</option><option value="en" ${draft.language==="en"?"selected":""}>${t("english")}</option></select></div><div class="setting-card"><h3>${t("customize_devices")}</h3><div class="settings-list">${all.map((entry)=>`<div class="setting-row"><div class="setting-entity"><strong>${mBatteryEsc(entry.displayName)}</strong><span>${mBatteryEsc(entry.room==="Ohne Raum"?this._t("no_room"):entry.room)}${entry.binaryOnly?` · ${t("binary_sensor")}`:` · ${t("battery")}`}</span></div><input type="text" data-rename="${mBatteryEsc(entry.deviceId)}" placeholder="${t("rename_placeholder")}" value="${mBatteryEsc(draft.names[entry.deviceId] || draft.names[entry.entityId] || entry.currentOverride || "")}"><label><input type="checkbox" data-hide="${mBatteryEsc(entry.deviceId)}" ${draft.hidden.includes(entry.deviceId) || (entry.allEntityIds || []).some((id)=>draft.hidden.includes(id))?"checked":""}> ${t("hide")}</label></div>`).join("") || `<div class="empty">${t("no_batteries")}</div>`}</div></div><div class="modal-actions"><button class="button" data-action="close-settings">${t("cancel")}</button><button class="button primary" data-action="save-settings">${t("save")}</button></div><p class="note">${mBatteryEsc(localOnly)}</p></div></section></div>`;
+      <div class="overlay" data-overlay ${this._openSettings?"":"hidden"}><section class="modal" role="dialog" aria-modal="true" aria-label="${t("configure_aria")}"><div class="modal-head"><h2>${t("configure_title")}</h2><button class="button" data-action="close-settings" aria-label="${t("close")}">✕</button></div><div class="modal-body"><div class="setting-card"><h3>${t("display_notifications")}</h3><div class="setting-grid"><label class="field">${t("threshold")}<div class="range-row"><input data-setting="threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(draft.threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(draft.threshold)}%</output></div></label><label class="field">${t("notify_service")}<input data-setting="service" type="text" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(draft.service)}"></label></div><p class="note">${t("notify_note")}</p><label class="toggle-line"><input data-setting="notifications" type="checkbox" ${draft.notifications?"checked":""}> ${t("enable_notifications")}</label></div><div class="setting-card"><h3>${t("device_filter")}</h3><label class="toggle-line"><input data-setting="show-mobile" type="checkbox" ${draft.showMobile?"checked":""}> ${t("show_mobile")}</label><p class="note">${t("mobile_note")}</p></div><div class="setting-card"><h3>${t("language")}</h3><select class="language-select" data-setting="language" aria-label="${t("language")}"><option value="auto" ${draft.language==="auto"?"selected":""}>${t("auto_language")}</option>${languageOptions}</select></div><div class="setting-card"><h3>${t("customize_devices")}</h3><div class="settings-list">${all.map((entry)=>`<div class="setting-row"><div class="setting-entity"><strong>${mBatteryEsc(entry.displayName)}</strong><span>${mBatteryEsc(entry.room==="Ohne Raum"?this._t("no_room"):entry.room)}${entry.binaryOnly?` · ${t("binary_sensor")}`:` · ${t("battery")}`}</span></div><input type="text" data-rename="${mBatteryEsc(entry.deviceId)}" placeholder="${t("rename_placeholder")}" value="${mBatteryEsc(draft.names[entry.deviceId] || draft.names[entry.entityId] || entry.currentOverride || "")}"><label><input type="checkbox" data-hide="${mBatteryEsc(entry.deviceId)}" ${draft.hidden.includes(entry.deviceId) || (entry.allEntityIds || []).some((id)=>draft.hidden.includes(id))?"checked":""}> ${t("hide")}</label></div>`).join("") || `<div class="empty">${t("no_batteries")}</div>`}</div></div><div class="modal-actions"><button class="button" data-action="close-settings">${t("cancel")}</button><button class="button primary" data-action="save-settings">${t("save")}</button></div><p class="note">${mBatteryEsc(localOnly)}</p></div></section></div>`;
     root.querySelector(".sort")?.addEventListener("change",(ev)=>this._setSort(ev.currentTarget.value));
     const overlay=root.querySelector("[data-overlay]");
     if(overlay) overlay.hidden=!this._openSettings;
@@ -813,7 +801,7 @@ class ModernBatterieMonitor extends HTMLElement {
   _onChange(ev) {
     if (ev.target.matches?.("[data-setting],[data-hide],[data-rename]")) {
       this._captureSettingsDraft();
-      if(ev.target.dataset.setting==="language") this._render();
+      if(ev.target.dataset.setting==="language") { this._ensureTranslation(); this._render(); }
       return;
     }
     if (ev.target.matches?.(".sort")) this._setSort(ev.target.value);
@@ -836,7 +824,7 @@ class ModernBatterieMonitor extends HTMLElement {
     const service = draft.service?.trim() || "";
     const notifications = !!draft.notifications;
     const showMobileDevices = !!draft.showMobile;
-    const language = M_BATTERY_TRANSLATIONS[draft.language] ? draft.language : "auto";
+    const language = M_BATTERY_TRANSLATION_LANGUAGES.has(draft.language) ? draft.language : "auto";
     const hidden = draft.hidden || [];
     const names = draft.names || {};
     this._config = { ...this._config, low_threshold:Math.max(0,Math.min(100,threshold)), notification_service:service, notifications_enabled:notifications, show_mobile_devices:showMobileDevices, language, hidden_entities:hidden, name_overrides:names };
@@ -869,6 +857,11 @@ class ModernBatterieMonitorEditor extends HTMLElement {
     super();
     this.attachShadow({mode:"open"});
     this._config={...M_BATTERY_DEFAULTS};
+    this._hass=null;
+    this._translation=null;
+    this._translationLanguage="";
+    this._translationPromise=null;
+    this._translationToken=0;
     this.shadowRoot.addEventListener("input",(ev)=>{
       if(ev.target.matches?.('[data-field="low_threshold"]')) {
         const output=this.shadowRoot.querySelector("[data-threshold-value]");
@@ -877,26 +870,45 @@ class ModernBatterieMonitorEditor extends HTMLElement {
     });
     this.shadowRoot.addEventListener("change",(ev)=>{
       this._changed();
-      if(ev.target.matches?.('[data-field="language"]')) this._render();
+      if(ev.target.matches?.('[data-field="language"]')) { this._ensureTranslation(); this._render(); }
     });
   }
-  setConfig(config) { this._config={...M_BATTERY_DEFAULTS,...config}; this._render(); }
-  set hass(hass) { this._hass=hass; this._render(); }
+  setConfig(config) { this._config={...M_BATTERY_DEFAULTS,...config}; this._ensureTranslation(); this._render(); }
+  set hass(hass) { this._hass=hass; this._ensureTranslation(); this._render(); }
   get hass() { return this._hass; }
   _uiLanguage() {
-    if(this._config.language && this._config.language!=="auto" && M_BATTERY_TRANSLATIONS[this._config.language]) return this._config.language;
-    const requested=String(this._hass?.language || "de").toLowerCase().split("-")[0];
-    return M_BATTERY_TRANSLATIONS[requested]?requested:"en";
+    return mBatteryResolveLanguage(this._config.language,this._hass);
+  }
+  _ensureTranslation() {
+    const language=this._uiLanguage();
+    if(language===this._translationLanguage && (this._translation || this._translationPromise)) return;
+    this._translationLanguage=language;
+    this._translation=null;
+    const token=++this._translationToken;
+    const requested=mBatteryLoadLocale(language);
+    this._translationPromise=requested;
+    requested.then((dictionary)=>{
+      if(token!==this._translationToken) return;
+      this._translation=dictionary;
+      this._translationPromise=null;
+      this._render();
+    }).catch((error)=>{
+      if(token!==this._translationToken) return;
+      this._translationPromise=null;
+      this._translationLanguage="";
+      console.error("[modern-batterie-monitor] Translation file could not be loaded:",error);
+    });
   }
   _t(key,values={}) {
-    const text=M_BATTERY_TRANSLATIONS[this._uiLanguage()]?.[key] ?? M_BATTERY_TRANSLATIONS.en[key] ?? key;
-    return text.replace(/\{(\w+)\}/g,(_match,name)=>String(values[name] ?? ""));
+    return mBatteryTranslate(this._translation,key,values);
   }
   _render() {
+    if(!this._translation) return;
     const t=(key,values={})=>mBatteryEsc(this._t(key,values));
     const threshold=this._config.low_threshold ?? 25;
     const title=this._config.title===M_BATTERY_DEFAULTS.title?this._t("default_title"):this._config.title;
-    this.shadowRoot.innerHTML = `<style>${M_BATTERY_CSS}:host{display:block}.shell{padding:16px}.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}.hint{font-size:11px;color:var(--secondary-text-color,#8796a4)}@media(max-width:520px){.edit-grid{grid-template-columns:1fr}}</style><div class="shell"><h2>${t("editor_title")}</h2><p class="hint">${t("editor_hint")}</p><div class="edit-grid"><label class="field">${t("editor_heading")}<input data-field="title" value="${mBatteryEsc(title)}"></label><label class="field">${t("threshold")}<div class="range-row"><input data-field="low_threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(threshold)}%</output></div></label></div><label class="field">${t("language")}<select class="language-select" data-field="language"><option value="auto" ${(this._config.language||"auto")==="auto"?"selected":""}>${t("auto_language")}</option><option value="de" ${this._config.language==="de"?"selected":""}>${t("german")}</option><option value="en" ${this._config.language==="en"?"selected":""}>${t("english")}</option></select></label><label class="field">${t("hidden_entities")}<textarea data-field="hidden_entities" rows="4">${mBatteryEsc((this._config.hidden_entities||[]).join("\n"))}</textarea></label><label class="field">${t("custom_names")}<textarea data-field="name_overrides" rows="5">${mBatteryEsc(Object.entries(this._config.name_overrides||{}).map(([id,name])=>`${id} = ${name}`).join("\n"))}</textarea></label><label class="toggle-line"><input data-field="show_mobile_devices" type="checkbox" ${this._config.show_mobile_devices?"checked":""}> ${t("show_mobile_editor")}</label><label class="toggle-line"><input data-field="notifications_enabled" type="checkbox" ${this._config.notifications_enabled?"checked":""}> ${t("enable_notifications_short")}</label><label class="field">${t("notify_service_short")}<input data-field="notification_service" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(this._config.notification_service||"")}"></label></div>`;
+    const languageOptions=[...M_BATTERY_TRANSLATION_LANGUAGES].map((language)=>`<option value="${language}" ${this._config.language===language?"selected":""}>${t(`lang_${language}`)}</option>`).join("");
+    this.shadowRoot.innerHTML = `<style>${M_BATTERY_CSS}:host{display:block}.shell{padding:16px}.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}.hint{font-size:11px;color:var(--secondary-text-color,#8796a4)}@media(max-width:520px){.edit-grid{grid-template-columns:1fr}}</style><div class="shell" dir="${this._uiLanguage()==="ar"?"rtl":"ltr"}"><h2>${t("editor_title")}</h2><p class="hint">${t("editor_hint")}</p><div class="edit-grid"><label class="field">${t("editor_heading")}<input data-field="title" value="${mBatteryEsc(title)}"></label><label class="field">${t("threshold")}<div class="range-row"><input data-field="low_threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(threshold)}%</output></div></label></div><label class="field">${t("language")}<select class="language-select" data-field="language"><option value="auto" ${(this._config.language||"auto")==="auto"?"selected":""}>${t("auto_language")}</option>${languageOptions}</select></label><label class="field">${t("hidden_entities")}<textarea data-field="hidden_entities" rows="4">${mBatteryEsc((this._config.hidden_entities||[]).join("\n"))}</textarea></label><label class="field">${t("custom_names")}<textarea data-field="name_overrides" rows="5">${mBatteryEsc(Object.entries(this._config.name_overrides||{}).map(([id,name])=>`${id} = ${name}`).join("\n"))}</textarea></label><label class="toggle-line"><input data-field="show_mobile_devices" type="checkbox" ${this._config.show_mobile_devices?"checked":""}> ${t("show_mobile_editor")}</label><label class="toggle-line"><input data-field="notifications_enabled" type="checkbox" ${this._config.notifications_enabled?"checked":""}> ${t("enable_notifications_short")}</label><label class="field">${t("notify_service_short")}<input data-field="notification_service" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(this._config.notification_service||"")}"></label></div>`;
   }
   _changed() {
     const get=(key)=>this.shadowRoot.querySelector(`[data-field="${key}"]`);
