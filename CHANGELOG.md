@@ -10,6 +10,11 @@
 - Eigene Anzeigenamen gelten nur in der Batterieanzeige.
 - Die Karte übernimmt Bereichsicons aus Home Assistant und erkennt weitere Gerätetypen.
 
+## 1.6.6 — 2026-11-24
+
+- Konfigurationszeilen so angepasst, dass das Umbenennungsfeld weiter links endet und „Ausblenden“ innerhalb des Zeilenrahmens bleibt.
+- Kartenkopf vereinfacht: Statusanzeige bündig neben dem Titel, über dem Titel stehende Marken- und Abschnittstexte entfernt.
+
 ## 1.6.5 — 2026-11-22
 
 - Marketplace-Release stellt `modern-batterie-monitor.js` als einzelne Datei bereit; die Karte benötigt beim Installieren keine separate Übersetzungsdatei.

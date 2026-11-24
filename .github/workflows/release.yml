@@ -7,7 +7,7 @@ on:
         description: Version from VERSION.txt, without a leading v
         required: true
         type: string
-        default: "1.6.5"
+        default: "1.6.6"
 
 permissions:
   contents: write

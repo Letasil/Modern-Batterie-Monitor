@@ -46,7 +46,7 @@
   "customize_devices": "Geräte anpassen",
   "binary_sensor": "Binärsensor",
   "battery": "Batterie",
-  "rename_placeholder": "Anzeigename nur in dieser Karte",
+  "rename_placeholder": "Anzeigename anpassen",
   "hide": "Ausblenden",
   "no_batteries": "Keine Batterie-Sensoren vorhanden.",
   "cancel": "Abbrechen",
