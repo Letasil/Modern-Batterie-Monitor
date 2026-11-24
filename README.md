@@ -1,6 +1,6 @@
 # Modern-Batterie-Monitor
 
-**Version 1.6.5**
+**Version 1.7.0**
 
 Modern-Batterie-Monitor ist eine responsive Lovelace-Karte für batteriebetriebene Smart-Home-Geräte. Das erste Release erkennt Batterie-Prozentwerte und Binärsensoren, ordnet Geräte ihren Räumen zu und zeigt Warnungen übersichtlich im Dashboard.
 

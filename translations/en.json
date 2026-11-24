@@ -46,7 +46,7 @@
   "customize_devices": "Customize devices",
   "binary_sensor": "Binary sensor",
   "battery": "Battery",
-  "rename_placeholder": "Set display name",
+  "rename_placeholder": "Display name in this card",
   "hide": "Hide",
   "no_batteries": "No battery sensors found.",
   "cancel": "Cancel",

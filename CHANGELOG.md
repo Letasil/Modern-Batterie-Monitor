@@ -1,5 +1,11 @@
 # Änderungsprotokoll
 
+## 1.7.0
+
+- Das Konfigurationsmenü öffnet sich im sichtbaren Fenster und behält bei Statusupdates Scrollposition und Eingabefokus.
+- Eigene Anzeigenamen gelten nur in der Batterieanzeige.
+- Die Karte übernimmt Bereichsicons aus Home Assistant und erkennt weitere Gerätetypen.
+
 ## 1.6.5 — 2026-11-22
 
 - Marketplace-Release stellt `modern-batterie-monitor.js` als einzelne Datei bereit; die Karte benötigt beim Installieren keine separate Übersetzungsdatei.

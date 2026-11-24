@@ -1,5 +1,5 @@
-/* Modern-Batterie-Monitor · Lovelace custom card · 1.6.5 */
-const M_BATTERY_VERSION = "1.6.5";
+/* Modern-Batterie-Monitor · Lovelace custom card · 1.7.0 */
+const M_BATTERY_VERSION = "1.7.0";
 const M_BATTERY_DEFAULTS = {
   type: "custom:modern-batterie-monitor",
   title: "Batterien",
@@ -152,7 +152,7 @@ const M_BATTERY_EMBEDDED_TRANSLATIONS = {
     "customize_devices": "Geräte anpassen",
     "binary_sensor": "Binärsensor",
     "battery": "Batterie",
-    "rename_placeholder": "Anzeigename anpassen",
+    "rename_placeholder": "Anzeigename nur in dieser Karte",
     "hide": "Ausblenden",
     "no_batteries": "Keine Batterie-Sensoren vorhanden.",
     "cancel": "Abbrechen",
@@ -241,7 +241,7 @@ const M_BATTERY_EMBEDDED_TRANSLATIONS = {
     "customize_devices": "Customize devices",
     "binary_sensor": "Binary sensor",
     "battery": "Battery",
-    "rename_placeholder": "Set display name",
+    "rename_placeholder": "Display name in this card",
     "hide": "Hide",
     "no_batteries": "No battery sensors found.",
     "cancel": "Cancel",
@@ -859,7 +859,8 @@ const M_BATTERY_CSS = `
   :host { display:block; color:var(--primary-text-color,#f3f7fb); }
   * { box-sizing:border-box; }
   button,input,select,textarea { font:inherit; }
-  .shell { --ink:var(--primary-text-color,#f3f7fb); --muted:var(--secondary-text-color,#a7b4c1); --line:rgba(255,255,255,.11); --teal:#50e0d1; color:var(--ink); padding:clamp(16px,3vw,28px); border:1px solid rgba(255,255,255,.12); border-radius:24px; background:radial-gradient(700px 300px at 10% 0%,rgba(42,205,185,.16),transparent 65%),radial-gradient(620px 320px at 100% 0%,rgba(100,114,226,.16),transparent 64%),linear-gradient(145deg,rgba(23,32,43,.94),rgba(9,15,24,.96)); box-shadow:0 20px 60px rgba(0,0,0,.24); backdrop-filter:blur(18px); }
+  :host { --ink:var(--primary-text-color,#f3f7fb); --muted:var(--secondary-text-color,#a7b4c1); --line:rgba(255,255,255,.11); --teal:#50e0d1; } 
+  .shell { color:var(--ink); padding:clamp(16px,3vw,28px); border:1px solid rgba(255,255,255,.12); border-radius:24px; background:radial-gradient(700px 300px at 10% 0%,rgba(42,205,185,.16),transparent 65%),radial-gradient(620px 320px at 100% 0%,rgba(100,114,226,.16),transparent 64%),linear-gradient(145deg,rgba(23,32,43,.94),rgba(9,15,24,.96)); box-shadow:0 20px 60px rgba(0,0,0,.24); backdrop-filter:blur(18px); }
   .topbar,.hero,.toolbar,.section-head,.room-title,.device-main,.device-meta,.stats,.modal-head { display:flex; align-items:center; }
   .topbar,.hero,.section-head,.room-title { justify-content:space-between; gap:14px; }
   .topbar { margin-bottom:26px; }
@@ -920,6 +921,7 @@ const M_BATTERY_CSS = `
   .room-copy { min-width:0; flex:1; }
   .room-meta { display:block; margin-top:3px; color:#82929f; font-size:10px; }
   .room-icon { width:36px; height:36px; flex:0 0 auto; display:grid; place-items:center; color:#b9f5eb; border:1px solid rgba(80,224,209,.12); border-radius:12px; background:rgba(80,224,209,.12); }
+  .room-icon ha-icon,.device-icon ha-icon { --mdc-icon-size:18px; }
   .room-icon svg { width:18px; height:18px; }
   .room-count { margin-left:auto; padding:5px 8px; border-radius:999px; color:#9aa9b7; background:rgba(255,255,255,.055); font-size:11px; white-space:nowrap; }
   .room:not([open]) .room-count[data-warning="true"] { color:#ffe7a7; background:rgba(255,199,71,.28); box-shadow:inset 0 1px 0 rgba(255,245,195,.18),0 0 14px rgba(255,199,71,.12); }
@@ -977,9 +979,8 @@ const M_BATTERY_CSS = `
   .battery .divider { stroke:rgba(255,255,255,.16); stroke-width:.45; pointer-events:none; }
   .empty { padding:24px 12px; color:var(--muted); text-align:center; font-size:12px; }
   .foot { margin:14px 2px 0; color:var(--muted); font-size:10px; line-height:1.45; }
-  .overlay { position:fixed; inset:0; z-index:999; display:grid; place-items:center; padding:18px; background:rgba(3,7,12,.72); backdrop-filter:blur(8px); }
-  .overlay[hidden] { display:none; }
-  .modal { width:min(960px,calc(100vw - 36px)); max-height:min(93vh,1100px); overflow:auto; border:1px solid rgba(255,255,255,.18); border-radius:25px; background:linear-gradient(145deg,rgba(28,39,51,.97),rgba(10,16,25,.98)); box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.08); backdrop-filter:blur(22px) saturate(135%); }
+  .modal::backdrop { background:rgba(3,7,12,.72); backdrop-filter:blur(8px); }
+  .modal { position:fixed; inset:0; margin:auto; padding:0; color:var(--ink); width:min(960px,calc(100% - 24px)); max-width:100%; max-height:calc(100vh - 24px); max-height:min(1100px,calc(100dvh - 24px)); overflow:auto; overscroll-behavior:contain; border:1px solid rgba(255,255,255,.18); border-radius:25px; background:linear-gradient(145deg,rgba(28,39,51,.97),rgba(10,16,25,.98)); box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.08); backdrop-filter:blur(22px) saturate(135%); }
   .modal-head { position:sticky; top:0; z-index:1; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--line); background:rgba(18,25,34,.96); backdrop-filter:blur(14px); }
   .modal-head h2 { margin:0; font-size:17px; }
   .modal-body { padding:16px 18px; }
@@ -1050,7 +1051,11 @@ const M_BATTERY_ICONS = {
   sensor:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 8h8M8 12h8m-8 4h5"/>'
 };
 function mBatteryIcon(name) { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${M_BATTERY_ICONS[name] || M_BATTERY_ICONS.sensor}</svg>`; }
-function mBatteryRoomIcon(room) {
+function mBatteryHaIcon(icon) {
+  return `<ha-icon icon="${mBatteryEsc(icon)}" aria-hidden="true"></ha-icon>`;
+}
+function mBatteryRoomIcon(room, icon) {
+  if (icon) return mBatteryHaIcon(icon);
   const name=String(room || "").toLocaleLowerCase("de-DE");
   if(name.includes("ohne raum")) return mBatteryIcon("unassigned");
   if(/k[uü]che/.test(name)) return mBatteryIcon("kitchen");
@@ -1093,7 +1098,6 @@ class ModernBatterieMonitor extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${M_BATTERY_CSS}</style><div class="shell"></div>`;
     this.shadowRoot.addEventListener("click", (ev) => this._onClick(ev));
     this.shadowRoot.addEventListener("input", (ev) => this._onInput(ev));
-    this.shadowRoot.addEventListener("change", (ev) => this._onChange(ev));
     this.shadowRoot.addEventListener("pointerdown", (ev) => this._onPointerDown(ev));
     this.shadowRoot.addEventListener("toggle", (ev) => {
       const node=ev.target;
@@ -1188,7 +1192,7 @@ class ModernBatterieMonitor extends HTMLElement {
       this._registry = {
         entities: new Map((entities || []).map((entry) => [entry.entity_id, entry])),
         devices: new Map((devices || []).map((entry) => [entry.id, entry])),
-        areas: new Map((areas || []).map((entry) => [entry.area_id, entry.name])),
+        areas: new Map((areas || []).map((entry) => [entry.area_id, entry])),
       };
       succeeded=true;
     } catch (_err) {
@@ -1256,10 +1260,11 @@ class ModernBatterieMonitor extends HTMLElement {
     const override = this._config.name_overrides?.[deviceId] || this._config.name_overrides?.[state.entity_id];
     const deviceName = device?.name_by_user || device?.name || state.attributes?.device_name || [device?.manufacturer,device?.model].filter(Boolean).join(" ") || this._t("generic_device");
     const displayName = override || deviceName;
-    const room = this._registry?.areas.get(areaId) || state.attributes?.area_name || "Ohne Raum";
+    const area = this._hass?.areas?.[areaId] || this._registry?.areas.get(areaId);
+    const room = area?.name || state.attributes?.area_name || "Ohne Raum";
     return {
       entityId:state.entity_id, deviceId, state, level, lowBinary, binaryStatus,
-      binaryOnly, binaryEntityIds, room, displayName, low: level != null ? level <= threshold : lowBinary,
+      binaryOnly, binaryEntityIds, room, roomIcon:area?.icon, deviceName, displayName, low: level != null ? level <= threshold : lowBinary,
       domain:state.entity_id.split(".")[0],
     };
   }
@@ -1306,22 +1311,27 @@ class ModernBatterieMonitor extends HTMLElement {
     for(const state of Object.values(this._hass?.states || {})) {
       const entity=this._registry?.entities.get(state.entity_id);
       const deviceId=entity?.device_id || state.attributes?.device_id;
-      if(deviceId===entry.deviceId) related.push({state,entity});
+      if(deviceId===entry.deviceId || state.entity_id===entry.entityId) related.push({state,entity});
     }
     const classes=related.map(({state})=>String(state.attributes?.device_class || "").toLowerCase());
     const domains=related.map(({state})=>state.entity_id.split(".")[0]);
-    const text=[entry.displayName,device?.name,device?.model,device?.manufacturer,...related.map(({state,entity})=>`${state.attributes?.friendly_name || ""} ${entity?.name || ""} ${entity?.original_name || ""}`)].join(" ").toLocaleLowerCase("de-DE");
+    const text=[entry.deviceName,device?.name,device?.model,device?.manufacturer,...related.map(({state,entity})=>`${state.attributes?.friendly_name || ""} ${entity?.name || ""} ${entity?.original_name || ""}`)].join(" ").toLocaleLowerCase("de-DE");
+    if(domains.includes("lock") || classes.includes("lock")) return mBatteryIcon("lock");
+    if(domains.includes("climate") || /thermostat|heizkörper|radiator/.test(text)) return mBatteryHaIcon("mdi:thermostat");
+    if(domains.includes("cover")) return mBatteryHaIcon("mdi:window-shutter");
+    if(classes.includes("carbon_monoxide")) return mBatteryHaIcon("mdi:molecule-co");
+    if(/doorbell|türklingel/.test(text)) return mBatteryHaIcon("mdi:doorbell");
     if(classes.includes("gas") || /gasmelder|gassensor/.test(text)) return mBatteryIcon("gas");
     if(classes.some((value)=>["smoke","carbon_monoxide"].includes(value)) || /rauch|smoke|brandmelder/.test(text)) return mBatteryIcon("smoke");
     if(classes.includes("window") || /fenster|window/.test(text)) return mBatteryIcon("window");
     if(classes.includes("door") || classes.includes("opening") || /t[uü]r|door|kontakt/.test(text)) return mBatteryIcon("door");
     if(classes.some((value)=>["motion","occupancy","presence"].includes(value)) || /beweg|bewmel|motion|occupancy|pr[aä]senz/.test(text)) return mBatteryIcon("motion");
-    if(classes.some((value)=>["moisture","water","leak"].includes(value)) || /wasser|leak|feucht|water/.test(text)) return mBatteryIcon("water");
-    if(domains.includes("remote") || domains.includes("button") || /fernbedien|remote|taster/.test(text)) return mBatteryIcon("remote");
-    if(domains.includes("lock") || classes.includes("lock") || /schloss|lock/.test(text)) return mBatteryIcon("lock");
+    if(classes.some((value)=>["moisture","water","leak"].includes(value)) || /wassermelder|wasserleck|leak|wassersensor/.test(text)) return mBatteryIcon("water");
+    if(domains.includes("remote") || /fernbedien|remote|taster/.test(text)) return mBatteryIcon("remote");
+    if(/türschloss|door lock/.test(text)) return mBatteryIcon("lock");
     if(classes.some((value)=>["temperature","humidity","pressure","illuminance"].includes(value)) || /klima|temperatur|thermo|humidity|temperature/.test(text)) return mBatteryIcon("climate");
     if(domains.includes("light") || /lampe|licht|light|bulb/.test(text)) return mBatteryIcon("light");
-    if(domains.includes("switch") || domains.includes("cover") || /steckdose|switch|schalter/.test(text)) return mBatteryIcon("switch");
+    if(domains.includes("switch") || /steckdose|switch|schalter/.test(text)) return mBatteryIcon("switch");
     if(domains.includes("sensor") || domains.includes("binary_sensor")) return mBatteryIcon("sensor");
     return mBatteryIcon("sensor");
   }
@@ -1478,9 +1488,17 @@ class ModernBatterieMonitor extends HTMLElement {
     if (service) draft.service=service.value;
     if (notifications) draft.notifications=notifications.checked;
     if (showMobile) draft.showMobile=showMobile.checked;
-    draft.hidden=[...this.shadowRoot.querySelectorAll("[data-hide]:checked")].map((input)=>input.dataset.hide);
-    draft.names={};
-    this.shadowRoot.querySelectorAll("[data-rename]").forEach((input)=>{if(input.value.trim())draft.names[input.dataset.rename]=input.value.trim();});
+    const represented=new Set();
+    this.shadowRoot.querySelectorAll("[data-rename]").forEach(input=>{
+      represented.add(input.dataset.rename);
+      for (const id of JSON.parse(input.dataset.entityIds)) represented.add(id);
+    });
+    draft.hidden=(this._config.hidden_entities || []).filter(id=>!represented.has(id));
+    draft.names=Object.fromEntries(Object.entries(this._config.name_overrides || {}).filter(([id])=>!represented.has(id)));
+    this.shadowRoot.querySelectorAll("[data-hide]:checked").forEach(input=>draft.hidden.push(input.dataset.hide));
+    this.shadowRoot.querySelectorAll("[data-rename]").forEach(input=>{
+      if(input.value.trim()) draft.names[input.dataset.rename]=input.value.trim();
+    });
     this._settingsDraft=draft;
   }
 
@@ -1488,12 +1506,6 @@ class ModernBatterieMonitor extends HTMLElement {
     const root = this.shadowRoot?.querySelector(".shell");
     if (!root || !this._translation) return;
     root.dir=this._uiLanguage()==="ar"?"rtl":"ltr";
-    const oldModal=root.querySelector(".modal");
-    const modalScroll=oldModal?.scrollTop || 0;
-    const focused=this.shadowRoot.activeElement;
-    const focusInfo=focused?.dataset?.setting ? {kind:"setting",key:focused.dataset.setting,start:focused.selectionStart,end:focused.selectionEnd}
-      : focused?.dataset?.rename ? {kind:"rename",key:focused.dataset.rename,start:focused.selectionStart,end:focused.selectionEnd}
-      : focused?.dataset?.hide ? {kind:"hide",key:focused.dataset.hide} : null;
     const t=(key,values={})=>mBatteryEsc(this._t(key,values));
     const all = this._aggregateDevices(this._batteryEntities());
     const hidden = new Set(this._config.hidden_entities || []);
@@ -1521,13 +1533,11 @@ class ModernBatterieMonitor extends HTMLElement {
       const roomOpen=this._expandedNodes.has(roomKey)?this._expandedNodes.get(roomKey):this._allExpanded;
       const roomWarning=shown.some((entry)=>entry.room===room && entry.low);
       const roomLabel=room==="Ohne Raum"?this._t("no_room"):room;
-      return `<details class="room" data-node-key="${mBatteryEsc(roomKey)}" ${roomOpen?"open":""}><summary class="room-title"><span class="chev" aria-hidden="true">›</span><span class="room-icon" aria-hidden="true">${mBatteryRoomIcon(room)}</span><span class="room-copy"><span class="room-name">${mBatteryEsc(roomLabel)}</span><span class="room-meta">${room==="Ohne Raum"?t("area_assign"):t("batteries_in_room")}</span></span><span class="room-count" data-warning="${roomWarning?"true":"false"}">${t(deviceGroups.size===1?"one_device":"many_devices",{count:deviceGroups.size})}</span></summary><div class="room-list">${devicesHtml}</div></details>`;
+      return `<details class="room" data-node-key="${mBatteryEsc(roomKey)}" ${roomOpen?"open":""}><summary class="room-title"><span class="chev" aria-hidden="true">›</span><span class="room-icon" aria-hidden="true">${mBatteryRoomIcon(room, groups.get(room)[0].roomIcon)}</span><span class="room-copy"><span class="room-name">${mBatteryEsc(roomLabel)}</span><span class="room-meta">${room==="Ohne Raum"?t("area_assign"):t("batteries_in_room")}</span></span><span class="room-count" data-warning="${roomWarning?"true":"false"}">${t(deviceGroups.size===1?"one_device":"many_devices",{count:deviceGroups.size})}</span></summary><div class="room-list">${devicesHtml}</div></details>`;
     }).join("");
     const roomOpenStates=roomNames.map((room)=>{const key="room:"+room;return this._expandedNodes.has(key)?this._expandedNodes.get(key):this._allExpanded;});
     const expandAllActive=roomOpenStates.length>0 && roomOpenStates.every(Boolean);
     const collapseAllActive=roomOpenStates.length>0 && roomOpenStates.every((open)=>!open);
-    const localOnly = this._t("local_only");
-    const draft=this._settingsDraft || this._makeSettingsDraft();
     root.innerHTML = `
       <div class="topbar"><div class="brand"><div class="mark">HA</div><div class="brand-copy"><strong>${t("smart_home")}</strong><span>Modern-Batterie-Monitor</span></div></div><div class="top-meta"><span class="pill"><span class="dot"></span>${this._hass?t("status_auto"):t("waiting_ha")}</span></div></div>
       <div class="hero"><div><div class="eyebrow">${t("overview")}</div><h1>${mBatteryEsc(!this._config.title || this._config.title===M_BATTERY_DEFAULTS.title?this._t("default_title"):this._config.title)}</h1><p class="subtitle">${t("subtitle")}</p></div></div>
@@ -1536,49 +1546,71 @@ class ModernBatterieMonitor extends HTMLElement {
       <div class="section-head"><strong>${this._filter==="low"?t("low_filter"):this._filter==="no-room"?t("no_room_heading"):t("room_heading")} · ${t(rows.length===1?"one_device":"many_devices",{count:rows.length})}</strong><div class="tree-actions"><button class="button ${expandAllActive?"state-active":""}" data-action="expand-all">${t("expand_all")}</button><button class="button ${collapseAllActive?"state-active":""}" data-action="collapse-all">${t("collapse_all")}</button></div></div>
       <div class="tree">${content || `<div class="empty">${all.length ? t("no_matching") : t("no_sensors")}</div>`}</div>
       <div class="foot">${t("battery_change_note")}</div>
-      <div class="overlay" data-overlay ${this._openSettings?"":"hidden"}><section class="modal" role="dialog" aria-modal="true" aria-label="${t("configure_aria")}"><div class="modal-head"><h2>${t("configure_title")}</h2><button class="button" data-action="close-settings" aria-label="${t("close")}">✕</button></div><div class="modal-body"><div class="setting-card"><h3>${t("display_notifications")}</h3><div class="setting-grid"><label class="field">${t("threshold")}<div class="range-row"><input data-setting="threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(draft.threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(draft.threshold)}%</output></div></label><label class="field">${t("notify_service")}<input data-setting="service" type="text" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(draft.service)}"></label></div><p class="note">${t("notify_note")}</p><label class="toggle-line"><input data-setting="notifications" type="checkbox" ${draft.notifications?"checked":""}> ${t("enable_notifications")}</label></div><div class="setting-card"><h3>${t("device_filter")}</h3><label class="toggle-line"><input data-setting="show-mobile" type="checkbox" ${draft.showMobile?"checked":""}> ${t("show_mobile")}</label><p class="note">${t("mobile_note")}</p></div><div class="setting-card"><h3>${t("customize_devices")}</h3><div class="settings-list">${all.map((entry)=>`<div class="setting-row"><div class="setting-entity"><strong>${mBatteryEsc(entry.displayName)}</strong><span>${mBatteryEsc(entry.room==="Ohne Raum"?this._t("no_room"):entry.room)}${entry.binaryOnly?` · ${t("binary_sensor")}`:` · ${t("battery")}`}</span></div><input type="text" data-rename="${mBatteryEsc(entry.deviceId)}" placeholder="${t("rename_placeholder")}" value="${mBatteryEsc(draft.names[entry.deviceId] || draft.names[entry.entityId] || entry.currentOverride || "")}"><label><input type="checkbox" data-hide="${mBatteryEsc(entry.deviceId)}" ${draft.hidden.includes(entry.deviceId) || (entry.allEntityIds || []).some((id)=>draft.hidden.includes(id))?"checked":""}> ${t("hide")}</label></div>`).join("") || `<div class="empty">${t("no_batteries")}</div>`}</div></div><div class="modal-actions"><button class="button" data-action="close-settings">${t("cancel")}</button><button class="button primary" data-action="save-settings">${t("save")}</button></div><p class="note">${mBatteryEsc(localOnly)}</p></div></section></div>`;
-    const overlay=root.querySelector("[data-overlay]");
-    if(overlay) overlay.hidden=!this._openSettings;
-    if(this._openSettings) {
-      const modal=root.querySelector(".modal");
-      if(modal) modal.scrollTop=modalScroll;
-      if(focusInfo) {
-        const target=[...this.shadowRoot.querySelectorAll(`[data-${focusInfo.kind}]`)].find((item)=>item.dataset[focusInfo.kind]===focusInfo.key);
-        target?.focus();
-        if(target && focusInfo.start!=null && target.setSelectionRange) {
-          try { target.setSelectionRange(focusInfo.start,focusInfo.end); } catch (_err) { /* Keep focus when the input type has no selection. */ }
-        }
-      }
-    }
+    `;
     this._maybeNotify(shown);
+  }
+
+  _showSettings(deviceId) {
+    if (this._openSettings) return;
+    const draft=this._makeSettingsDraft();
+    const all=this._aggregateDevices(this._batteryEntities());
+    const localOnly=this._t("local_only");
+    const t=(key,values={})=>mBatteryEsc(this._t(key,values));
+    const dialog=document.createElement("dialog");
+    dialog.className="modal";
+    dialog.dir=this._uiLanguage()==="ar"?"rtl":"ltr";
+    dialog.setAttribute("aria-label",this._t("configure_aria"));
+    dialog.innerHTML=`<div class="modal-head"><h2>${t("configure_title")}</h2><button class="button" data-action="close-settings" aria-label="${t("close")}">✕</button></div><div class="modal-body"><div class="setting-card"><h3>${t("display_notifications")}</h3><div class="setting-grid"><label class="field">${t("threshold")}<div class="range-row"><input data-setting="threshold" type="range" min="0" max="100" step="1" value="${mBatteryEsc(draft.threshold)}"><output class="range-value" data-threshold-value>${mBatteryEsc(draft.threshold)}%</output></div></label><label class="field">${t("notify_service")}<input data-setting="service" type="text" placeholder="notify.mobile_app_dein_handy" value="${mBatteryEsc(draft.service)}"></label></div><p class="note">${t("notify_note")}</p><label class="toggle-line"><input data-setting="notifications" type="checkbox" ${draft.notifications?"checked":""}> ${t("enable_notifications")}</label></div><div class="setting-card"><h3>${t("device_filter")}</h3><label class="toggle-line"><input data-setting="show-mobile" type="checkbox" ${draft.showMobile?"checked":""}> ${t("show_mobile")}</label><p class="note">${t("mobile_note")}</p></div><div class="setting-card"><h3>${t("customize_devices")}</h3><div class="settings-list">${all.map((entry)=>`<div class="setting-row"><div class="setting-entity"><strong>${mBatteryEsc(entry.displayName)}</strong><span>${mBatteryEsc(entry.room==="Ohne Raum"?this._t("no_room"):entry.room)}${entry.binaryOnly?` · ${t("binary_sensor")}`:` · ${t("battery")}`}</span></div><input type="text" data-rename="${mBatteryEsc(entry.deviceId)}" data-entity-ids="${mBatteryEsc(JSON.stringify(entry.allEntityIds))}" placeholder="${t("rename_placeholder")}" value="${mBatteryEsc(draft.names[entry.deviceId] || draft.names[entry.entityId] || entry.currentOverride || "")}"><label><input type="checkbox" data-hide="${mBatteryEsc(entry.deviceId)}" ${draft.hidden.includes(entry.deviceId) || (entry.allEntityIds || []).some((id)=>draft.hidden.includes(id))?"checked":""}> ${t("hide")}</label></div>`).join("") || `<div class="empty">${t("no_batteries")}</div>`}</div></div><div class="modal-actions"><button class="button" data-action="close-settings">${t("cancel")}</button><button class="button primary" data-action="save-settings">${t("save")}</button></div><p class="note">${mBatteryEsc(localOnly)}</p></div>`;
+    this._openSettings=true;
+    this._settingsDraft=draft;
+    this._renameTarget=deviceId;
+    dialog.addEventListener("cancel",(event)=>{
+      event.preventDefault();
+      this._closeSettings();
+    });
+    dialog.addEventListener("click",(event)=>{
+      if (event.target!==dialog) return;
+      const box=dialog.getBoundingClientRect();
+      if (event.clientX<box.left || event.clientX>box.right || event.clientY<box.top || event.clientY>box.bottom) this._closeSettings();
+    });
+    this.shadowRoot.append(dialog);
+    dialog.showModal();
+    if (deviceId) {
+      const input=[...dialog.querySelectorAll("[data-rename]")].find(item=>item.dataset.rename===deviceId);
+      input?.focus();
+      input?.select();
+    }
+  }
+
+  _closeSettings() {
+    const dialog=this.shadowRoot.querySelector("dialog");
+    dialog?.close();
+    dialog?.remove();
+    this._openSettings=false;
+    this._settingsDraft=null;
+    this._render();
+    const trigger=this._renameTarget
+      ? [...this.shadowRoot.querySelectorAll("[data-rename-device]")].find(item=>item.dataset.renameDevice===this._renameTarget)
+      : null;
+    (trigger || this.shadowRoot.querySelector('[data-action="settings"]'))?.focus({preventScroll:true});
   }
 
   _onClick(ev) {
     const filter = ev.composedPath().find((node) => node?.dataset?.filter);
     if (filter) { this._filter = filter.dataset.filter; this._render(); return; }
     const renameDevice=ev.composedPath().find((node)=>node?.dataset?.renameDevice)?.dataset.renameDevice;
-    if(renameDevice) {
-      this._settingsDraft=this._makeSettingsDraft();
-      this._openSettings=true;
-      this._render();
-      const input=[...this.shadowRoot.querySelectorAll("[data-rename]")].find((item)=>item.dataset.rename===renameDevice);
-      input?.focus();
-      input?.select();
-      return;
-    }
+    if(renameDevice) { this._showSettings(renameDevice); return; }
     const action = ev.composedPath().find((node) => node?.dataset?.action)?.dataset.action;
-    if (action === "settings") { this._settingsDraft=this._makeSettingsDraft(); this._openSettings = true; this._render(); return; }
-    if (action === "close-settings") { this._openSettings = false; this._settingsDraft=null; this._render(); return; }
+    if (action === "settings") { this._showSettings(); return; }
+    if (action === "close-settings") { this._closeSettings(); return; }
     if (action === "save-settings") { this._saveSettings(); return; }
     if (action === "expand-all") { this._allExpanded=true; this._expandedNodes.clear(); this._render(); return; }
     if (action === "collapse-all") { this._allExpanded=false; this._expandedNodes.clear(); this._render(); return; }
-    const overlay = ev.composedPath().find((node) => node?.dataset?.overlay != null);
-    if (overlay && ev.target === overlay) { this._openSettings = false; this._settingsDraft=null; this._render(); }
+
   }
 
   _onInput(ev) {
     if (ev.target.matches?.("[data-setting],[data-hide],[data-rename]")) {
-      this._captureSettingsDraft();
       if(ev.target.dataset.setting==="threshold") {
         const output=this.shadowRoot.querySelector("[data-threshold-value]");
         if(output) output.textContent=`${ev.target.value}%`;
@@ -1592,12 +1624,6 @@ class ModernBatterieMonitor extends HTMLElement {
       const input = this.shadowRoot.querySelector(".search");
       input?.focus();
       try { input?.setSelectionRange(start,start); } catch (_err) { /* Search input type may not support selection. */ }
-    }
-  }
-  _onChange(ev) {
-    if (ev.target.matches?.("[data-setting],[data-hide],[data-rename]")) {
-      this._captureSettingsDraft();
-      return;
     }
   }
   _onPointerDown(ev) {
@@ -1624,9 +1650,7 @@ class ModernBatterieMonitor extends HTMLElement {
     delete this._config.language;
     try { localStorage.setItem(this._storageKey, JSON.stringify({ low_threshold:this._config.low_threshold, notification_service:service, notifications_enabled:notifications, show_mobile_devices:showMobileDevices, hidden_entities:hidden, name_overrides:names })); } catch (_err) { /* Settings remain active until the card is reloaded. */ }
     mBatteryFire(this, "config-changed", { config:this._config });
-    this._openSettings = false;
-    this._settingsDraft=null;
-    this._render();
+    this._closeSettings();
   }
 
   async _maybeNotify(rows) {
@@ -1641,7 +1665,7 @@ class ModernBatterieMonitor extends HTMLElement {
     if (!this._config.notifications_enabled || !newlyLow.length || !this._config.notification_service) return;
     const [domain,service] = this._config.notification_service.split(".");
     if (!domain || !service) return;
-    const details = rows.filter((row)=>newlyLow.includes(row.entityId)).map((row)=>`${row.displayName}: ${row.level == null ? this._t("battery_low") : `${Math.round(row.level)} %`}${row.room !== "Ohne Raum" ? ` (${row.room})` : ""}`).join("\n");
+    const details = rows.filter((row)=>newlyLow.includes(row.entityId)).map((row)=>`${row.deviceName}: ${row.level == null ? this._t("battery_low") : `${Math.round(row.level)} %`}${row.room !== "Ohne Raum" ? ` (${row.room})` : ""}`).join("\n");
     try { await this._hass.callService(domain,service,{title:this._t("notify_title"),message:details}); } catch (_err) { /* Invalid or unavailable notify services are ignored. */ }
   }
 }
@@ -1667,7 +1691,7 @@ class ModernBatterieMonitorEditor extends HTMLElement {
     });
   }
   setConfig(config) { this._config={...M_BATTERY_DEFAULTS,...config}; delete this._config.language; this._ensureTranslation(); this._render(); }
-  set hass(hass) { this._hass=hass; this._ensureTranslation(); this._render(); }
+  set hass(hass) { this._hass=hass; this._ensureTranslation(); }
   get hass() { return this._hass; }
   _uiLanguage() {
     return mBatteryResolveLanguage(this._hass);
