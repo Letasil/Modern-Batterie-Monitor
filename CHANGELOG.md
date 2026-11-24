@@ -1,5 +1,9 @@
 # Änderungsprotokoll
 
+## 1.8.0
+
+- Kleine Bildvorschau in der Kartenauswahl von Home Assistant hinzugefügt.
+
 ## 1.7.0
 
 - Das Konfigurationsmenü öffnet sich im sichtbaren Fenster und behält bei Statusupdates Scrollposition und Eingabefokus.
